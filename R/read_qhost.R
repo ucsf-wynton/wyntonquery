@@ -14,7 +14,20 @@ read_qhost <- function() {
     SWAPTO = col_character(),
     SWAPUS = col_character()
   )
+  
   df <- read_table(pipe("qhost | awk '(NR != 2)'"), col_types = col_types)
   colnames(df) <- tolower(colnames(df))
+
+  scale <- c(K = 1000, M = 1000^2, G = 1000^3, T = 1000^4)
+  for (field in c("memtot", "memuse", "swapto", "swapus")) {
+    values <- df[[field]]
+    for (suffix in c("K", "M", "G", "T")) {
+      idx <- grep(suffix, values)
+      if (length(idx) == 0) next
+      values[idx] <- as.numeric(gsub(suffix, "", values[idx])) * scale[suffix]
+    }
+    df[[field]] <- suppressWarnings(as.numeric(values) / 1000^3)
+  }
+
   df
 }
