@@ -1,0 +1,16 @@
+Package: wyntonquery
+Version: 0.0.0-9000
+Depends:
+    R (>= 3.5.0)
+Imports:
+    readr,
+    tibble,
+Title: Query the UCSF Wynton Environment
+Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
+                                          email = "henrikb@braju.com"))
+Description: Functions for querying the UCSF Wynton environment.
+License: LGPL (>= 2.1)
+LazyLoad: TRUE
+URL: https://github.com/UCSF-HPC/wyntonquery
+BugReports: https://github.com/UCSF-HPC/wyntonquery
+RoxygenNote: 6.0.1
