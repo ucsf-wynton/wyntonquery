@@ -1,6 +1,7 @@
 .Rhistory
 *~
 **/*~
+.future/
 .check
 .test
 .o
