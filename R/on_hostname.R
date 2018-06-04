@@ -1,3 +1,10 @@
+#' @example
+#' \donttest{\dontrun{
+#' qh <- read_qhost()
+#' qh <- subset(qh, !is.na(load) & !grepl("-test[0-9]+$", hostname))
+#' ci <- on_hostname(qh$hostname, read_cpuinfo())
+#' }}
+#'
 #' @importFrom future future value values plan
 #' @importFrom future.batchtools batchtools_sge
 #' @export
