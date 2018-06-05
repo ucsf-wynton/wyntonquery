@@ -1,0 +1,10 @@
+#! /usr/bin/env bash
+#$ -S /bin/bash
+#$ -N collect_nodes_info
+#$ -j y
+#$ -cwd
+#$ -V
+#$ -l mem_free=1G
+#$ -R yes
+
+Rscript -e "source(system.file(package='wyntonquery', 'scripts', 'collect_nodes_info.R'), echo = TRUE)"

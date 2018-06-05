@@ -1,7 +1,7 @@
 #' @example
 #' \donttest{\dontrun{
 #' qh <- read_qhost()
-#' qh <- subset(qh, !is.na(load) & !grepl("-test[0-9]+$", hostname))
+#' qh <- subset(qh, !is.na(load) & !grepl("-(int|test)[0-9]+$", hostname))
 #' ci <- on_hostname(qh$hostname, read_cpuinfo())
 #' }}
 #'
