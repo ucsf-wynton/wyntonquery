@@ -1,0 +1,10 @@
+#! /usr/bin/env bash
+#$ -S /bin/bash
+#$ -N system_info
+#$ -j y
+#$ -cwd
+#$ -V
+#$ -l mem_free=1G
+#$ -R yes
+
+Rscript -e "source(system.file(package='wyntonquery', 'scripts', 'system_info.R'), echo = TRUE)"

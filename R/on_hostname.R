@@ -18,7 +18,8 @@
 #' \donttest{\dontrun{
 #' q <- queues(filter = "available")
 #' hostnames <- sort(unique(q$hostname))
-#' ci <- on_hostname(hostnames, cpu_info())
+#' si <- on_hostname(hostnames, system_info())
+#' print(si)
 #' }}
 #'
 #' @importFrom future future value values plan

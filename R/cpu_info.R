@@ -2,6 +2,7 @@
 #'
 #' @return
 #' A data.frame (tibble) with the two columns `field` and `value`.
+#' For most CPUs, there will be duplicated `field`:s.
 #'
 #' @details
 #' This function reads/queries `/proc/cpuinfo` on the current machine.
@@ -20,6 +21,7 @@ cpu_info <- function() {
   bfr <- unique(bfr)
   bfr <- c(sprintf("hostname: %s", Sys.info()[["nodename"]]), bfr)
   pattern <- "([a-z ]+):[ ]+(.*)"
-  tibble(field = gsub(pattern, "\\1", bfr),
-         value = gsub(pattern, "\\2", bfr))
+  field <- gsub(pattern, "\\1", bfr)
+  field <- gsub(" ", "_", tolower(field), fixed = TRUE)
+  tibble(field = field, value = gsub(pattern, "\\2", bfr))
 }

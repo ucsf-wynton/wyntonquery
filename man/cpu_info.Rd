@@ -8,6 +8,7 @@ cpu_info()
 }
 \value{
 A data.frame (tibble) with the two columns `field` and `value`.
+For most CPUs, there will be duplicated `field`:s.
 }
 \description{
 Lists the CPU Information for the Current Machine
