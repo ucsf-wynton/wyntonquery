@@ -1,6 +1,7 @@
 .Rhistory
 *~
 **/*~
+*.rds
 .future/
 .check
 .test

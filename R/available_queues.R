@@ -1,3 +1,26 @@
+#' List Available Queues and Their Properties
+#'
+#' @param parse If `TRUE`, `qhost -f` columns that contain multiple properties
+#' (e.g. 'states') are further parsed for easy access.
+#'
+#' @return
+#' A data.frame (tibble) where each row corresponds to a
+#' unique queue on a particular host.
+#'
+#' @examples
+#' \donttest{
+#' q <- available_queues()
+#' print(q)
+#'
+#' ## Ignore queues whose nodes are disabled, without load, or those
+#' ## on developer and test nodes
+#' q <- subset(q, !is.na(load_avg) & !disabled & !grepl("-(int|test)", hostname))
+#' print(q)
+#' }
+#'
+#' @details
+#' This function queries SGE's `qstat -f` on the system.
+#'
 #' @importFrom readr read_table cols col_character col_double
 #' @export
 available_queues <- function(parse = TRUE) {

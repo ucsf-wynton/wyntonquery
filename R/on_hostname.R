@@ -1,8 +1,12 @@
 #' @examples
 #' \donttest{\dontrun{
+#' q <- available_queues()
+#' q <- subset(q, !is.na(load_avg) & !disabled & !grepl("-(int|test)", hostname))
+#' 
+#' hostnames <- sort(unique(q$hostname))
 #' qh <- read_qhost()
 #' qh <- subset(qh, !is.na(load) & !grepl("-(int|test)[0-9]+$", hostname))
-#' ci <- on_hostname(qh$hostname, read_cpuinfo())
+#' ci <- on_hostname(hostnames, read_cpuinfo())
 #' }}
 #'
 #' @importFrom future future value values plan
