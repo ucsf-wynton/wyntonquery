@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' \donttest{
-#' q <- available_queues()
+#' q <- queues()
 #' print(q)
 #'
 #' ## Ignore queues whose nodes are disabled, without load, or those
@@ -23,7 +23,7 @@
 #'
 #' @importFrom readr read_table cols col_character col_double
 #' @export
-available_queues <- function(parse = TRUE) {
+queues <- function(parse = TRUE) {
   col_types <- cols(
     queuename        = col_character(),
     qtype            = col_character(),

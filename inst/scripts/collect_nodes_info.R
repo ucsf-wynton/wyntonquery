@@ -3,7 +3,7 @@ library(wyntonquery)
 now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 print(now)
 
-q <- available_queues()
+q <- queues()
 
 ## Ignore queues whose nodes are disabled, without load, or those
 ## on developer and test nodes

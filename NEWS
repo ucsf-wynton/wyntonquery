@@ -5,8 +5,8 @@ Version: 0.0.0-9000 [2018-06-09]
 
 NEW FEATURES:
 
- o Add available_queues().
+ o Add queues().
 
  o Add on_hostname().
  
- o Add read_qhost() and read_cpuinfo().
+ o Add qhost() and read_cpuinfo().
