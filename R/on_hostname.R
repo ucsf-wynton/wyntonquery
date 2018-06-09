@@ -1,4 +1,4 @@
-#' @example
+#' @examples
 #' \donttest{\dontrun{
 #' qh <- read_qhost()
 #' qh <- subset(qh, !is.na(load) & !grepl("-(int|test)[0-9]+$", hostname))
