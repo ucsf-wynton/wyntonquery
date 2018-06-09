@@ -1,28 +1,45 @@
+#' Evaluates an R Expression on One or More Hosts
+#'
+#' @param hostnames A character vector of hostnames.
+#'
+#' @param expr The \R expression to be evaluated on each host.
+#'
+#' @param \ldots (optional) Additional arguments passed to [future::future()].
+#'
+#' @return
+#' A named list with names `hostnames`.
+#'
+#' @details
+#' This function utilizes the \pkg{future} framework and specifically
+#' the \pkg{future.batchtools} package to evaluate the expression on
+#' a particular host by submitting it via the SGE scheduler.
+#'
 #' @examples
 #' \donttest{\dontrun{
-#' q <- queues()
-#' q <- subset(q, !is.na(load_avg) & !disabled & !grepl("-(int|test)", hostname))
+#' q <- queues(filter = "available")
 #' hostnames <- sort(unique(q$hostname))
-#' ci <- on_hostname(hostnames, read_cpuinfo())
+#' ci <- on_hostname(hostnames, cpu_info())
 #' }}
 #'
 #' @importFrom future future value values plan
 #' @importFrom future.batchtools batchtools_sge
 #' @export
-on_hostname <- function(hostname, ...) {
+on_hostname <- function(hostnames, expr, ...) {
+  stopifnot(is.character(hostnames), !anyNA(hostnames))
+  
   template <- system.file(package = "wyntonquery",
                           "batchtools.sge.tmpl", mustWork = TRUE)
   oplan <- plan(batchtools_sge, template = template)
   on.exit(plan(oplan))
 
   fs <- list()
-  for (h in hostname) {
+  for (h in hostnames) {
     resources <- list(custom = c(
       sprintf("-l hostname=%s", h),
       "-l mem_free=1G",
       "-l h_rt=00:00:30"
     ))
-    fs[[h]] <- future(..., resources = resources, label = h)
+    fs[[h]] <- future(expr, ..., resources = resources, label = h)
   }
   
   values(fs)

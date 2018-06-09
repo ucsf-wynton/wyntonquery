@@ -11,4 +11,4 @@ NEW FEATURES:
 
  o Add on_hostname().
  
- o Add qhost() and read_cpuinfo().
+ o Add qhost() and cpu_info().

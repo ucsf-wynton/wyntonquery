@@ -13,9 +13,13 @@ hostnames <- sort(unique(q$hostname))
 print(hostnames)
 
 ## Query nods
-ci <- on_hostname(hostnames, read_cpuinfo())
-print(ci)
+info <- on_hostname(hostnames, {
+  info <- as.list(Sys.info())
+  info <- info[!grepl("(user|login)", names(info))]
+  info$cpu_info <- cpu_info()
+})
+print(info)
 
-saveRDS(ci, file = sprintf("collect_nodes_info,%s.rds", now))
+saveRDS(info, file = sprintf("host_info,%s.rds", now))
 
 print(sessionInfo())
