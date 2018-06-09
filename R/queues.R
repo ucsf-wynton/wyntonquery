@@ -1,5 +1,10 @@
 #' List Available Queues and Their Properties
 #'
+#' @param filter A predefined filter to apply, unless `"none"`.
+#' If `"available"`, only queues on available hosts with a known load and
+#' where either the 'short.q' or the 'long.q' queue is non-overloaded
+#' are returned.
+#'
 #' @param parse If `TRUE`, `qhost -f` columns that contain multiple properties
 #' (e.g. 'states') are further parsed for easy access.
 #'
@@ -14,7 +19,7 @@
 #'
 #' ## Ignore queues whose nodes are disabled, without load, or those
 #' ## on developer and test nodes
-#' q <- subset(q, !is.na(load_avg) & !disabled & !grepl("-(int|test)", hostname))
+#' q <- queues(filter = "available")
 #' print(q)
 #' }
 #'
@@ -23,7 +28,10 @@
 #'
 #' @importFrom readr read_table cols col_character col_double
 #' @export
-queues <- function(parse = TRUE) {
+queues <- function(filter = c("none", "available"), parse = TRUE) {
+  filter <- match.arg(filter)
+  if (filter != "none") parse <- TRUE
+  
   col_types <- cols(
     queuename        = col_character(),
     qtype            = col_character(),
@@ -87,6 +95,27 @@ queues <- function(parse = TRUE) {
       name <- map[kk]
       df[[name]] <- sapply(parts, FUN = function(x) state %in% x)
     }
+  }
+
+  ## To please R CMD check
+  load_avg <- disabled <- hostname <- alarm <- Alarm <- queue <- NULL
+  
+  if (filter == "available") {
+    ## Ignore queues whose nodes are disabled or without load
+    df <- subset(df, !is.na(load_avg) & !disabled)
+
+    ## Wynton specific: Ignore developer and test nodes
+    df <- subset(df, !grepl("-(dev|int|test)", hostname))
+    
+    ## Wynton specific: Ignore hosts whose short.q or long.q queues
+    ## are flagged with an alarm
+    dfa <- subset(df, (alarm | Alarm))
+    skip <- intersect(
+      unique(subset(dfa, queue == "short.q")$hostname),
+      unique(subset(dfa, queue == "long.q")$hostname)
+    )
+    ## Functioning queues
+    df <- subset(df, !hostname %in% skip)
   }
 
   df
