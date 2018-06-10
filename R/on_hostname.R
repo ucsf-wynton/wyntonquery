@@ -41,7 +41,8 @@ on_hostname <- function(hostnames, expr, ...) {
       "-l mem_free=1G",
       "-l h_rt=00:00:30"
     ))
-    fs[[h]] <- future(expr, ..., resources = resources, label = h)
+    fs[[h]] <- future(expr, substitute = FALSE, ...,
+                      resources = resources, label = h)
   }
   
   values(fs)
