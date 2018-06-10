@@ -27,6 +27,7 @@
 #' @export
 on_hostname <- function(hostnames, expr, ...) {
   stopifnot(is.character(hostnames), !anyNA(hostnames))
+  expr <- substitute(expr)
   
   template <- system.file(package = "wyntonquery",
                           "batchtools.sge.tmpl", mustWork = TRUE)

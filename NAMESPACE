@@ -2,6 +2,7 @@
 
 export(cpu_info)
 export(disk_free)
+export(host_info)
 export(lscpu)
 export(mem_info)
 export(on_hostname)
@@ -18,4 +19,5 @@ importFrom(readr,col_double)
 importFrom(readr,col_integer)
 importFrom(readr,cols)
 importFrom(readr,read_table)
+importFrom(tibble,as_tibble)
 importFrom(tibble,tibble)
