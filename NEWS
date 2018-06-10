@@ -5,6 +5,8 @@ Version: 0.0.0-9000 [2018-06-09]
 
 NEW FEATURES:
 
+ o Add lscpu().
+ 
  o Add system_info().
  
  o Add disk_free().

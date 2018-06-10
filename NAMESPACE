@@ -2,6 +2,8 @@
 
 export(cpu_info)
 export(disk_free)
+export(lscpu)
+export(mem_info)
 export(on_hostname)
 export(qhost)
 export(queues)

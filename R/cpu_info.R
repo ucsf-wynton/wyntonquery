@@ -11,6 +11,8 @@
 #' info <- cpu_info()
 #' print(info)
 #'
+#' @seealso [lscpu()]
+#'
 #' @importFrom tibble tibble
 #' @export
 cpu_info <- function() {
@@ -22,6 +24,7 @@ cpu_info <- function() {
   bfr <- c(sprintf("hostname: %s", Sys.info()[["nodename"]]), bfr)
   pattern <- "([a-z ]+):[ ]+(.*)"
   field <- gsub(pattern, "\\1", bfr)
+  field <- gsub(":", "", field, fixed = TRUE)
   field <- gsub(" ", "_", tolower(field), fixed = TRUE)
   tibble(field = field, value = gsub(pattern, "\\2", bfr))
 }
