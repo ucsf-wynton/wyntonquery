@@ -3,6 +3,7 @@
 export(cpu_info)
 export(disk_free)
 export(host_info)
+export(host_table)
 export(lscpu)
 export(mem_info)
 export(on_hostname)
