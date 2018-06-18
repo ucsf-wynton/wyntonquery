@@ -16,7 +16,7 @@
 #'
 #' @examples
 #' \donttest{\dontrun{
-#' q <- queues(filter = "available")
+#' q <- available(queues())
 #' hostnames <- sort(unique(q$hostname))
 #' si <- on_hostname(hostnames, system_info())
 #' print(si)

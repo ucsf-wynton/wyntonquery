@@ -4,14 +4,9 @@
 \alias{queues}
 \title{List Available Queues and Their Properties}
 \usage{
-queues(filter = c("none", "available"), parse = TRUE)
+queues(parse = TRUE)
 }
 \arguments{
-\item{filter}{A predefined filter to apply, unless `"none"`.
-If `"available"`, only queues on available hosts with a known load and
-where either the 'short.q' or the 'long.q' queue is non-overloaded
-are returned.}
-
 \item{parse}{If `TRUE`, `qhost -f` columns that contain multiple properties
 (e.g. 'states') are further parsed for easy access.}
 }
@@ -32,7 +27,7 @@ print(q)
 
 ## Ignore queues whose nodes are disabled, without load, or those
 ## on developer and test nodes
-q <- queues(filter = "available")
+q <- available(q)
 print(q)
 }
 

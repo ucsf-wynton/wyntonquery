@@ -5,7 +5,7 @@ print(today)
 
 ## Ignore queues whose nodes are disabled, without load, or flagged as alarmed,
 ## or on developer and test nodes
-q <- queues(filter = "available")
+q <- available(queues())
 print(q)
 
 ## Functioning nodes
