@@ -32,9 +32,9 @@ queues <- function(parse = TRUE) {
     arch             = col_character(),
     states           = col_character()
   )
-  
-  df <- read_table(pipe("qstat -f | grep -vE '^---'"), col_types = col_types,
-                   na = c("-NA-"))
+
+  cmd <- "qstat -f | grep -vE '^(---|###| - |[0-9]+ )'"
+  df <- read_table(pipe(cmd), col_types = col_types, na = c("-NA-"))
   colnames(df) <- tolower(colnames(df))
 
   if (parse) {

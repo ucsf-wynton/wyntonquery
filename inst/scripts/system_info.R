@@ -14,11 +14,17 @@ print(q)
 
 ## Functioning nodes
 hostnames <- sort(unique(q$hostname))
+## AD HOC: Drop nodes that should not have lists /HB 2018-09-27
+hostnames <- setdiff(hostnames, "qb3-gpudev1")
 print(hostnames)
 
 ## Query nodes
-raw <- on_hostname(hostnames, system_info())
+raw <- on_hostname(hostnames, try(system_info()))
 saveRDS(raw, file = sprintf("system_info,%s.rds", today))
+print(raw)
+
+## Filter out errors
+raw <- raw[!sapply(raw, FUN = inherits, "try-error")]
 print(raw)
 
 ## Combine
