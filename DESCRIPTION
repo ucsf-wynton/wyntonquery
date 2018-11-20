@@ -3,6 +3,7 @@ Version: 0.0.0-9000
 Depends:
     R (>= 3.5.0)
 Imports:
+    prettyunits,
     readr,
     tibble,
     future,
@@ -16,4 +17,4 @@ License: LGPL (>= 2.1)
 LazyLoad: TRUE
 URL: https://github.com/UCSF-HPC/wyntonquery
 BugReports: https://github.com/UCSF-HPC/wyntonquery
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
