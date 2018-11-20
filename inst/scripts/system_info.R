@@ -18,6 +18,12 @@ hostnames <- sort(unique(q$hostname))
 hostnames <- setdiff(hostnames, "qb3-gpudev1")
 print(hostnames)
 
+## Exclude additional hostnames?
+excl <- Sys.getenv("R_WYNTONQUERY_EXCLUDE", "")
+excl <- strsplit(excl, split = "[, ]")[[1]]
+hostnames <- setdiff(hostnames, excl)
+print(hostnames)
+
 ## Query nodes
 raw <- on_hostname(hostnames, try(system_info()))
 saveRDS(raw, file = sprintf("system_info,%s.rds", today))
