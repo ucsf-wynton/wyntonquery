@@ -4,8 +4,8 @@
 \alias{round_ram}
 \title{Round RAM Sizes to Nearest Possible RAM Size}
 \usage{
-round_ram(x, map = getOption("wyntonquery.round_ram.map", c(16, 32, 48, 64,
-  96, 128, 256, 384, 512, 768, 1024, 2048)))
+round_ram(x, map = getOption("wyntonquery.round_ram.map", c(16, 32, 48,
+  64, 96, 128, 256, 384, 512, 768, 1024, 2048)))
 }
 \arguments{
 \item{x}{A numeric vector of RAM sizes to round.}
