@@ -38,8 +38,8 @@ read_raw_sge_accounting <- function(file, skip = 0L, ...) {
     ##    long   ru_nivcsw;        /* involuntary context switches */
     ## };
     ## Source: http://manpages.ubuntu.com/manpages/trusty/man2/getrusage.2.html
-    ru_utime         = col_double(),   ## [seconds] Total amount of time spent executing in user mod
-    ru_stime         = col_double(),   ## [seconds] Total amount of time spent executing in kernel mode
+    ru_utime         = col_double(),   ## [time interval] Total amount of time spent executing in user mod (seconds)
+    ru_stime         = col_double(),   ## [time interval] Total amount of time spent executing in kernel mode (seconds)
     ru_maxrss        = col_double(),   ## [kB] maximum resident set size
     ru_ixrss         = col_double(),   ## [kB] integral shared memory size (UNUSED)
     ru_ismrss        = col_double(),   ## [kB] integral ??? size
@@ -61,15 +61,15 @@ read_raw_sge_accounting <- function(file, skip = 0L, ...) {
          
     granted_pe       = col_character(),   ##        The parallel environment which was selected for the job
     slots            = col_integer(),     ##        The number of slots which were dispatched to the job by the scheduler
-    task_number      = col_integer(),     ##        The CPU time usage in seconds
+    task_number      = col_integer(),     ##        
          
-    cpu              = col_double(),      ## [s]    The CPU time usage in seconds
+    cpu              = col_double(),      ## [time interval]    The CPU time usage in seconds
     mem              = col_double(),      ## [GB*s] The integral  memory  usage  in  Gbytes  seconds
     io               = col_double(),      ## [GB]   The  amount  of data transferred in input/output operations in GB (if available, otherwise 0)
          
     category         = col_character(),
          
-    iow              = col_double(),      ## [seconds] The input/output wait time in seconds (if available, otherwise 0)
+    iow              = col_double(),      ## [time interval] The input/output wait time in seconds (if available, otherwise 0)
     pe_taskid        = col_character(),   ## If this identifier is not equal to NONE, the task was part of   parallel job, and was passed to Grid Engine via the qrsh -inherit interface
          
     maxvmem          = col_double(),      ## [bytes] The maximum vmem size in bytes
@@ -93,28 +93,33 @@ as_sge_accounting <- function(x, ...) UseMethod("as_sge_accounting")
 as_sge_accounting.raw_sge_accounting <- function(x, ...) {
   origin <- as.POSIXct("1970-01-01 00:00.00 UTC", tz = "GMT")
   
-  ## POSIX timestamps
-  for (name in c("submission_time", "start_time", "end_time")) {
-    x[[name]] <- as.POSIXct(x[[name]], origin = origin)
+  ## epoch times
+  for (name in c("submission_time", "start_time", "end_time", "ar_sub_time")) {
+    value <- x[[name]]
+    value[value == 0] <- NA_real_
+    x[[name]] <- as.POSIXct(value, origin = origin)
   }
-  
-  ## Transfer 
-  x$io <- x$io * 1024 * 1000^2              ## in bytes
-  x$ru_maxrss <- x$ru_maxrss * (1000/1024)  
-  x$mem <- x$mem * (1000/1024) * 1000^3     ## in bytes
-  
-  class(x) <- c("sge_accounting", setdiff(class(x), "raw_sge_accounting"))
-  x
-}
 
-#' @export
-sge_accounting <- function(x, cols = NULL) {
-  if (!is.null(cols)) {
-    t <- x[, cols]
-    class(t) <- class(x)
-    x <- t
+  ## time interval
+  for (name in c("ru_wallclock", "ru_utime", "ru_stime", "iow", "cpu")) {
+    value <- x[[name]]
+    value[value == 0] <- NA_real_
+    value <- as.difftime(value, units = "secs")
+    x[[name]] <- value
   }
-  class(x) <- c("sge_accounting", class(x))
+
+  ## Convert kB to bytes (B)
+  for (name in c("ru_maxrss", "ru_ixrss", "ru_ismrss", "ru_idrss", "ru_isrss")) {
+    x[[name]] <- x[[name]] * 1000
+  }
+
+  ## Convert GB to bytes (B) (or GB*s to B*s)
+  for (name in c("mem", "io")) {
+    x[[name]] <- x[[name]] * 1000^3
+  }
+  
+  attr(x, "spec") <- NULL
+  class(x) <- c("sge_accounting", setdiff(class(x), "raw_sge_accounting"))
   x
 }
 
@@ -143,6 +148,4 @@ print.sge_accounting <- function(x, format = c("pretty", "raw"), ...) {
   }
 
   NextMethod()
-## mem          8.389KBs B*s
-## maxvmem      2.199MB
 }
