@@ -1,27 +1,34 @@
 library(wyntonquery)
 
 today <- format(Sys.time(), "%Y%m%d")
-print(today)
+cat("Today's date: ", today, "\n", sep="")
 
 ## All queues
 q <- queues()
+cat("\nAll known queues:\n")
 print(q)
 
 ## Ignore queues whose nodes are disabled, without load, or flagged as alarmed,
 ## or on developer and test nodes
 q <- available(q)
+cat("\nAll available queues:\n")
 print(q)
 
 ## Functioning nodes
 hostnames <- sort(unique(q$hostname))
-## AD HOC: Drop nodes that should not have lists /HB 2018-09-27
+## AD HOC: Drop nodes that should not have queues /HB 2018-09-27
 hostnames <- setdiff(hostnames, "qb3-gpudev1")
+cat("\nAll known hostnames:\n")
 print(hostnames)
 
 ## Exclude additional hostnames?
 excl <- Sys.getenv("R_WYNTONQUERY_EXCLUDE", "")
-excl <- strsplit(excl, split = "[, ]")[[1]]
+excl <- unlist(strsplit(excl, split = "[, \n]"), use.names = FALSE)
+cat("\nHostnames to exclude:\n")
+print(excl)
+
 hostnames <- setdiff(hostnames, excl)
+cat("\nHostnames to query:\n")
 print(hostnames)
 
 ## Query nodes
