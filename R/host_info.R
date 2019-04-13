@@ -1,5 +1,12 @@
+#' Compile Host Information
+#'
+#' @param system_info (optional) A named list as returned by [system_info()].
+#'
+#' @param qhost (optional) A data.frame as returned by [qhost()].
+#'
 #' @return
-#' A data.frame (tibble)
+#' A data.frame (tibble) with information combined based
+#' on `system_info` and `qhost`.
 #'
 #' @importFrom tibble as_tibble
 #' @export

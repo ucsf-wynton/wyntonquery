@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{df}{A `queues` data frame.}
+
+\item{\ldots}{Not used.}
 }
 \value{
 Return the subset of queues that are on available hosts with a

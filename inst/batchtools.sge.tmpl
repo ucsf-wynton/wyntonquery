@@ -16,7 +16,7 @@
 
 ## Resources needed:
 <% if (exists("resources", mode = "list") && length(resources) > 0) {
-  ## plan(batchtools_sge, resources = list(custom = "-pe smp 2"))
+  ## e.g. plan(batchtools_sge, resources = list(custom = "-pe smp 2"))
   if (isTRUE(getOption("future.debug"))) {
     R.utils::mcat("resources:")
     R.utils::mstr(resources)
@@ -24,9 +24,10 @@
   cat(sprintf("#$ %s\n", resources[["custom"]]))
 } %>
 
-## UCSF HPC Pilot specific
+## UCSF Wynton HPC specific
 #$ -S /bin/bash         # Required
 #$ -l mem_free=1G       # Memory usage, required.  Note that this is per slot
+#$ -l h_rt=00:02:00     # Will only for a few seconds
 #$ -R yes               # SGE host reservation, highly recommended
 
 # For troubleshooting if there are errors

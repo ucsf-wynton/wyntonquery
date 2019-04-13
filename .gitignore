@@ -2,8 +2,9 @@
 *~
 **/*~
 *.rds
-.data/
-.future/
+.data
+.local
+.future
 .check
 .test
 .o
