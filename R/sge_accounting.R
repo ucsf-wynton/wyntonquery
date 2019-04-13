@@ -17,7 +17,7 @@ read_raw_sge_accounting <- function(file, skip = 0L, ...) {
     failed          = col_integer(),   ## Indicates the problem which occurred in case a job failed (at the system level, as opposed to the job script or binary having non-zero exit status)
     exit_status     = col_integer(),   ## Exit status of the job script (or Grid Engine-specific status in case of certain error conditions)
  
-    ru_wallclock    = col_double(),    ## [POSIX time interval]
+    ru_wallclock    = col_double(),    ## [time interval] Difference between 'end_time' and 'start_time', except that if the job fails, it is zero.
     
     ## struct rusage {
     ##    struct timeval ru_utime; /* user CPU time used */
@@ -59,18 +59,18 @@ read_raw_sge_accounting <- function(file, skip = 0L, ...) {
     project          = col_character(),
     department       = col_character(),  
          
-    granted_pe       = col_character(),   ##        The parallel environment which was selected for the job
-    slots            = col_integer(),     ##        The number of slots which were dispatched to the job by the scheduler
+    granted_pe       = col_character(),   ## The parallel environment which was selected for the job
+    slots            = col_integer(),     ## The number of slots which were dispatched to the job by the scheduler
     task_number      = col_integer(),     ##        
          
-    cpu              = col_double(),      ## [time interval]    The CPU time usage in seconds
-    mem              = col_double(),      ## [GB*s] The integral  memory  usage  in  Gbytes  seconds
-    io               = col_double(),      ## [GB]   The  amount  of data transferred in input/output operations in GB (if available, otherwise 0)
+    cpu              = col_double(),      ## [time interval] The CPU time usage in seconds
+    mem              = col_double(),      ## [GB*s] The integral memory usage in Gbytes seconds
+    io               = col_double(),      ## [GB] The  amount of data transferred in input/output operations in GB (if available, otherwise 0)
          
     category         = col_character(),
          
     iow              = col_double(),      ## [time interval] The input/output wait time in seconds (if available, otherwise 0)
-    pe_taskid        = col_character(),   ## If this identifier is not equal to NONE, the task was part of   parallel job, and was passed to Grid Engine via the qrsh -inherit interface
+    pe_taskid        = col_character(),   ## If this identifier is not equal to NONE, the task was part of parallel job, and was passed to Grid Engine via the qrsh -inherit interface
          
     maxvmem          = col_double(),      ## [bytes] The maximum vmem size in bytes
     arid             = col_integer(),     ## Advance reservation identifier
@@ -92,6 +92,16 @@ as_sge_accounting <- function(x, ...) UseMethod("as_sge_accounting")
 #' @export
 as_sge_accounting.raw_sge_accounting <- function(x, ...) {
   origin <- as.POSIXct("1970-01-01 00:00.00 UTC", tz = "GMT")
+
+  ## Setting missing values
+  x$ru_wallclock[x$failed] <- NA_real_
+  x$arid[x$arid == 0] <- NA_real_
+  x$ar_sub_time[is.na(x$arid)] <- NA_real_
+  for (name in c("granted_pe", "pe_taskid")) {
+    value <- x[[name]]
+    value[value == "NONE"] <- NA_character_
+    x[[name]] <- value
+  }
   
   ## epoch times
   for (name in c("submission_time", "start_time", "end_time", "ar_sub_time")) {
@@ -102,9 +112,7 @@ as_sge_accounting.raw_sge_accounting <- function(x, ...) {
 
   ## time interval
   for (name in c("ru_wallclock", "ru_utime", "ru_stime", "iow", "cpu")) {
-    value <- x[[name]]
-    value[value == 0] <- NA_real_
-    value <- as.difftime(value, units = "secs")
+    value <- as.difftime(x[[name]], units = "secs")
     x[[name]] <- value
   }
 
@@ -123,7 +131,7 @@ as_sge_accounting.raw_sge_accounting <- function(x, ...) {
   x
 }
 
-#' @importFrom prettyunits pretty_bytes pretty_sec
+#' @importFrom prettyunits pretty_bytes pretty_dt pretty_sec
 #' @export
 print.sge_accounting <- function(x, format = c("pretty", "raw"), ...) {
   format <- match.arg(format)
@@ -131,7 +139,10 @@ print.sge_accounting <- function(x, format = c("pretty", "raw"), ...) {
     ## Time intervals (in seconds)
     for (name in c("ru_wallclock", "ru_utime", "ru_stime", "cpu")) {  # "iow"
       if (!name %in% names(x)) next
-      x[[name]] <- pretty_sec(x[[name]])
+      ## WORKAROUND: pretty_ms() does not support NA:s
+      value <- x[[name]]
+      ok <- which(!is.na(value))
+      x[[name]][ok] <- pretty_dt(value[ok])
     }
   
     ## Memory / Transfer (in bytes)

@@ -15,7 +15,7 @@
 #' }
 #'
 #' @details
-#' This function queries SGE's `qstat` on the system.
+#' This function queries SGE's `qhost` on the system.
 #'
 #' @importFrom readr read_table cols col_character col_integer col_double
 #' @export
