@@ -1,3 +1,6 @@
-^.future/
+^.data
+^.local
+^.future
 ^.*.rds$
+^Makefile
 

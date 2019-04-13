@@ -6,6 +6,8 @@ available <- function(df, ...) UseMethod("available")
 #'
 #' @param df A `queues` data frame.
 #'
+#' @param \ldots Not used.
+#'
 #' @return
 #' Return the subset of queues that are on available hosts with a
 #' known load and where either the 'short.q' or the 'long.q' queue
