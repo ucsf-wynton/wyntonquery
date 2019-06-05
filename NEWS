@@ -3,6 +3,13 @@ Package: wyntonquery
 
 Version: 0.0.0-9001 [2019-06-06]
 
+SIGNIFICIANT CHANGES:
+
+ * host_info() now report on 'cpu_label' and 'cpu_ghz', which both
+   are inferred from the cpu_info() field 'model_name', e.g.
+   "Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz".  Previously, the CPU
+   speed was inferred from the dynamic 'cpu_mhz' values of cpu_info().
+ 
 BUG FIXES:
 
  * cpu_info() did not handle upper-case letters in field names.
