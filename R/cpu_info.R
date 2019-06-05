@@ -22,7 +22,7 @@ cpu_info <- function() {
   bfr <- bfr[nzchar(bfr)]
   bfr <- unique(bfr)
   bfr <- c(sprintf("hostname: %s", Sys.info()[["nodename"]]), bfr)
-  pattern <- "([a-z ]+):[ ]+(.*)"
+  pattern <- "([a-zA-Z ]+):[ ]+(.*)"
   field <- gsub(pattern, "\\1", bfr)
   field <- gsub(":", "", field, fixed = TRUE)
   field <- gsub(" ", "_", tolower(field), fixed = TRUE)

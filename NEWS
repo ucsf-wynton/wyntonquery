@@ -1,22 +1,29 @@
 Package: wyntonquery
 ====================
 
+Version: 0.0.0-9001 [2019-06-06]
+
+BUG FIXES:
+
+ * cpu_info() did not handle upper-case letters in field names.
+ 
+
 Version: 0.0.0-9000 [2018-06-10]
 
 NEW FEATURES:
 
- o Add host_table().
+ * Add host_table().
  
- o Add round_ram().
+ * Add round_ram().
  
- o Add lscpu().
+ * Add lscpu().
  
- o Add system_info().
+ * Add system_info().
  
- o Add disk_free().
+ * Add disk_free().
  
- o Add queues().
+ * Add queues().
 
- o Add on_hostname().
+ * Add on_hostname().
  
- o Add qhost() and cpu_info().
+ * Add qhost() and cpu_info().
