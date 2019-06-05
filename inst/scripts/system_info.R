@@ -3,19 +3,23 @@ library(wyntonquery)
 today <- format(Sys.time(), "%Y%m%d")
 cat("Today's date: ", today, "\n", sep="")
 
-## All queues
-q <- queues()
-cat("\nAll known queues:\n")
-print(q)
+hostnames <- Sys.getenv("R_WYNTONQUERY_INCLUDE", "")
+if (hostnames == "") {
+  ## All queues
+  q <- queues()
+  cat("\nAll known queues:\n")
+  print(q)
+  
+  ## Ignore queues whose nodes are disabled, without load, or flagged as alarmed,
+  ## or on developer and test nodes
+  q <- available(q)
+  cat("\nAll available queues:\n")
+  print(q)
+  
+  ## Functioning nodes
+  hostnames <- sort(unique(q$hostname))
+}
 
-## Ignore queues whose nodes are disabled, without load, or flagged as alarmed,
-## or on developer and test nodes
-q <- available(q)
-cat("\nAll available queues:\n")
-print(q)
-
-## Functioning nodes
-hostnames <- sort(unique(q$hostname))
 ## AD HOC: Drop nodes that should not have queues /HB 2018-09-27
 hostnames <- setdiff(hostnames, "qb3-gpudev1")
 cat("\nAll known hostnames:\n")
@@ -32,12 +36,13 @@ cat("\nHostnames to query:\n")
 print(hostnames)
 
 ## Query nodes
-raw <- on_hostname(hostnames, try(system_info()))
+raw <- on_hostname(hostnames, try(system_info()), on_error = "asis")
 saveRDS(raw, file = sprintf("system_info,%s.rds", today))
 print(raw)
 
 ## Filter out errors
-raw <- raw[!sapply(raw, FUN = inherits, "try-error")]
+is_error <- vapply(raw, FUN = inherits, c("error", "try-error"), FUN.VALUE = FALSE)
+raw <- raw[!is_error]
 print(raw)
 
 ## Combine

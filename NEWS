@@ -5,12 +5,19 @@ Version: 0.0.0-9001 [2019-06-06]
 
 SIGNIFICIANT CHANGES:
 
+ * The system("scripts", "system_info.R", package="wyntonquery") script is
+   now robust against errors; if there's an error querying a particular host,
+   then that host is dropped from the final out.
+ 
  * host_info() now reports on 'cpu_model', which corresponds to the cpu_info()
    field 'model_name', e.g. "Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz".
    Previously, it tried to report on the CPU speed but that fluctuated from
    run to run because it was incorrectly inferred from the 'cpu_mhz' field.
 
 NEW FEATURES:
+
+ * It's now possible to specify which hosts to query via environment variable
+   'R_WYNTONQUERY_INCLUDE'.
 
  * on_hostname() gained argument 'on_error' for controlling how errors should
    be handled.
