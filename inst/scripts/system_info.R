@@ -2,8 +2,11 @@ library(wyntonquery)
 
 today <- format(Sys.time(), "%Y%m%d")
 cat("Today's date: ", today, "\n", sep="")
+cat("\n")
 
 hostnames <- Sys.getenv("R_WYNTONQUERY_INCLUDE", "")
+cat("R_WYNTONQUERY_INCLUDE: ", sQuote(hostnames), "\n", sep = "")
+
 if (hostnames == "") {
   ## All queues
   q <- queues()
@@ -13,11 +16,15 @@ if (hostnames == "") {
   ## Ignore queues whose nodes are disabled, without load, or flagged as alarmed,
   ## or on developer and test nodes
   q <- available(q)
-  cat("\nAll available queues:\n")
+  cat("All available queues:\n")
   print(q)
   
   ## Functioning nodes
   hostnames <- sort(unique(q$hostname))
+} else {
+  hostnames <- unlist(strsplit(hostnames, split = "[ ,]", fixed = FALSE), use.names = FALSE)
+  hostnames <- sort(unique(hostnames))
+  hostnames <- hostnames[nzchar(hostnames)]  
 }
 
 ## AD HOC: Drop nodes that should not have queues /HB 2018-09-27
