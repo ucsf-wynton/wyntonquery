@@ -35,13 +35,12 @@ host_info <- function(system_info = NULL, qhost = TRUE) {
   os <- as.list(os)
   os <- as.data.frame(os, stringsAsFactors = FALSE)
   
-  ## CPU speed
+  ## CPU label and speed
   ci <- system_info$cpu_info
   ## Parse the model name, e.g. Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz
   value <- subset(ci, field == "model_name", select = "value", drop = TRUE)
   pattern <- "^(.*)[ ]*@[ ]*([0-9.]+)[ ]*(|GHz)[ ]*$"
-  cpu_label <- gsub(pattern, "\\1", value)
-  cpu_label <- trim(gsub("[ ]*CPU[ ]*$", "", cpu_label))
+  cpu_label <- trim(gsub(pattern, "\\1", value))
   cpu_ghz <- trim(gsub(pattern, "\\2", value))
   cpu_ghz <- as.numeric(cpu_ghz)
   cpu <- data.frame(cpu_label = cpu_label, cpu_ghz = cpu_ghz, stringsAsFactors = FALSE)
