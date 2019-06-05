@@ -4,12 +4,14 @@
 \alias{host_info}
 \title{Compile Host Information}
 \usage{
-host_info(system_info = NULL, qhost = NULL)
+host_info(system_info = NULL, qhost = TRUE)
 }
 \arguments{
 \item{system_info}{(optional) A named list as returned by [system_info()].}
 
-\item{qhost}{(optional) A data.frame as returned by [qhost()].}
+\item{qhost}{(optional) A data.frame as returned by [qhost()].
+If `TRUE` (default), then [qhost()] is queried.
+If `FALSE`, then queue information is not reported.}
 }
 \value{
 A data.frame (tibble) with information combined based
