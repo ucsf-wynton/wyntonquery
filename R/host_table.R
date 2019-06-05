@@ -10,7 +10,7 @@
 #'
 #' @export
 host_table <- function(host_info, format = TRUE) {
-  data <- host_info[, c("hostname", "ncor", "cpu_max", "memtot", "scratch", "tmp")]
+  data <- host_info[, c("hostname", "ncor", "cpu", "memtot", "scratch", "tmp")]
   data$memtot <- round_ram(data$memtot)
   data$scratch <- signif(data$scratch / 1024, digits = 2L)
   data$tmp <- signif(data$tmp, digits = 2L)

@@ -4,7 +4,8 @@
 \alias{on_hostname}
 \title{Evaluates an R Expression on One or More Hosts}
 \usage{
-on_hostname(hostnames, expr, ..., on_error = c("stop", "asis"))
+on_hostname(hostnames, expr, ..., on_error = c("stop", "asis"),
+  cache = FALSE)
 }
 \arguments{
 \item{hostnames}{A character vector of hostnames.}
@@ -14,6 +15,8 @@ on_hostname(hostnames, expr, ..., on_error = c("stop", "asis"))
 \item{on_error}{A character string specifying how to handle errors.
 If `"stop"` (default), then the error is relayed.
 If `"asis"`, then the error (the [base::condition] object) is returned.}
+
+\item{cache}{If `TRUE`, cached results on file are considered.}
 
 \item{\ldots}{(optional) Additional arguments passed to [future::future()].}
 }

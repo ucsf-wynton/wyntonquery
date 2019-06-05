@@ -16,6 +16,9 @@ SIGNIFICIANT CHANGES:
 
 NEW FEATURES:
 
+ * on_hostname() gained argument 'cache' for controlling whether cached results
+   should be considered or not.
+   
  * It's now possible to specify which hosts to query via environment variable
    'R_WYNTONQUERY_INCLUDE'.
 

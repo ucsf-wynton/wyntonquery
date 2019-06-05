@@ -10,6 +10,8 @@
 #' If `"stop"` (default), then the error is relayed.
 #' If `"asis"`, then the error (the [base::condition] object) is returned.
 #'
+#' @param cache If `TRUE`, cached results on file are considered.
+#'
 #' @return
 #' A named list with names `hostnames`.
 #'
@@ -26,10 +28,11 @@
 #' print(si)
 #' }}
 #'
+#' @importFrom R.cache loadCache saveCache
 #' @importFrom future future value plan
 #' @importFrom future.batchtools batchtools_sge
 #' @export
-on_hostname <- function(hostnames, expr, ..., on_error = c("stop", "asis")) {
+on_hostname <- function(hostnames, expr, ..., on_error = c("stop", "asis"), cache = FALSE) {
   stopifnot(is.character(hostnames), !anyNA(hostnames))
   expr <- substitute(expr)
   on_error <- match.arg(on_error)
@@ -39,8 +42,19 @@ on_hostname <- function(hostnames, expr, ..., on_error = c("stop", "asis")) {
   oplan <- plan(batchtools_sge, template = template)
   on.exit(plan(oplan))
 
+  dirs <- c("wyntonquery")
+
   fs <- list()
   for (h in hostnames) {
+    key <- list(hostname = h)
+    if (cache) {
+      value <- loadCache(key = key, dirs = dirs)
+      if (!is.null(value)) {
+        fs[[h]] <- value
+	next
+      }
+    }
+    
     resources <- list(custom = c(
       sprintf("-l hostname=%s", h),
       "-l mem_free=1G",
@@ -58,7 +72,17 @@ on_hostname <- function(hostnames, expr, ..., on_error = c("stop", "asis")) {
     asis  = identity,
     relay = stop
   )
-  lapply(fs, FUN = function(f) {
-    tryCatch(value(f), error = on_error)
+  lapply(names(fs), FUN = function(h) {
+    key <- list(hostname = h)
+    f <- fs[[h]]
+    if (inherits(f, "Future")) {
+      tryCatch({
+        v <- value(f)
+        if (cache) saveCache(v, key = key, dirs = dirs)
+        v
+      }, error = on_error)
+    } else {
+      f
+    }
   })
 }

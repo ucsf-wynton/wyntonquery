@@ -4,42 +4,50 @@ today <- format(Sys.time(), "%Y%m%d")
 cat("Today's date: ", today, "\n", sep="")
 cat("\n")
 
-hostnames <- Sys.getenv("R_WYNTONQUERY_INCLUDE", "")
-cat("R_WYNTONQUERY_INCLUDE: ", sQuote(hostnames), "\n", sep = "")
+## All queues
+q <- queues()
+cat("\nAll known queues:\n")
+print(q)
 
-if (hostnames == "") {
-  ## All queues
-  q <- queues()
-  cat("\nAll known queues:\n")
-  print(q)
-  
-  ## Ignore queues whose nodes are disabled, without load, or flagged as alarmed,
-  ## or on developer and test nodes
-  q <- available(q)
-  cat("All available queues:\n")
-  print(q)
-  
-  ## Functioning nodes
-  hostnames <- sort(unique(q$hostname))
+## Ignore queues whose nodes are disabled, without load, or flagged as alarmed,
+## or on developer and test nodes
+q <- available(q)
+cat("All available queues:\n")
+print(q)
+
+## All available compute nodes
+avail_hostnames <- sort(unique(q$hostname))
+avail_hostnames <- setdiff(avail_hostnames, "qb3-gpudev1")
+cat("All known available hostnames:\n")
+print(avail_hostnames)
+
+incl <- Sys.getenv("R_WYNTONQUERY_INCLUDE", "")
+incl <- gsub("\"", "", incl)
+cat("R_WYNTONQUERY_INCLUDE: ", sQuote(incl), "\n", sep = "")
+
+if (incl == "") {
+  hostnames <- avail_hostnames
 } else {
-  hostnames <- unlist(strsplit(hostnames, split = "[ ,]", fixed = FALSE), use.names = FALSE)
-  hostnames <- sort(unique(hostnames))
-  hostnames <- hostnames[nzchar(hostnames)]  
+  incl <- unlist(strsplit(incl, split = "[ ,\n]"), use.names = FALSE)
+  incl <- incl[nzchar(incl)]
+  hostnames <- incl
+  cat("Hostnames to include:\n")
+  print(hostnames)
 }
-
-## AD HOC: Drop nodes that should not have queues /HB 2018-09-27
-hostnames <- setdiff(hostnames, "qb3-gpudev1")
-cat("\nAll known hostnames:\n")
-print(hostnames)
 
 ## Exclude additional hostnames?
 excl <- Sys.getenv("R_WYNTONQUERY_EXCLUDE", "")
 excl <- unlist(strsplit(excl, split = "[, \n]"), use.names = FALSE)
+excl <- excl[nzchar(excl)]
 cat("\nHostnames to exclude:\n")
 print(excl)
 
 hostnames <- setdiff(hostnames, excl)
-cat("\nHostnames to query:\n")
+cat("All requested hostnames:\n")
+print(hostnames)
+
+hostnames <- intersect(hostnames, avail_hostnames)
+cat("All requested hostnames after dropping non-available ones:\n")
 print(hostnames)
 
 ## Query nodes

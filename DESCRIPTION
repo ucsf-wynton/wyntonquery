@@ -1,8 +1,9 @@
 Package: wyntonquery
-Version: 0.0.0-9001
+Version: 0.0.0-9002
 Depends:
     R (>= 3.5.0)
 Imports:
+    R.cache,
     prettyunits,
     readr,
     tibble,
