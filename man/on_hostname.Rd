@@ -4,12 +4,16 @@
 \alias{on_hostname}
 \title{Evaluates an R Expression on One or More Hosts}
 \usage{
-on_hostname(hostnames, expr, ...)
+on_hostname(hostnames, expr, ..., on_error = c("stop", "asis"))
 }
 \arguments{
 \item{hostnames}{A character vector of hostnames.}
 
 \item{expr}{The \R expression to be evaluated on each host.}
+
+\item{on_error}{A character string specifying how to handle errors.
+If `"stop"` (default), then the error is relayed.
+If `"asis"`, then the error (the [base::condition] object) is returned.}
 
 \item{\ldots}{(optional) Additional arguments passed to [future::future()].}
 }

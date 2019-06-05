@@ -5,10 +5,16 @@ Version: 0.0.0-9001 [2019-06-06]
 
 SIGNIFICIANT CHANGES:
 
- * host_info() now reports on 'cpu_label' and 'cpu_ghz', which both
-   are inferred from the cpu_info() field 'model_name', e.g.
-   "Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz".  Previously, the CPU
-   speed was inferred from the dynamic 'cpu_mhz' values of cpu_info().
+ * host_info() now reports on 'cpu_model', which is the corresponds to
+   the cpu_info() field 'model_name', e.g.
+   "Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz".  Previously, it only reported
+   on the CPU speed which was incorrectly inferred from the cpu_info() field
+   'cpu_mhz', which fluctuates with the CPU load etc.
+
+NEW FEATURES:
+
+ * on_hostname() gained argument 'on_error' for controlling how errors should
+   be handled.
  
 BUG FIXES:
 

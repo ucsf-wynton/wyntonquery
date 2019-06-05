@@ -6,6 +6,10 @@
 #'
 #' @param \ldots (optional) Additional arguments passed to [future::future()].
 #'
+#' @param on_error A character string specifying how to handle errors.
+#' If `"stop"` (default), then the error is relayed.
+#' If `"asis"`, then the error (the [base::condition] object) is returned.
+#'
 #' @return
 #' A named list with names `hostnames`.
 #'
@@ -22,12 +26,13 @@
 #' print(si)
 #' }}
 #'
-#' @importFrom future future value values plan
+#' @importFrom future future value plan
 #' @importFrom future.batchtools batchtools_sge
 #' @export
-on_hostname <- function(hostnames, expr, ...) {
+on_hostname <- function(hostnames, expr, ..., on_error = c("stop", "asis")) {
   stopifnot(is.character(hostnames), !anyNA(hostnames))
   expr <- substitute(expr)
+  on_error <- match.arg(on_error)
   
   template <- system.file(package = "wyntonquery",
                           "batchtools.sge.tmpl", mustWork = TRUE)
@@ -44,7 +49,16 @@ on_hostname <- function(hostnames, expr, ...) {
     fs[[h]] <- future(expr, substitute = FALSE, ...,
                       resources = resources, label = h)
   }
-  
-  values(fs)
-}
 
+  ## AD HOC: Using values(fs) would work as long all jobs
+  ## return.  If not, we'll get a FutureError.  The below
+  ## approach will allow us to fail for some jobs (=hosts)
+  ## while still collecting data from the others.
+  on_error <- switch(on_error,
+    asis  = identity,
+    relay = stop
+  )
+  lapply(fs, FUN = function(f) {
+    tryCatch(value(f), error = on_error)
+  })
+}
