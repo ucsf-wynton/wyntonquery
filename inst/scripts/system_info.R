@@ -51,7 +51,7 @@ cat("All requested hostnames after dropping non-available ones:\n")
 print(hostnames)
 
 ## Query nodes
-raw <- on_hostname(hostnames, try(system_info()), on_error = "asis")
+raw <- on_hostname(hostnames, try(system_info()), on_error = "asis", cache = TRUE)
 saveRDS(raw, file = sprintf("system_info,%s.rds", today))
 print(raw)
 
