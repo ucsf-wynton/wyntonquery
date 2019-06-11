@@ -1,4 +1,5 @@
 library(wyntonquery)
+library(gtools)
 
 today <- format(Sys.time(), "%Y%m%d")
 cat("Today's date: ", today, "\n", sep="")
@@ -61,16 +62,29 @@ raw <- raw[!is_error]
 print(raw)
 
 ## Combine
-data <- Reduce(rbind, lapply(raw, FUN = host_info, qhost = qhost()))
+qhost <- subset(qhost(), !hostname %in% c("global"))
+todo <- vapply(raw, FUN = inherits, "list", FUN.VALUE = FALSE)
+raw2 <- raw
+raw2[todo] <- lapply(raw[todo], FUN = host_info, qhost = qhost)
+data <- Reduce(rbind, raw2)
+data <- data[mixedorder(data$hostname), , drop = FALSE]
 saveRDS(data, file = sprintf("host_info,%s.rds", today))
 print(data)
 
 ## Summarize static information
-hosts <- host_table(data)
-saveRDS(hosts, file = sprintf("host_table,%s.rds", today))
-print(hosts)
+host_table <- host_table(data)
+host_table <- unique(host_table)
+host_table <- host_table[, c("Node", "# Physical Cores", "RAM", "Local `/scratch`", "Local `/tmp`", "CPU")]
+stopifnot(!anyDuplicated(host_table[[1]]))
+saveRDS(host_table, file = sprintf("host_table,%s.rds", today))
+print(host_table)
 
 ## Write TSV file (for website)
-readr::write_tsv(hosts, path = sprintf("host_table,%s.tsv", today))
+pathname <- sprintf("host_table,%s.tsv", today)
+cat(sprintf("# Created by: Henrik Bengtsson\n"), file = pathname)
+cat(sprintf("# Created on: %s\n", Sys.time()), file = pathname, append = TRUE)
+cat(sprintf("# Number of hosts: %d\n", nrow(host_table)), file = pathname, append = TRUE)
+cat(sprintf("# Number of cores: %d\n", sum(host_table[["# Physical Cores"]])), file = pathname, append = TRUE)
+readr::write_tsv(host_table, path = pathname, append = TRUE)
 
 print(sessionInfo())
