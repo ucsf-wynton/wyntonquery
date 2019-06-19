@@ -54,12 +54,12 @@ print(hostnames)
 ## Query nodes
 raw <- on_hostname(hostnames, try(system_info()), on_error = "asis", cache = TRUE)
 saveRDS(raw, file = sprintf("system_info,%s.rds", today))
-print(raw)
+str(raw)
 
 ## Filter out errors
 is_error <- vapply(raw, FUN = inherits, c("error", "try-error"), FUN.VALUE = FALSE)
 raw <- raw[!is_error]
-print(raw)
+str(raw)
 
 ## Combine
 qhost <- subset(qhost(), !hostname %in% c("global"))
@@ -69,13 +69,20 @@ raw2[todo] <- lapply(raw[todo], FUN = host_info, qhost = qhost)
 data <- Reduce(rbind, raw2)
 data <- data[mixedorder(data$hostname), , drop = FALSE]
 saveRDS(data, file = sprintf("host_info,%s.rds", today))
-print(data)
+str(data)
 
 ## Summarize static information
 host_table <- host_table(data)
 host_table <- unique(host_table)
 host_table <- host_table[, c("Node", "# Physical Cores", "RAM", "Local `/scratch`", "Local `/tmp`", "CPU")]
 stopifnot(!anyDuplicated(host_table[[1]]))
+cpu <- host_table[["CPU"]]
+cpu <- gsub("(R)", "", cpu, fixed = TRUE)
+cpu <- gsub("(tm)", "", cpu, fixed = TRUE)
+cpu <- gsub(" @ ", " ", cpu, fixed = TRUE)
+cpu <- gsub(" CPU ", " ", cpu, fixed = TRUE)
+cpu <- gsub(" Processor ", " ", cpu, fixed = TRUE)
+host_table[["CPU"]] <- cpu
 saveRDS(host_table, file = sprintf("host_table,%s.rds", today))
 print(host_table)
 
@@ -85,6 +92,6 @@ cat(sprintf("# Created by: Henrik Bengtsson\n"), file = pathname)
 cat(sprintf("# Created on: %s\n", Sys.time()), file = pathname, append = TRUE)
 cat(sprintf("# Number of hosts: %d\n", nrow(host_table)), file = pathname, append = TRUE)
 cat(sprintf("# Number of cores: %d\n", sum(host_table[["# Physical Cores"]])), file = pathname, append = TRUE)
-readr::write_tsv(host_table, path = pathname, append = TRUE)
+readr::write_tsv(host_table, path = pathname, col_names = TRUE, append = TRUE)
 
 print(sessionInfo())
