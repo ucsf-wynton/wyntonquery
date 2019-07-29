@@ -1,6 +1,11 @@
+#' @details
+#' The SGE \file{accounting} file is typically located in a subfolder of
+#' the folder \file{$SGE_ROOT/$SGE_CELL/}.  On Wynton HPC, the pathname
+#' is given by `sge_accounting_file()`.
+#'
 #' @importFrom readr read_delim cols col_character col_double col_integer 
 #' @export
-read_raw_sge_accounting <- function(file, skip = 0L, ...) {
+read_raw_sge_accounting <- function(file, skip = 4L, ...) {
   ## Source: http://manpages.ubuntu.com/manpages/bionic/man5/sge_accounting.5.html
   col_types <- cols(
     qname           = col_character(), ## Name of the cluster queue in which the job has run
@@ -159,4 +164,22 @@ print.sge_accounting <- function(x, format = c("pretty", "raw"), ...) {
   }
 
   NextMethod()
+}
+
+
+#' @importFrom utils file_test
+#' @export
+sge_accounting_file <- function(filename = "accounting", path = do.call(file.path, args = as.list(c(Sys.getenv(c("SGE_ROOT", "SGE_CELL")), "common")))) {
+  stopifnot(file_test("-d", path))
+  pathname <- file.path(path, filename)
+  stopifnot(file_test("-f", pathname))
+  pathname
+}
+
+
+#' @export
+read_sge_accounting <- function(file = sge_accounting_file(), ...) {
+  data <- read_raw_sge_accounting(file = file, ...)
+  data <- as_sge_accounting(data)
+  data
 }
