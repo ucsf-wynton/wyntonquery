@@ -7,14 +7,14 @@
 mem_info()
 }
 \value{
-A data.frame (tibble) with the two columns `field` and `value`.
-For most CPUs, there will be duplicated `field`:s.
+A data.frame (tibble) with the two columns \code{field} and \code{value}.
+For most CPUs, there will be duplicated \code{field}:s.
 }
 \description{
 Lists the Memory Information for the Current Machine
 }
 \details{
-This function reads/queries `/proc/meminfo` on the current machine.
+This function reads/queries \code{/proc/meminfo} on the current machine.
 }
 \examples{
 info <- mem_info()

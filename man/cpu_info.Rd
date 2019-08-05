@@ -7,14 +7,14 @@
 cpu_info()
 }
 \value{
-A data.frame (tibble) with the two columns `field` and `value`.
-For most CPUs, there will be duplicated `field`:s.
+A data.frame (tibble) with the two columns \code{field} and \code{value}.
+For most CPUs, there will be duplicated \code{field}:s.
 }
 \description{
 Lists the CPU Information for the Current Machine
 }
 \details{
-This function reads/queries `/proc/cpuinfo` on the current machine.
+This function reads/queries \code{/proc/cpuinfo} on the current machine.
 }
 \examples{
 info <- cpu_info()
@@ -22,5 +22,5 @@ print(info)
 
 }
 \seealso{
-[lscpu()]
+\code{\link[=lscpu]{lscpu()}}
 }

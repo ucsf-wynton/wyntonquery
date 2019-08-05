@@ -13,15 +13,15 @@ on_hostname(hostnames, expr, ..., on_error = c("stop", "asis"),
 \item{expr}{The \R expression to be evaluated on each host.}
 
 \item{on_error}{A character string specifying how to handle errors.
-If `"stop"` (default), then the error is relayed.
-If `"asis"`, then the error (the [base::condition] object) is returned.}
+If \code{"stop"} (default), then the error is relayed.
+If \code{"asis"}, then the error (the \link[base:condition]{base::condition} object) is returned.}
 
-\item{cache}{If `TRUE`, cached results on file are considered.}
+\item{cache}{If \code{TRUE}, cached results on file are considered.}
 
-\item{\ldots}{(optional) Additional arguments passed to [future::future()].}
+\item{\ldots}{(optional) Additional arguments passed to \code{\link[future:future]{future::future()}}.}
 }
 \value{
-A named list with names `hostnames`.
+A named list with names \code{hostnames}.
 }
 \description{
 Evaluates an R Expression on One or More Hosts

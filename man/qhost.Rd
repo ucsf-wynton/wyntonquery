@@ -14,7 +14,7 @@ A data.frame (tibble) where each row corresponds to a unique host
 List Available Host and Their Current Statuses
 }
 \details{
-This function queries SGE's `qhost` on the system.
+This function queries SGE's \code{qhost} on the system.
 }
 \examples{
 \donttest{

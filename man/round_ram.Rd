@@ -13,8 +13,8 @@ round_ram(x, map = getOption("wyntonquery.round_ram.map", c(16, 32, 48,
 \item{map}{A numeric vector of RAM sizes to round.}
 }
 \value{
-A numeric vector of length `length(x)` with
-values in the `map` set.
+A numeric vector of length \code{length(x)} with
+values in the \code{map} set.
 }
 \description{
 Round RAM Sizes to Nearest Possible RAM Size

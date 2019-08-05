@@ -7,7 +7,7 @@
 \method{available}{queues}(df, ...)
 }
 \arguments{
-\item{df}{A `queues` data frame.}
+\item{df}{A \code{queues} data frame.}
 
 \item{\ldots}{Not used.}
 }

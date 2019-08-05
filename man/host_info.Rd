@@ -7,15 +7,15 @@
 host_info(system_info = NULL, qhost = TRUE)
 }
 \arguments{
-\item{system_info}{(optional) A named list as returned by [system_info()].}
+\item{system_info}{(optional) A named list as returned by \code{\link[=system_info]{system_info()}}.}
 
-\item{qhost}{(optional) A data.frame as returned by [qhost()].
-If `TRUE` (default), then [qhost()] is queried.
-If `FALSE`, then queue information is not reported.}
+\item{qhost}{(optional) A data.frame as returned by \code{\link[=qhost]{qhost()}}.
+If \code{TRUE} (default), then \code{\link[=qhost]{qhost()}} is queried.
+If \code{FALSE}, then queue information is not reported.}
 }
 \value{
 A data.frame (tibble) with information combined based
-on `system_info` and `qhost`.
+on \code{system_info} and \code{qhost}.
 }
 \description{
 Compile Host Information

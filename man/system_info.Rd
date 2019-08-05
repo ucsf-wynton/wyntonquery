@@ -7,15 +7,15 @@
 system_info()
 }
 \value{
-A named list with elements `hostname` (a character string),
-`os_info`, `cpu_info`, and `disk_free` (data frames/tibbles).
+A named list with elements \code{hostname} (a character string),
+\code{os_info}, \code{cpu_info}, and \code{disk_free} (data frames/tibbles).
 }
 \description{
 Lists System Information for the Current Machine
 }
 \details{
-This function reads/queries [base::Sys.info()], [disk_free()],
-and [cpu_info()] on the current machine.
+This function reads/queries \code{\link[base:Sys.info]{base::Sys.info()}}, \code{\link[=disk_free]{disk_free()}},
+and \code{\link[=cpu_info]{cpu_info()}} on the current machine.
 }
 \examples{
 info <- system_info()

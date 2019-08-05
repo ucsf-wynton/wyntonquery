@@ -8,9 +8,9 @@ disk_free(mounts = NULL, local = FALSE)
 }
 \arguments{
 \item{mounts}{A character vector of disks (mount points) to query.
-If `NULL`, all disks are queried.}
+If \code{NULL}, all disks are queried.}
 
-\item{local}{If `TRUE`, only local disks are queried.}
+\item{local}{If \code{TRUE}, only local disks are queried.}
 }
 \value{
 A data.frame (tibble) where each row corresponds to a unique disk.
@@ -19,7 +19,7 @@ A data.frame (tibble) where each row corresponds to a unique disk.
 Report on File System Disk Usage
 }
 \details{
-This function queries `df -P` (POSIX output format) on the system.
+This function queries \code{df -P} (POSIX output format) on the system.
 }
 \examples{
 ## All disks

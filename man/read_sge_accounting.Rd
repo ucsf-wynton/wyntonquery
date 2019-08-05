@@ -4,7 +4,63 @@
 \alias{read_sge_accounting}
 \title{Read an SGE accounting}
 \usage{
-read_sge_accounting(file = sge_accounting_file(), ...)
+read_sge_accounting(file = sge_accounting_file(), skip = 4L, ...)
+}
+\arguments{
+\item{file}{(character) The SGE \file{accounting} file to read.}
+
+\item{file}{(integer) The number of lines to skip at the top of the file.}
+
+\item{\ldots}{Additional arguments passed to \code{\link[=read_raw_sge_accounting]{read_raw_sge_accounting()}}.}
+}
+\value{
+A \code{tibble} data frame with columns:
+\itemize{
+\item \code{qname} (character) - name of the cluster queue in which the job has run
+\item \code{hostname} (character) - name of the execution host
+\item \code{group} (character) - the effective group id of the job owner when executing the job
+\item \code{owner} (character) - owner of the Grid Engine job
+\item \code{job_name} (character) - job name
+\item \code{job_number} (integer) - job identifier
+\item \code{account} (character) - an account string as specified by the \code{qsub} or \code{qalter}
+\item \code{priority} (integer) - priority value assigned to the job
+\item \code{submission_time} (dttm) - submission time
+\item \code{start_time} (dttm) - start time
+\item \code{end_time} (dttm) - end time
+\item \code{failed} (integer) - indicates the problem which occurred in case a job failed (at the system level, as opposed to the job script or binary having non-zero exit status)
+\item \code{exit_status} (integer) - exit status of the job script (or Grid Engine-specific status in case of certain error conditions)
+\item \code{ru_wallclock} (drtn) - Difference between 'end_time' and 'start_time' (time interval), except that if the job fails, it is zero.
+\item \code{ru_utime} (drtn) - user CPU time (in seconds) used, i.e. total amount of time spent executing in user mode
+\item \code{ru_stime} (drtn) - system CPU time (in seconds) used, i.e. total amount of time spent executing in kernel mode
+\item \code{ru_maxrss} (character) - maximum resident set size (in kB)
+\item \code{ru_ixrss} (character) - integral shared memory size (in kB) [UNUSED]
+\item \code{ru_ismrss} (character) - ???
+\item \code{ru_idrss} (character) - integral unshared data size (in kB) [UNUSED]
+\item \code{ru_isrss} (character) - integral unshared stack size (in kB) [UNUSED]
+\item \code{ru_minflt} (numeric) - page reclaims (soft page faults)
+\item \code{ru_majflt} (numeric) - page faults (hard page faults)
+\item \code{ru_nswap} (numeric) - number of swaps [UNUSED]
+\item \code{ru_inblock} (numeric) - number of block input operations
+\item \code{ru_oublock} (numeric) - number of block output operations
+\item \code{ru_msgsnd} (numeric) - number of IPC messages sent [UNUSED]
+\item \code{ru_msgrcv} (numeric) - number of IPC messages received [UNUSED]
+\item \code{ru_nsignals} (numeric) - number of signals received
+\item \code{ru_nvcsw} (numeric) - number of voluntary context switches (number of times a context switch resulted due to a process voluntarily giving up the processor before its time slice was completed (usually to await availability of a resource)* \code{ru_nivcsw} (numeric) - number of involuntary context switches (number of times a context switch resulted due to a higher priority process becoming runnable or because the current process exceeded its time slice)
+\item \code{project} (character) -
+\item \code{department} (character) -
+\item \code{granted_pe} (character) - the parallel environment which was selected for the job
+\item \code{slots} (integer) - the number of slots which were dispatched to the job by the scheduler
+\item \code{task_number} (integer) -
+\item \code{cpu} (drtn) - The CPU time usage (in seconds)
+\item \code{mem} (character) - the integral memory usage (in GB seconds)
+\item \code{io} (character) - the amount of data transferred in input/output operations (in GB) if available, otherwise \code{0}
+\item \code{category} (character) -
+\item \code{iow} (drtn) - the input/output wait time (in seconds) if available, otherwise 0
+\item \code{pe_taskid} (character) - if this identifier is not equal to \code{NONE}, the task was part of parallel job, and was passed to Grid Engine via the \code{qrsh}-inherit interface
+\item \code{maxvmem} (numeric) - the maximum vmem size (in bytes)
+\item \code{arid} (numeric) - advance reservation identifier
+\item \code{ar_sub_time} (dttm) - advance reservation submission time, if the job uses the resources of an advance reservation, otherwise \code{0}
+}
 }
 \description{
 Read an SGE accounting

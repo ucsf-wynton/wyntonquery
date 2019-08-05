@@ -7,7 +7,7 @@
 queues(parse = TRUE)
 }
 \arguments{
-\item{parse}{If `TRUE`, `qhost -f` columns that contain multiple properties
+\item{parse}{If \code{TRUE}, \code{qhost -f} columns that contain multiple properties
 (e.g. 'states') are further parsed for easy access.}
 }
 \value{
@@ -18,7 +18,7 @@ unique queue on a particular host.
 List Available Queues and Their Properties
 }
 \details{
-This function queries SGE's `qstat -f` on the system.
+This function queries SGE's \code{qstat -f} on the system.
 }
 \examples{
 \donttest{

@@ -8,9 +8,9 @@ host_table(host_info, format = TRUE)
 }
 \arguments{
 \item{host_info}{A data.frame as returned by one or more
-[host_info()] calls.}
+\code{\link[=host_info]{host_info()}} calls.}
 
-\item{format}{If `TRUE`, the output is formatted to strings
+\item{format}{If \code{TRUE}, the output is formatted to strings
 with units and friendly column names.}
 }
 \value{
