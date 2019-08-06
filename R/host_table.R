@@ -19,7 +19,7 @@ host_table <- function(host_info, format = TRUE) {
     data$memtot  <- sprintf("%.0f GiB", data$memtot)
     data$scratch <- sprintf("%.1f TiB", data$scratch)
     data$tmp     <- sprintf("%.1f GiB", data$tmp)
-    colnames(data) <- c("Node", "# Physical Cores", "CPU", "RAM", "Local `/scratch`", "Local `/tmp`")
+    colnames(data) <- c("Node", "Physical Cores", "CPU", "RAM", "Local `/scratch`", "Local `/tmp`")
   }
   
   data

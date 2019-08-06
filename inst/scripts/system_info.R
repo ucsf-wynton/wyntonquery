@@ -74,7 +74,7 @@ str(data)
 ## Summarize static information
 host_table <- host_table(data)
 host_table <- unique(host_table)
-host_table <- host_table[, c("Node", "# Physical Cores", "RAM", "Local `/scratch`", "Local `/tmp`", "CPU")]
+host_table <- host_table[, c("Node", "Physical Cores", "RAM", "Local `/scratch`", "Local `/tmp`", "CPU")]
 stopifnot(!anyDuplicated(host_table[[1]]))
 cpu <- host_table[["CPU"]]
 cpu <- gsub("(R)", "", cpu, fixed = TRUE)
@@ -91,7 +91,7 @@ pathname <- sprintf("host_table,%s.tsv", today)
 cat(sprintf("# Created by: Henrik Bengtsson\n"), file = pathname)
 cat(sprintf("# Created on: %s\n", Sys.time()), file = pathname, append = TRUE)
 cat(sprintf("# Number of hosts: %d\n", nrow(host_table)), file = pathname, append = TRUE)
-cat(sprintf("# Number of cores: %d\n", sum(host_table[["# Physical Cores"]])), file = pathname, append = TRUE)
+cat(sprintf("# Number of cores: %d\n", sum(host_table[["Physical Cores"]])), file = pathname, append = TRUE)
 readr::write_tsv(host_table, path = pathname, col_names = TRUE, append = TRUE)
 
 print(sessionInfo())
