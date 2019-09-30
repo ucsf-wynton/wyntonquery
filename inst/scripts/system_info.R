@@ -1,5 +1,5 @@
 library(wyntonquery)
-library(gtools)
+library(gtools)  ## mixedsort(), mixedorder()
 
 today <- format(Sys.time(), "%Y%m%d")
 cat("Today's date: ", today, "\n", sep="")
@@ -17,7 +17,7 @@ cat("All available queues:\n")
 print(q)
 
 ## All available compute nodes
-avail_hostnames <- sort(unique(q$hostname))
+avail_hostnames <- mixedsort(unique(q$hostname))
 avail_hostnames <- setdiff(avail_hostnames, "qb3-gpudev1")
 cat("All known available hostnames:\n")
 print(avail_hostnames)

@@ -7,4 +7,5 @@
 #$ -l mem_free=1G
 #$ -R yes
 
-Rscript -e "source(system.file(package='wyntonquery', 'scripts', 'system_info.R'), echo = TRUE)"
+module load CBI r
+Rscript -e "source(system.file(package='wyntonquery', 'scripts', 'system_info.R', mustWork=TRUE), echo=TRUE)"
