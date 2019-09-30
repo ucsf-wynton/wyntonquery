@@ -3,7 +3,41 @@
 An R package that provides utility functions for querying the UCSF Wynton environment, in order to gather system details used to populate the information on the [Wynton website](https://ucsf-hpc.github.io/wynton/about/specs.html).
 
 
-## Usage
+## Install
+
+This R package is only available on GitHub.  To install it, run the following in R:
+
+```r
+if (!requireNamespace("remotes")) install.packages("remotes")
+remotes::install_github("UCSF-HPC/wyntonquery")
+```
+
+
+
+
+## Usages
+
+### Read the SGE accounting file
+
+As of September 2019, the Wynton HPC accounting file is ~5 GiB and takes roughly 2 minutes to read in:
+
+```r
+library(wyntonquery)
+pathname <- sge_accounting_file()
+
+## Read all of the accounting file
+data <- read_sge_accounting(pathname, skip=4L)
+print(data)
+
+## Get all non-failed jobs of 'sali' group that requested a single slot
+data2 <- subset(data, group == "sali" & slots == 1L & failed == 0)
+print(data2)
+```
+
+See `help("read_sge_accounting", package="wyntonquery")` for details on the parsed fields and their data types.
+
+
+### Query compute node information via job submissions
 
 To gather the information, in R, run:
 

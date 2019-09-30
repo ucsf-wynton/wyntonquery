@@ -70,3 +70,11 @@ Read an SGE accounting
 The 4.8 GB \file{accounting} on Wynton HPC takes ~120s to read.
 }
 
+\examples{
+\donttest{\dontrun{
+## 'accounting' files are *colon*-separated files
+data <- read_sge_accounting("accounting.csv", skip=4L)
+print(data)
+}}
+
+}

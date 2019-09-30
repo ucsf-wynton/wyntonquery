@@ -236,6 +236,13 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #' @section Benchmarking:
 #' The 4.8 GB \file{accounting} on Wynton HPC takes ~120s to read.
 #'
+#' @examples
+#' \donttest{\dontrun{
+#' ## 'accounting' files are *colon*-separated files
+#' data <- read_sge_accounting("accounting.csv", skip=4L)
+#' print(data)
+#' }}
+#'
 #' @export
 read_sge_accounting <- function(file = sge_accounting_file(), skip = 4L, ...) {
   data <- read_raw_sge_accounting(file = file, skip = skip, ...)
