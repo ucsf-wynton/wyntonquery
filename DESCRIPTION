@@ -18,5 +18,5 @@ License: LGPL (>= 2.1)
 LazyLoad: TRUE
 URL: https://github.com/UCSF-HPC/wyntonquery
 BugReports: https://github.com/UCSF-HPC/wyntonquery
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)

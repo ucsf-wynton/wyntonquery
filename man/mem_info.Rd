@@ -14,7 +14,7 @@ For most CPUs, there will be duplicated \code{field}:s.
 Lists the Memory Information for the Current Machine
 }
 \details{
-This function reads/queries \code{/proc/meminfo} on the current machine.
+This function reads/queries \verb{/proc/meminfo} on the current machine.
 }
 \examples{
 info <- mem_info()

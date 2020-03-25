@@ -4,8 +4,7 @@
 \alias{on_hostname}
 \title{Evaluates an R Expression on One or More Hosts}
 \usage{
-on_hostname(hostnames, expr, ..., on_error = c("stop", "asis"),
-  cache = FALSE)
+on_hostname(hostnames, expr, ..., on_error = c("stop", "asis"), cache = FALSE)
 }
 \arguments{
 \item{hostnames}{A character vector of hostnames.}
