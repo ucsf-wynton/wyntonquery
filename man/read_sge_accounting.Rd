@@ -25,8 +25,11 @@ A \code{tibble} data frame with columns:
 \item \code{submission_time} (dttm) - submission time
 \item \code{start_time} (dttm) - start time
 \item \code{end_time} (dttm) - end time
-\item \code{failed} (integer) - indicates the problem which occurred in case a job failed (at the system level, as opposed to the job script or binary having non-zero exit status)
-\item \code{exit_status} (integer) - exit status of the job script (or Grid Engine-specific status in case of certain error conditions)
+\item \code{failed} (integer) - indicates the problem which occurred in case a job failed (at the system level, as opposed to the job script or binary having non-zero exit status).
+Indicates the problem which occurred in case a job could not be started on the execution host (e.g. because the owner of the job did not have a valid account on that machine). If Sun Grid Engine tries to start a job multiple times, this may lead to multiple entries in the accounting file corresponding to the same job ID
+\item \code{exit_status} (integer) - exit status of the job script (or Grid Engine-specific status in case of certain error conditions).
+The exit status is determined by following the normal shell conventions. If the command terminates normally the value of the command is its exit status. However, in the case that the command exits abnormally, a value of 0200 (octal), 128 (decimal) is added to the value of the command to make up the exit status.
+For example: If a job dies through signal 9 (\code{SIGKILL}) - probably issued by Grid Engine through \code{qdel}, or because the job exceeded time or memory hard limits - then the exit status is 128 + 9 = 137.
 \item \code{ru_wallclock} (drtn) - Difference between 'end_time' and 'start_time' (time interval), except that if the job fails, it is zero.
 \item \code{ru_utime} (drtn) - user CPU time (in seconds) used, i.e. total amount of time spent executing in user mode
 \item \code{ru_stime} (drtn) - system CPU time (in seconds) used, i.e. total amount of time spent executing in kernel mode
@@ -68,11 +71,53 @@ Read an SGE accounting
 The 4.8 GB \file{accounting} on Wynton HPC takes ~120s to read.
 }
 
+\section{Common exit codes}{
+
+\itemize{
+\item 0 = Success
+\item 1 = Catchall for general errors
+\item 2 = Misuse of shell builtins (according to Bash documentation)
+\item 126 = Command invoked cannot execute, e.g. \verb{/dev/null}
+\item 127 = "command not found"
+\item 128 = Invalid argument to exit, e.g. \verb{exit 3.14}
+\item 128 + \code{n} = Fatal error signal \code{n}
+\item 134 = 128 + 6 = 128 + \code{SIGABRT}
+\item 137 = 128 + 9 = 128 + \code{SIGKILL}
+\item 255 = 128 + 127 = Exit status out of range, e.g.\code{exit -1}
+}
+
+Comment: \code{exit} only takes integers in [0,255]
+}
+
 \examples{
 \donttest{\dontrun{
 ## 'accounting' files are *colon*-separated files
 data <- read_sge_accounting("accounting.csv", skip=4L)
 print(data)
+
+## Identify successful and failed jobs
+db_success <- subset(db, failed == 0)
+db_fail <- subset(db, failed > 0)
+
+## CPU time consumed
+t <- c(sum(db_success$cpu), sum(db_fail$cpu))
+units(t) <- "days"
+print(t)
+## Time differences in days
+## [1] 118726.76  44917.09
+
+## Fraction of successful and failed CPU time
+u <- as.numeric(t)
+u <- u / sum(u)
+names(u) <- c("success", "failed")
+print(u)
+##   success    failed 
+## 0.7255192 0.2744808
 }}
 
+}
+\references{
+\itemize{
+\item \verb{man accounting}
+}
 }

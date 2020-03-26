@@ -199,8 +199,11 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #'  * `submission_time` (dttm) - submission time
 #'  * `start_time` (dttm) - start time
 #'  * `end_time` (dttm) - end time
-#'  * `failed` (integer) - indicates the problem which occurred in case a job failed (at the system level, as opposed to the job script or binary having non-zero exit status)
-#'  * `exit_status` (integer) - exit status of the job script (or Grid Engine-specific status in case of certain error conditions) 
+#'  * `failed` (integer) - indicates the problem which occurred in case a job failed (at the system level, as opposed to the job script or binary having non-zero exit status).
+#'    Indicates the problem which occurred in case a job could not be started on the execution host (e.g. because the owner of the job did not have a valid account on that machine). If Sun Grid Engine tries to start a job multiple times, this may lead to multiple entries in the accounting file corresponding to the same job ID
+#'  * `exit_status` (integer) - exit status of the job script (or Grid Engine-specific status in case of certain error conditions).
+#'    The exit status is determined by following the normal shell conventions. If the command terminates normally the value of the command is its exit status. However, in the case that the command exits abnormally, a value of 0200 (octal), 128 (decimal) is added to the value of the command to make up the exit status.
+#'    For example: If a job dies through signal 9 (`SIGKILL`) - probably issued by Grid Engine through `qdel`, or because the job exceeded time or memory hard limits - then the exit status is 128 + 9 = 137.
 #'  * `ru_wallclock` (drtn) - Difference between 'end_time' and 'start_time' (time interval), except that if the job fails, it is zero.
 #'  * `ru_utime` (drtn) - user CPU time (in seconds) used, i.e. total amount of time spent executing in user mode
 #'  * `ru_stime` (drtn) - system CPU time (in seconds) used, i.e. total amount of time spent executing in kernel mode
@@ -236,12 +239,49 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #' @section Benchmarking:
 #' The 4.8 GB \file{accounting} on Wynton HPC takes ~120s to read.
 #'
+#' @section Common exit codes:
+#'
+#'  * 0 = Success
+#'  * 1 = Catchall for general errors
+#'  * 2 = Misuse of shell builtins (according to Bash documentation)
+#'  * 126 = Command invoked cannot execute, e.g. `/dev/null`
+#'  * 127 = "command not found"
+#'  * 128 = Invalid argument to exit, e.g. `exit 3.14`
+#'  * 128 + `n` = Fatal error signal `n`
+#'  * 134 = 128 + 6 = 128 + `SIGABRT`
+#'  * 137 = 128 + 9 = 128 + `SIGKILL`
+#'  * 255 = 128 + 127 = Exit status out of range, e.g.`exit -1`
+#'
+#' Comment: `exit` only takes integers in \[0,255\]
+#'
 #' @examples
 #' \donttest{\dontrun{
 #' ## 'accounting' files are *colon*-separated files
 #' data <- read_sge_accounting("accounting.csv", skip=4L)
 #' print(data)
+#'
+#' ## Identify successful and failed jobs
+#' db_success <- subset(db, failed == 0)
+#' db_fail <- subset(db, failed > 0)
+#'
+#' ## CPU time consumed
+#' t <- c(sum(db_success$cpu), sum(db_fail$cpu))
+#' units(t) <- "days"
+#' print(t)
+#' ## Time differences in days
+#' ## [1] 118726.76  44917.09
+#'
+#' ## Fraction of successful and failed CPU time
+#' u <- as.numeric(t)
+#' u <- u / sum(u)
+#' names(u) <- c("success", "failed")
+#' print(u)
+#' ##   success    failed 
+#' ## 0.7255192 0.2744808
 #' }}
+#'
+#' @references
+#' * `man accounting`
 #'
 #' @export
 read_sge_accounting <- function(file = sge_accounting_file(), skip = 4L, ...) {

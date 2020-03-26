@@ -1,6 +1,14 @@
 Package: wyntonquery
 ====================
 
+Version: 0.0.0-9003 [2020-03-26]
+
+DOCUMENTATION:
+
+ * Expand example of read_sge_accounting() to display how to inspect how
+   much CPU time was spent on successful and failed jobs.
+
+
 Version: 0.0.0-9002 [2019-08-06]
 
 NEW FEATURES:
