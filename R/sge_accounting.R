@@ -1,5 +1,11 @@
 #' Read a tab-delimited SGE accounting file (without parsing it)
 #'
+#' @param file (character) The SGE \file{accounting} file to read.
+#'
+#' @param skip (integer) Number of lines to skip before parsing file content.
+#'
+#' @param \ldots (optional) Addition arguments passed to [readr::read_delim()].
+#'
 #' @details
 #' The SGE \file{accounting} file is typically located in a subfolder of
 #' the folder \file{$SGE_ROOT/$SGE_CELL/}.  On Wynton HPC, the pathname
@@ -183,7 +189,7 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #'
 #' @param file (character) The SGE \file{accounting} file to read.
 #'
-#' @param file (integer) The number of lines to skip at the top of the file.
+#' @param skip (integer) The number of lines to skip at the top of the file.
 #'
 #' @param \ldots Additional arguments passed to [read_raw_sge_accounting()].
 #'

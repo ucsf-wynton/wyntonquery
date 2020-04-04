@@ -6,6 +6,13 @@
 \usage{
 read_raw_sge_accounting(file, skip = 4L, ...)
 }
+\arguments{
+\item{file}{(character) The SGE \file{accounting} file to read.}
+
+\item{skip}{(integer) Number of lines to skip before parsing file content.}
+
+\item{\ldots}{(optional) Addition arguments passed to \code{\link[readr:read_delim]{readr::read_delim()}}.}
+}
 \description{
 Read a tab-delimited SGE accounting file (without parsing it)
 }
