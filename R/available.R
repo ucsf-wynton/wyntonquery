@@ -1,7 +1,3 @@
-#' @export
-available <- function(df, ...) UseMethod("available")
-
-
 #' Gets Queues that are Available For Jobs
 #'
 #' @param df A `queues` data frame.
@@ -13,6 +9,10 @@ available <- function(df, ...) UseMethod("available")
 #' known load and where either the 'short.q' or the 'long.q' queue
 #' is available for jobs (= not overloaded).
 #'
+#' @export
+available <- function(df, ...) UseMethod("available")
+
+
 #' @export
 available.queues <- function(df, ...) {
   ## To please R CMD check

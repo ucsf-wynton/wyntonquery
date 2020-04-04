@@ -56,6 +56,9 @@ qhost <- function() {
 }
 
 
+
+#' Check Whether 'qhost' is Available on the System or not
+#'
 #' @return (logical)
 #' `has_qhost()` returns TRUE if the `qhost` could be found, otherwise FALSE.
 #'

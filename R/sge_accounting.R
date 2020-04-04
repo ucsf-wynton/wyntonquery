@@ -99,6 +99,12 @@ read_raw_sge_accounting <- function(file, skip = 4L, ...) {
   x
 }
 
+#' Coerce to an 'sge_accounting' Object
+#'
+#' @param x The object to be coerced.
+#' 
+#' @param \ldots (optional) Addition arguments passed to the S3 methods.
+#'
 #' @export
 as_sge_accounting <- function(x, ...) UseMethod("as_sge_accounting")
 
@@ -175,6 +181,15 @@ print.sge_accounting <- function(x, format = c("pretty", "raw"), ...) {
 }
 
 
+#' Locate the SGE Accounting File on the Current System
+#'
+#' @param filename (character string) The name of the accounting file.
+#'
+#' @param path (character string) The path to the accounting file.
+#'
+#' @return (character string) The pathname to the SGE accounting file.
+#' If not found, and error is thrown.
+#'
 #' @importFrom utils file_test
 #' @export
 sge_accounting_file <- function(filename = "accounting", path = do.call(file.path, args = as.list(c(Sys.getenv(c("SGE_ROOT", "SGE_CELL")), "common")))) {
