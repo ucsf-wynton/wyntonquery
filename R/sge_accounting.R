@@ -330,23 +330,80 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #'  * `ar_sub_time` (dttm) - advance reservation submission time, if the job
 #'    uses the resources of an advance reservation, otherwise `0`
 #'
-#' @section Benchmarking:
-#' The 4.8 GB \file{accounting} on Wynton HPC takes ~120s to read.
 #'
+#' @section Failed code:
+#' 
+#' |Code | Description                                    | OK | Explanation                                             |
+#' | --: | ---------------------------------------------- | -- | ------------------------------------------------------- |
+#' |   0 | no failure                                     | Y  | ran and exited normally                                 |
+#' |   1 | assumedly before job                           | N  | failed early in execd                                   |
+#' |   3 | before writing config                          | N  | failed before execd set up local spool                  |
+#' |   4 | before writing PID                             | N  | shepherd failed to record its pid - filesystem problem? |
+#' |   6 | setting processor set                          | N  | failed setting up processor set (obsolete)              |
+#' |   7 | before prolog                                  | N  | failed before prolog                                    |
+#' |   8 | in prolog                                      | N  | failed in prolog                                        |
+#' |   9 | before pestart                                 | N  | failed before starting PE                               |
+#' |  10 | in pestart                                     | N  | failed in PE starter                                    |
+#' |  11 | before job                                     | N  | failed in shepherd before starting job                  |
+#' |  12 | before pestop                                  | Y  | ran, but failed before calling PE stop procedure        |
+#' |  13 | in pestop                                      | Y  | ran, but PE stop procedure failed                       |
+#' |  14 | before epilog                                  | Y  | ran, but failed before calling epilog                   |
+#' |  15 | in epilog                                      | Y  | ran, but failed in epilog                               |
+#' |  16 | releasing processor set                        | Y  | ran, but processor set could not be released (obsolete) |
+#' |  17 | through signal                                 | Y  | job killed by signal (possibly qdel)                    |
+#' |  18 | shepherd returned error                        | N  | shepherd died somehow                                   |
+#' |  19 | before writing exit_status                     | N  | shepherd didn't write reports correctly - probably program or machine crash |
+#' |  20 | found unexpected error file                    | ?  | shepherd encountered a problem                          |
+#' |  21 | in recognizing job                             | N  | qmaster asked about an unknown job (not in accounting?) |
+#' |  24 | migrating (checkpointing jobs)                 | Y  | ran, will be migrated                                   |
+#' |  25 | rescheduling                                   | Y  | ran, will be rescheduled                                |
+#' |  26 | opening output file                            | N  | failed opening stderr/stdout file                       |
+#' |  27 | searching requested shell                      | N  | failed finding specified shell                          |
+#' |  28 | changing to working directory                  | N  | failed changing to start directory                      |
+#' |  29 | AFS setup                                      | N  | failed setting up AFS security                          |
+#' |  30 | application error returned                     | Y  | ran and exited 100 - maybe re-scheduled                 |
+#' |  36 | checking configured daemons                    | N  | failed because of configured remote startup daemon      |
+#' |  38 | adding supplementary group                     | N  | failed adding supplementary gid to job                  |
+#' |  37 | qmaster enforced h_rt, h_cpu, or h_vmem limit  | Y  | ran, but killed due to exceeding run time limit         |
+#' | 100 | assumedly after job                            | Y  | ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc. |
+#' 
+#' 
+#' The following failed codes are specific to MS Windows:
+#' 
+#' |Code | Description                                    | OK | Explanation                                             |
+#' | --: | ---------------------------------------------- | -- | ------------------------------------------------------- |
+#' |  31 | accessing sgepasswd file                       | N  | failed because sgepasswd not readable*                  |
+#' |  32 | entry is missing in password file              | N  | failed because user not in sgepasswd*                   |
+#' |  33 | wrong password                                 | N  | failed because of wrong password against sgepasswd*     |
+#' |  34 | communicating with Grid Engine Helper Service  | N  | failed because of failure of helper service*            |
+#' |  35 | before job in Grid Engine Helper Service       | N  | failed because of failure running helper service*       |
+#' 
+#' 
+#' Source: `man sge_status`.
+#' 
+#' 
 #' @section Common exit codes:
 #'
-#'  * 0 = Success
-#'  * 1 = Catchall for general errors
-#'  * 2 = Misuse of shell builtins (according to Bash documentation)
-#'  * 126 = Command invoked cannot execute, e.g. `/dev/null`
-#'  * 127 = "command not found"
-#'  * 128 = Invalid argument to exit, e.g. `exit 3.14`
-#'  * 128 + `n` = Fatal error signal `n`
-#'  * 134 = 128 + 6 = 128 + `SIGABRT`
-#'  * 137 = 128 + 9 = 128 + `SIGKILL`
-#'  * 255 = 128 + 127 = Exit status out of range, e.g.`exit -1`
+#' |Code     | Description                                                |
+#' | --:     | ---------------------------------------------------------- |
+#' |   0     | Success                                                    |
+#' |   1     | Catchall for general errors                                |
+#' |   2     | Misuse of shell builtins (according to Bash documentation) |
+#' | 126     | Command invoked cannot execute, e.g. `/dev/null`           |
+#' | 127     | "command not found"                                        |
+#' | 128     | Invalid argument to exit, e.g. `exit 3.14`                 |
+#' | 128 + n | Fatal error signal n                                       |
+#' | 134     | 128 + 6 = 128 + `SIGABRT`                                  |
+#' | 137     | 128 + 9 = 128 + `SIGKILL`                                  |
+#' | 255     | 128 + 127 = Exit status out of range, e.g.`exit -1`        |
 #'
 #' Comment: `exit` only takes integers in \[0,255\]
+#'
+#'
+#' @section Benchmarking:
+#' The \file{accounting} on Wynton HPC took ~2 minutes to read when it
+#' was 4.8 GB in size and ~6-8 minutes when it was 12 GB in size.
+#'
 #'
 #' @examples
 #' \donttest{\dontrun{
@@ -376,6 +433,7 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #'
 #' @references
 #' * `man accounting`
+#' * `man sge_status`
 #'
 #' @export
 read_sge_accounting <- function(file = sge_accounting_file(), skip = 4L, ...) {
@@ -383,3 +441,5 @@ read_sge_accounting <- function(file = sge_accounting_file(), skip = 4L, ...) {
   data <- as_sge_accounting(data)
   data
 }
+
+

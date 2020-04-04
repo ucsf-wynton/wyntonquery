@@ -97,27 +97,79 @@ uses the resources of an advance reservation, otherwise \code{0}
 \description{
 Read an SGE accounting
 }
-\section{Benchmarking}{
+\section{Failed code}{
+\tabular{rlll}{
+   Code \tab Description \tab OK \tab Explanation \cr
+   0 \tab no failure \tab Y \tab ran and exited normally \cr
+   1 \tab assumedly before job \tab N \tab failed early in execd \cr
+   3 \tab before writing config \tab N \tab failed before execd set up local spool \cr
+   4 \tab before writing PID \tab N \tab shepherd failed to record its pid - filesystem problem? \cr
+   6 \tab setting processor set \tab N \tab failed setting up processor set (obsolete) \cr
+   7 \tab before prolog \tab N \tab failed before prolog \cr
+   8 \tab in prolog \tab N \tab failed in prolog \cr
+   9 \tab before pestart \tab N \tab failed before starting PE \cr
+   10 \tab in pestart \tab N \tab failed in PE starter \cr
+   11 \tab before job \tab N \tab failed in shepherd before starting job \cr
+   12 \tab before pestop \tab Y \tab ran, but failed before calling PE stop procedure \cr
+   13 \tab in pestop \tab Y \tab ran, but PE stop procedure failed \cr
+   14 \tab before epilog \tab Y \tab ran, but failed before calling epilog \cr
+   15 \tab in epilog \tab Y \tab ran, but failed in epilog \cr
+   16 \tab releasing processor set \tab Y \tab ran, but processor set could not be released (obsolete) \cr
+   17 \tab through signal \tab Y \tab job killed by signal (possibly qdel) \cr
+   18 \tab shepherd returned error \tab N \tab shepherd died somehow \cr
+   19 \tab before writing exit_status \tab N \tab shepherd didn't write reports correctly - probably program or machine crash \cr
+   20 \tab found unexpected error file \tab ? \tab shepherd encountered a problem \cr
+   21 \tab in recognizing job \tab N \tab qmaster asked about an unknown job (not in accounting?) \cr
+   24 \tab migrating (checkpointing jobs) \tab Y \tab ran, will be migrated \cr
+   25 \tab rescheduling \tab Y \tab ran, will be rescheduled \cr
+   26 \tab opening output file \tab N \tab failed opening stderr/stdout file \cr
+   27 \tab searching requested shell \tab N \tab failed finding specified shell \cr
+   28 \tab changing to working directory \tab N \tab failed changing to start directory \cr
+   29 \tab AFS setup \tab N \tab failed setting up AFS security \cr
+   30 \tab application error returned \tab Y \tab ran and exited 100 - maybe re-scheduled \cr
+   36 \tab checking configured daemons \tab N \tab failed because of configured remote startup daemon \cr
+   38 \tab adding supplementary group \tab N \tab failed adding supplementary gid to job \cr
+   37 \tab qmaster enforced h_rt, h_cpu, or h_vmem limit \tab Y \tab ran, but killed due to exceeding run time limit \cr
+   100 \tab assumedly after job \tab Y \tab ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc. \cr
+}
 
-The 4.8 GB \file{accounting} on Wynton HPC takes ~120s to read.
+
+The following failed codes are specific to MS Windows:\tabular{rlll}{
+   Code \tab Description \tab OK \tab Explanation \cr
+   31 \tab accessing sgepasswd file \tab N \tab failed because sgepasswd not readable* \cr
+   32 \tab entry is missing in password file \tab N \tab failed because user not in sgepasswd* \cr
+   33 \tab wrong password \tab N \tab failed because of wrong password against sgepasswd* \cr
+   34 \tab communicating with Grid Engine Helper Service \tab N \tab failed because of failure of helper service* \cr
+   35 \tab before job in Grid Engine Helper Service \tab N \tab failed because of failure running helper service* \cr
+}
+
+
+Source: \verb{man sge_status}.
 }
 
 \section{Common exit codes}{
-
-\itemize{
-\item 0 = Success
-\item 1 = Catchall for general errors
-\item 2 = Misuse of shell builtins (according to Bash documentation)
-\item 126 = Command invoked cannot execute, e.g. \verb{/dev/null}
-\item 127 = "command not found"
-\item 128 = Invalid argument to exit, e.g. \verb{exit 3.14}
-\item 128 + \code{n} = Fatal error signal \code{n}
-\item 134 = 128 + 6 = 128 + \code{SIGABRT}
-\item 137 = 128 + 9 = 128 + \code{SIGKILL}
-\item 255 = 128 + 127 = Exit status out of range, e.g.\code{exit -1}
+\tabular{rl}{
+   Code \tab Description \cr
+   0 \tab Success \cr
+   1 \tab Catchall for general errors \cr
+   2 \tab Misuse of shell builtins (according to Bash documentation) \cr
+   126 \tab Command invoked cannot execute, e.g. \verb{/dev/null} \cr
+   127 \tab "command not found" \cr
+   128 \tab Invalid argument to exit, e.g. \verb{exit 3.14} \cr
+   128 + n \tab Fatal error signal n \cr
+   134 \tab 128 + 6 = 128 + \code{SIGABRT} \cr
+   137 \tab 128 + 9 = 128 + \code{SIGKILL} \cr
+   255 \tab 128 + 127 = Exit status out of range, e.g.\code{exit -1} \cr
 }
 
+
 Comment: \code{exit} only takes integers in [0,255]
+}
+
+\section{Benchmarking}{
+
+The \file{accounting} on Wynton HPC took ~2 minutes to read when it
+was 4.8 GB in size and ~6-8 minutes when it was 12 GB in size.
 }
 
 \examples{
@@ -150,5 +202,6 @@ print(u)
 \references{
 \itemize{
 \item \verb{man accounting}
+\item \verb{man sge_status}
 }
 }
