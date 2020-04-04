@@ -18,7 +18,8 @@ A \code{tibble} data frame with columns:
 \itemize{
 \item \code{qname} (character) - name of the cluster queue in which the job has run
 \item \code{hostname} (character) - name of the execution host
-\item \code{group} (character) - the effective group id of the job owner when executing the job
+\item \code{group} (character) - the effective group id of the job owner when
+executing the job
 \item \code{owner} (character) - owner of the Grid Engine job
 \item \code{job_name} (character) - job name
 \item \code{job_number} (integer) - job identifier
@@ -27,14 +28,29 @@ A \code{tibble} data frame with columns:
 \item \code{submission_time} (dttm) - submission time
 \item \code{start_time} (dttm) - start time
 \item \code{end_time} (dttm) - end time
-\item \code{failed} (integer) - indicates the problem which occurred in case a job failed (at the system level, as opposed to the job script or binary having non-zero exit status).
-Indicates the problem which occurred in case a job could not be started on the execution host (e.g. because the owner of the job did not have a valid account on that machine). If Sun Grid Engine tries to start a job multiple times, this may lead to multiple entries in the accounting file corresponding to the same job ID
-\item \code{exit_status} (integer) - exit status of the job script (or Grid Engine-specific status in case of certain error conditions).
-The exit status is determined by following the normal shell conventions. If the command terminates normally the value of the command is its exit status. However, in the case that the command exits abnormally, a value of 0200 (octal), 128 (decimal) is added to the value of the command to make up the exit status.
-For example: If a job dies through signal 9 (\code{SIGKILL}) - probably issued by Grid Engine through \code{qdel}, or because the job exceeded time or memory hard limits - then the exit status is 128 + 9 = 137.
-\item \code{ru_wallclock} (drtn) - Difference between 'end_time' and 'start_time' (time interval), except that if the job fails, it is zero.
-\item \code{ru_utime} (drtn) - user CPU time (in seconds) used, i.e. total amount of time spent executing in user mode
-\item \code{ru_stime} (drtn) - system CPU time (in seconds) used, i.e. total amount of time spent executing in kernel mode
+\item \code{failed} (integer) - indicates the problem which occurred in case a job
+failed (at the system level, as opposed to the job script or binary having
+non-zero exit status).  Indicates the problem which occurred in case a job
+could not be started on the execution host (e.g. because the owner of the
+job did not have a valid account on that machine). If Sun Grid Engine
+tries to start a job multiple times, this may lead to multiple entries in
+the accounting file corresponding to the same job ID
+\item \code{exit_status} (integer) - exit status of the job script (or Grid
+Engine-specific status in case of certain error conditions).
+The exit status is determined by following the normal shell conventions.
+If the command terminates normally the value of the command is its exit
+status. However, in the case that the command exits abnormally, a value
+of 0200 (octal), 128 (decimal) is added to the value of the command to
+make up the exit status.
+For example: If a job dies through signal 9 (\code{SIGKILL}) - probably issued
+by Grid Engine through \code{qdel}, or because the job exceeded time or memory
+hard limits - then the exit status is 128 + 9 = 137.
+\item \code{ru_wallclock} (drtn) - Difference between 'end_time' and 'start_time'
+(time interval), except that if the job fails, it is zero.
+\item \code{ru_utime} (drtn) - user CPU time (in seconds) used, i.e. total amount of
+time spent executing in user mode
+\item \code{ru_stime} (drtn) - system CPU time (in seconds) used, i.e. total amount
+of time spent executing in kernel mode
 \item \code{ru_maxrss} (character) - maximum resident set size (in kB)
 \item \code{ru_ixrss} (character) - integral shared memory size (in kB) [UNUSED]
 \item \code{ru_ismrss} (character) - ???
@@ -48,21 +64,34 @@ For example: If a job dies through signal 9 (\code{SIGKILL}) - probably issued b
 \item \code{ru_msgsnd} (numeric) - number of IPC messages sent [UNUSED]
 \item \code{ru_msgrcv} (numeric) - number of IPC messages received [UNUSED]
 \item \code{ru_nsignals} (numeric) - number of signals received
-\item \code{ru_nvcsw} (numeric) - number of voluntary context switches (number of times a context switch resulted due to a process voluntarily giving up the processor before its time slice was completed (usually to await availability of a resource)* \code{ru_nivcsw} (numeric) - number of involuntary context switches (number of times a context switch resulted due to a higher priority process becoming runnable or because the current process exceeded its time slice)
+\item \code{ru_nvcsw} (numeric) - number of voluntary context switches (number of
+times a context switch resulted due to a process voluntarily giving up
+the processor before its time slice was completed (usually to await
+availability of a resource)* \code{ru_nivcsw} (numeric) - number of
+involuntary context switches (number of times a context switch resulted
+due to a higher priority process becoming runnable or because the current
+process exceeded its time slice)
 \item \code{project} (character) -
 \item \code{department} (character) -
-\item \code{granted_pe} (character) - the parallel environment which was selected for the job
-\item \code{slots} (integer) - the number of slots which were dispatched to the job by the scheduler
+\item \code{granted_pe} (character) - the parallel environment which was selected
+for the job
+\item \code{slots} (integer) - the number of slots which were dispatched to the job
+by the scheduler
 \item \code{task_number} (integer) -
 \item \code{cpu} (drtn) - The CPU time usage (in seconds)
 \item \code{mem} (character) - the integral memory usage (in GB seconds)
-\item \code{io} (character) - the amount of data transferred in input/output operations (in GB) if available, otherwise \code{0}
+\item \code{io} (character) - the amount of data transferred in input/output
+operations (in GB) if available, otherwise \code{0}
 \item \code{category} (character) -
-\item \code{iow} (drtn) - the input/output wait time (in seconds) if available, otherwise 0
-\item \code{pe_taskid} (character) - if this identifier is not equal to \code{NONE}, the task was part of parallel job, and was passed to Grid Engine via the \code{qrsh}-inherit interface
+\item \code{iow} (drtn) - the input/output wait time (in seconds) if available,
+otherwise 0
+\item \code{pe_taskid} (character) - if this identifier is not equal to \code{NONE}, the
+task was part of parallel job, and was passed to Grid Engine via the
+\code{qrsh}-inherit interface
 \item \code{maxvmem} (numeric) - the maximum vmem size (in bytes)
 \item \code{arid} (numeric) - advance reservation identifier
-\item \code{ar_sub_time} (dttm) - advance reservation submission time, if the job uses the resources of an advance reservation, otherwise \code{0}
+\item \code{ar_sub_time} (dttm) - advance reservation submission time, if the job
+uses the resources of an advance reservation, otherwise \code{0}
 }
 }
 \description{

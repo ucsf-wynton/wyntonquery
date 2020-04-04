@@ -209,53 +209,126 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #' @param \ldots Additional arguments passed to [read_raw_sge_accounting()].
 #'
 #' @return A `tibble` data frame with columns:
+#'
 #'  * `qname` (character) - name of the cluster queue in which the job has run
+#'
 #'  * `hostname` (character) - name of the execution host
-#'  * `group` (character) - the effective group id of the job owner when executing the job
+#'
+#'  * `group` (character) - the effective group id of the job owner when
+#'    executing the job
+#'
 #'  * `owner` (character) - owner of the Grid Engine job
+#'
 #'  * `job_name` (character) - job name
+#'
 #'  * `job_number` (integer) - job identifier
+#'
 #'  * `account` (character) - an account string as specified by the `qsub` or `qalter`
+#'
 #'  * `priority` (integer) - priority value assigned to the job
+#'
 #'  * `submission_time` (dttm) - submission time
+#'
 #'  * `start_time` (dttm) - start time
+#'
 #'  * `end_time` (dttm) - end time
-#'  * `failed` (integer) - indicates the problem which occurred in case a job failed (at the system level, as opposed to the job script or binary having non-zero exit status).
-#'    Indicates the problem which occurred in case a job could not be started on the execution host (e.g. because the owner of the job did not have a valid account on that machine). If Sun Grid Engine tries to start a job multiple times, this may lead to multiple entries in the accounting file corresponding to the same job ID
-#'  * `exit_status` (integer) - exit status of the job script (or Grid Engine-specific status in case of certain error conditions).
-#'    The exit status is determined by following the normal shell conventions. If the command terminates normally the value of the command is its exit status. However, in the case that the command exits abnormally, a value of 0200 (octal), 128 (decimal) is added to the value of the command to make up the exit status.
-#'    For example: If a job dies through signal 9 (`SIGKILL`) - probably issued by Grid Engine through `qdel`, or because the job exceeded time or memory hard limits - then the exit status is 128 + 9 = 137.
-#'  * `ru_wallclock` (drtn) - Difference between 'end_time' and 'start_time' (time interval), except that if the job fails, it is zero.
-#'  * `ru_utime` (drtn) - user CPU time (in seconds) used, i.e. total amount of time spent executing in user mode
-#'  * `ru_stime` (drtn) - system CPU time (in seconds) used, i.e. total amount of time spent executing in kernel mode
+#'
+#'  * `failed` (integer) - indicates the problem which occurred in case a job
+#'    failed (at the system level, as opposed to the job script or binary having
+#'    non-zero exit status).  Indicates the problem which occurred in case a job
+#'    could not be started on the execution host (e.g. because the owner of the 
+#'    job did not have a valid account on that machine). If Sun Grid Engine
+#'    tries to start a job multiple times, this may lead to multiple entries in
+#'    the accounting file corresponding to the same job ID
+#'
+#'  * `exit_status` (integer) - exit status of the job script (or Grid
+#'    Engine-specific status in case of certain error conditions).
+#'    The exit status is determined by following the normal shell conventions.
+#'    If the command terminates normally the value of the command is its exit
+#'    status. However, in the case that the command exits abnormally, a value
+#'    of 0200 (octal), 128 (decimal) is added to the value of the command to
+#'    make up the exit status.
+#'    For example: If a job dies through signal 9 (`SIGKILL`) - probably issued
+#'    by Grid Engine through `qdel`, or because the job exceeded time or memory
+#'    hard limits - then the exit status is 128 + 9 = 137.
+#'
+#'  * `ru_wallclock` (drtn) - Difference between 'end_time' and 'start_time'
+#'    (time interval), except that if the job fails, it is zero.
+#'
+#'  * `ru_utime` (drtn) - user CPU time (in seconds) used, i.e. total amount of
+#'    time spent executing in user mode
+#'
+#'  * `ru_stime` (drtn) - system CPU time (in seconds) used, i.e. total amount
+#'    of time spent executing in kernel mode
+#'
 #'  * `ru_maxrss` (character) - maximum resident set size (in kB)
+#'
 #'  * `ru_ixrss` (character) - integral shared memory size (in kB) \[UNUSED\]
+#'
 #'  * `ru_ismrss` (character) - ???
+#'
 #'  * `ru_idrss` (character) - integral unshared data size (in kB) \[UNUSED\]
+#'
 #'  * `ru_isrss` (character) - integral unshared stack size (in kB) \[UNUSED\]
+#'
 #'  * `ru_minflt` (numeric) - page reclaims (soft page faults)
+#'
 #'  * `ru_majflt` (numeric) - page faults (hard page faults)
+#'
 #'  * `ru_nswap` (numeric) - number of swaps \[UNUSED\]
+#'
 #'  * `ru_inblock` (numeric) - number of block input operations
+#'
 #'  * `ru_oublock` (numeric) - number of block output operations
+#'
 #'  * `ru_msgsnd` (numeric) - number of IPC messages sent \[UNUSED\]
+#'
 #'  * `ru_msgrcv` (numeric) - number of IPC messages received \[UNUSED\]
+#'
 #'  * `ru_nsignals` (numeric) - number of signals received
-#'  * `ru_nvcsw` (numeric) - number of voluntary context switches (number of times a context switch resulted due to a process voluntarily giving up the processor before its time slice was completed (usually to await availability of a resource)* `ru_nivcsw` (numeric) - number of involuntary context switches (number of times a context switch resulted due to a higher priority process becoming runnable or because the current process exceeded its time slice)
-#'  * `project` (character) - 
-#'  * `department` (character) - 
-#'  * `granted_pe` (character) - the parallel environment which was selected for the job
-#'  * `slots` (integer) - the number of slots which were dispatched to the job by the scheduler
-#'  * `task_number` (integer) - 
+#'
+#'  * `ru_nvcsw` (numeric) - number of voluntary context switches (number of
+#'    times a context switch resulted due to a process voluntarily giving up
+#'    the processor before its time slice was completed (usually to await
+#'    availability of a resource)* `ru_nivcsw` (numeric) - number of
+#'    involuntary context switches (number of times a context switch resulted
+#'    due to a higher priority process becoming runnable or because the current
+#'    process exceeded its time slice)
+#'
+#'  * `project` (character) -
+#'
+#'  * `department` (character) -
+#'
+#'  * `granted_pe` (character) - the parallel environment which was selected
+#'    for the job
+#'
+#'  * `slots` (integer) - the number of slots which were dispatched to the job
+#'    by the scheduler
+#'
+#'  * `task_number` (integer) -
+#'
 #'  * `cpu` (drtn) - The CPU time usage (in seconds)
+#'
 #'  * `mem` (character) - the integral memory usage (in GB seconds)
-#'  * `io` (character) - the amount of data transferred in input/output operations (in GB) if available, otherwise `0`
-#'  * `category` (character) - 
-#'  * `iow` (drtn) - the input/output wait time (in seconds) if available, otherwise 0
-#'  * `pe_taskid` (character) - if this identifier is not equal to `NONE`, the task was part of parallel job, and was passed to Grid Engine via the `qrsh`-inherit interface
+#'
+#'  * `io` (character) - the amount of data transferred in input/output
+#'    operations (in GB) if available, otherwise `0`
+#'
+#'  * `category` (character) -
+#'
+#'  * `iow` (drtn) - the input/output wait time (in seconds) if available,
+#'    otherwise 0
+#'
+#'  * `pe_taskid` (character) - if this identifier is not equal to `NONE`, the
+#'    task was part of parallel job, and was passed to Grid Engine via the
+#'    `qrsh`-inherit interface
+#'
 #'  * `maxvmem` (numeric) - the maximum vmem size (in bytes)
+#'
 #'  * `arid` (numeric) - advance reservation identifier
-#'  * `ar_sub_time` (dttm) - advance reservation submission time, if the job uses the resources of an advance reservation, otherwise `0`
+#'
+#'  * `ar_sub_time` (dttm) - advance reservation submission time, if the job
+#'    uses the resources of an advance reservation, otherwise `0`
 #'
 #' @section Benchmarking:
 #' The 4.8 GB \file{accounting} on Wynton HPC takes ~120s to read.
