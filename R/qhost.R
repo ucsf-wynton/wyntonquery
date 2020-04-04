@@ -1,17 +1,19 @@
 #' List Available Host and Their Current Statuses
 #'
 #' @return
-#' A data.frame (tibble) where each row corresponds to a unique host
-#' (compute node).
+#' `qhost()` returns a data.frame (tibble) where each row corresponds to a
+#' unique host (compute node).
 #'
 #' @examples
 #' \donttest{
-#' qh <- qhost()
-#' print(qh)
-#'
-#' ## Ignore compute nodes that are without load
-#' qh <- subset(qh, !is.na(load))
-#' print(qh)
+#' if (has_qhost()) {
+#'   qh <- qhost()
+#'   print(qh)
+#'  
+#'   ## Ignore compute nodes that are without load
+#'   qh <- subset(qh, !is.na(load))
+#'   print(qh)
+#' }
 #' }
 #'
 #' @details
@@ -20,6 +22,8 @@
 #' @importFrom readr read_table cols col_character col_integer col_double
 #' @export
 qhost <- function() {
+  if (!has_qhost()) stop("Failed to locate 'qhost' executable")
+  
   col_types <- cols(
     HOSTNAME = col_character(),
     ARCH = col_character(),
@@ -49,4 +53,13 @@ qhost <- function() {
   }
   
   df
+}
+
+
+#' @return (logical)
+#' `has_qhost()` returns TRUE if the `qhost` could be found, otherwise FALSE.
+#'
+#' @export
+has_qhost <- function() {
+  nzchar(Sys.which("qhost"))
 }

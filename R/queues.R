@@ -9,13 +9,15 @@
 #'
 #' @examples
 #' \donttest{
-#' q <- queues()
-#' print(q)
-#'
-#' ## Ignore queues whose nodes are disabled, without load, or those
-#' ## on developer and test nodes
-#' q <- available(q)
-#' print(q)
+#' if (has_qhost()) {
+#'   q <- queues()
+#'   print(q)
+#'  
+#'   ## Ignore queues whose nodes are disabled, without load, or those
+#'   ## on developer and test nodes
+#'   q <- available(q)
+#'   print(q)
+#' }
 #' }
 #'
 #' @details
@@ -24,6 +26,8 @@
 #' @importFrom readr read_table cols col_character col_double
 #' @export
 queues <- function(parse = TRUE) {
+  if (!has_qhost()) stop("Failed to locate 'qhost' executable")
+  
   col_types <- cols(
     queuename        = col_character(),
     qtype            = col_character(),

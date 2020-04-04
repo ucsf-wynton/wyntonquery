@@ -1,13 +1,17 @@
 Package: wyntonquery
 ====================
 
-Version: 0.0.0-9003 [2020-03-26]
+Version: 0.0.0-9003 [2020-04-04]
 
 DOCUMENTATION:
 
  * Expand example of read_sge_accounting() to display how to inspect how
    much CPU time was spent on successful and failed jobs.
 
+BUG FIXES:
+
+ * Package did not pass 'R CMD check --as-cran' on systems without 'qhost'.
+ 
 
 Version: 0.0.0-9002 [2019-08-06]
 

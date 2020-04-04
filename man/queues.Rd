@@ -22,13 +22,15 @@ This function queries SGE's \code{qstat -f} on the system.
 }
 \examples{
 \donttest{
-q <- queues()
-print(q)
-
-## Ignore queues whose nodes are disabled, without load, or those
-## on developer and test nodes
-q <- available(q)
-print(q)
+if (has_qhost()) {
+  q <- queues()
+  print(q)
+ 
+  ## Ignore queues whose nodes are disabled, without load, or those
+  ## on developer and test nodes
+  q <- available(q)
+  print(q)
+}
 }
 
 }

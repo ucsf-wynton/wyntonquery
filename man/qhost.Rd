@@ -7,8 +7,8 @@
 qhost()
 }
 \value{
-A data.frame (tibble) where each row corresponds to a unique host
-(compute node).
+\code{qhost()} returns a data.frame (tibble) where each row corresponds to a
+unique host (compute node).
 }
 \description{
 List Available Host and Their Current Statuses
@@ -18,12 +18,14 @@ This function queries SGE's \code{qhost} on the system.
 }
 \examples{
 \donttest{
-qh <- qhost()
-print(qh)
-
-## Ignore compute nodes that are without load
-qh <- subset(qh, !is.na(load))
-print(qh)
+if (has_qhost()) {
+  qh <- qhost()
+  print(qh)
+ 
+  ## Ignore compute nodes that are without load
+  qh <- subset(qh, !is.na(load))
+  print(qh)
+}
 }
 
 }
