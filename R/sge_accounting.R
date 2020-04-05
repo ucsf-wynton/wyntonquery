@@ -384,18 +384,22 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #' 
 #' @section Common exit codes:
 #'
-#' |Code     | Description                                                |
-#' | --:     | ---------------------------------------------------------- |
-#' |   0     | Success                                                    |
-#' |   1     | Catchall for general errors                                |
-#' |   2     | Misuse of shell builtins (according to Bash documentation) |
-#' | 126     | Command invoked cannot execute, e.g. `/dev/null`           |
-#' | 127     | "command not found"                                        |
-#' | 128     | Invalid argument to exit, e.g. `exit 3.14`                 |
-#' | 128 + n | Fatal error signal n                                       |
-#' | 134     | 128 + 6 = 128 + `SIGABRT`                                  |
-#' | 137     | 128 + 9 = 128 + `SIGKILL`                                  |
-#' | 255     | 128 + 127 = Exit status out of range, e.g.`exit -1`        |
+#' |Code     | Description                                                 |
+#' | --:     | ----------------------------------------------------------- |
+#' |   0     | Success                                                     |
+#' |   1     | Catchall for general errors                                 |
+#' |   2     | Misuse of shell builtins (according to Bash documentation)  |
+#' | 126     | Command invoked cannot execute, e.g. `/dev/null`            |
+#' | 127     | "command not found"                                         |
+#' | 128     | Invalid argument to exit, e.g. `exit 3.14`                  |
+#' | 128 + n | Fatal error signal n                                        |
+#' | 134     | 128 +   6 = 128 + `SIGABRT` - Abort signal from abort       |
+#' | 135     | 128 +   7 = 128 + `SIGBUS`  - Bus error (bad memory access) |
+#' | 136     | 128 +   8 = 128 + `SIGFPE`  - Floating-point exception      |
+#' | 137     | 128 +   9 = 128 + `SIGKILL`                                 |
+#' | 138     | 128 +  10 = 128 + `SIGUSR1`                                 |
+#' | 140     | 128 +  12 = 128 + `SIGUSR2`                                 |
+#' | 255     | 128 + 127 = Exit status out of range, e.g.`exit -1`         |
 #'
 #' Comment: `exit` only takes integers in \[0,255\]
 #'
@@ -443,3 +447,55 @@ read_sge_accounting <- function(file = sge_accounting_file(), skip = 4L, ...) {
 }
 
 
+#' Parse SGE Accounting 'category' Field
+#'
+#' @param x An `sge_accounting` object.
+#' 
+#' @param \ldots (optional) Not used.
+#'
+#' @return A `tibble` data frame with columns corresponding to the requested
+#' properties.
+#'
+#' @export
+parse_category <- function(x, ...) {
+  UseMethod("parse_category")
+}
+
+#' @param properties (character vector) The properties to extract.
+#'
+#' @importFrom tibble as_tibble
+#' @export
+parse_category.sge_accounting <- function(x, properties = c("h_rt", "s_rt", "mem_free"), ...) {
+  properties <- match.arg(properties, several.ok = TRUE)
+
+  category <- x$category
+  n <- length(category)
+
+  res <- list()
+  for (field in properties) {
+    if (field %in% c("h_rt", "s_rt")) {
+      value <- rep(NA_integer_, times = n)
+      pattern <- sprintf(".*%s=([[:digit:]]+).*", field)
+      keep <- grep(pattern, category)
+      if (length(keep) > 0L) {
+        value[keep] <- as.integer(gsub(pattern, "\\1", category[keep]))
+      }
+      value <- .difftime(value, units = "secs")
+    } else if (field == "mem_free") {
+      value <- rep(NA_real_, times = n)
+      pattern <- sprintf(".*%s=([[:digit:]]+[MG]).*", field)
+      keep <- grep(pattern, category)
+      if (length(keep) > 0L) {
+        tmp <- gsub(pattern, "\\1", category[keep])
+	tmp <- gsub("G$", "000M", tmp)
+	tmp <- gsub("M$", "000K", tmp)
+	tmp <- gsub("K$", "000", tmp)
+        value[keep] <- tmp
+      }
+      value <- as.numeric(value)
+    }
+    res[[field]] <- value
+  }
+
+  as_tibble(res)
+}

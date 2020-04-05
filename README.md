@@ -25,6 +25,7 @@ As of March 2020, the Wynton HPC accounting file is ~12 GB and takes 6-8 minutes
 library(wyntonquery)
 pathname <- sge_accounting_file()
 cat(sprintf("File size: %.3g GB\n", file.size(pathname)/1024^3))
+# File size: 0.5 GB
 
 ## Read all of the accounting file
 jobs_all <- read_sge_accounting(pathname)
@@ -33,8 +34,8 @@ jobs <- jobs_all
 period <- range(jobs$start_time, na.rm=TRUE)
 cat(sprintf("Number of entries: %d\n", nrow(jobs)))
 cat(sprintf("Period: %s/%s\n", period[1], period[2]))
-## Number of entries: 9996
-## Period: 2017-08-15 11:59:36/2017-10-26 16:49:25
+# Number of entries: 1499996
+# Period: 2020-02-25 13:22:10/2020-03-25 15:58:48
 
 ## The last 30 days
 jobs_recent <- subset(jobs, start_time >= period[2] - 30*24*3600)
@@ -42,8 +43,8 @@ jobs <- jobs_recent
 period <- range(jobs$start_time, na.rm=TRUE)
 cat(sprintf("Number of entries: %d\n", nrow(jobs)))
 cat(sprintf("Period: %s/%s\n", period[1], period[2]))
-## Number of entries: 9428
-## Period: 2017-09-27 08:37:47/2017-10-26 16:49:25
+# Number of entries: 1489563
+# Period: 2020-02-25 13:22:10/2020-03-25 15:58:48
 
 ## Get successful and failed jobs
 jobs <- jobs_recent
@@ -52,22 +53,51 @@ jobs <- list(
   fail    = subset(jobs, failed > 0L)
 )
 print(sapply(jobs, nrow))
-## success    fail 
-##    9403      25
+# success    fail 
+# 1335219  154344
    
 ## CPU time consumed
 cpu <- sapply(jobs, function(j) { d <- sum(j$cpu); units(d) <- "days"; d })
 print(cpu)
-##  success     fail 
-## 136.1654 305.1815
+#  success     fail 
+# 82622.05 37785.55
 
 ## CPU-time fractions
 print(cpu / sum(cpu))
-##   success      fail
-## 0.3085224 0.6914776
+#   success      fail 
+# 0.6861863 0.3138137
 ```
 
-See `help("read_sge_accounting", package="wyntonquery")` for details on the parsed fields and their data types.
+From this, we see that during the last 30-day period, 31% of the CPU time was consumed by jobs that failed.  Among the failed jobs, the failure code was distributed as:
+
+```r
+print(table(jobs$fail$failed))
+#    14     26     37    100 
+#     1      9 104229  50105
+```
+
+From `help("read_sge_accounting", package="wyntonquery")` for details on the parsed fields and their data types, these description of these codes are:
+
+ *  14: ran, but failed before calling epilog
+ *  26: failed opening stderr/stdout file
+ *  37: ran but killed because it exceeded the maximum run time (`h_rt`), maximum CPU time (`h_cpu`), or maximum virtual memory (`h_vmem`)
+ * 100: ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.
+
+The jobs that exhausted their limits, consumed 28,600 days of CPU time;
+
+```r
+> d <- sum(subset(jobs$fail, failed == 37L)$cpu); units(d) <- "days"
+> d
+Time difference of 28597.34 days
+```
+
+which corresponds to 24% of all CPU time;
+
+```r
+> as.numeric(d/sum(cpu))
+[1] 0.2375044
+```
+
 
 
 ### Query compute node information via job submissions

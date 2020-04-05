@@ -3,6 +3,10 @@ Package: wyntonquery
 
 Version: 0.0.0-9003 [2020-04-04]
 
+NEW FEATURES:
+
+ * Add parse_category() for 'sge_accounting' objects.
+ 
 DOCUMENTATION:
 
  * Expand example of read_sge_accounting() to display how to inspect how

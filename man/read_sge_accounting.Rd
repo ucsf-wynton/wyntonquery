@@ -157,8 +157,12 @@ Source: \verb{man sge_status}.
    127 \tab "command not found" \cr
    128 \tab Invalid argument to exit, e.g. \verb{exit 3.14} \cr
    128 + n \tab Fatal error signal n \cr
-   134 \tab 128 + 6 = 128 + \code{SIGABRT} \cr
-   137 \tab 128 + 9 = 128 + \code{SIGKILL} \cr
+   134 \tab 128 +   6 = 128 + \code{SIGABRT} - Abort signal from abort \cr
+   135 \tab 128 +   7 = 128 + \code{SIGBUS}  - Bus error (bad memory access) \cr
+   136 \tab 128 +   8 = 128 + \code{SIGFPE}  - Floating-point exception \cr
+   137 \tab 128 +   9 = 128 + \code{SIGKILL} \cr
+   138 \tab 128 +  10 = 128 + \code{SIGUSR1} \cr
+   140 \tab 128 +  12 = 128 + \code{SIGUSR2} \cr
    255 \tab 128 + 127 = Exit status out of range, e.g.\code{exit -1} \cr
 }
 
