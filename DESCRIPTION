@@ -9,7 +9,7 @@ Imports:
     tibble,
     future,
     future.batchtools
-SystemRequirements: SGE (e.g. Son of Grid Engine)
+SystemRequirements: Linux, SGE (e.g. Son of Grid Engine)
 Title: Query the UCSF Wynton Environment
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
