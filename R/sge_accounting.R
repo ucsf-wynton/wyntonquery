@@ -290,10 +290,11 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #'  * `ru_nvcsw` (numeric) - number of voluntary context switches (number of
 #'    times a context switch resulted due to a process voluntarily giving up
 #'    the processor before its time slice was completed (usually to await
-#'    availability of a resource)* `ru_nivcsw` (numeric) - number of
-#'    involuntary context switches (number of times a context switch resulted
-#'    due to a higher priority process becoming runnable or because the current
-#'    process exceeded its time slice)
+#'    availability of a resource)
+#'
+#'  * `ru_nivcsw` (numeric) - number of involuntary context switches (number of
+#'    times a context switch resulted due to a higher priority process becoming
+#'    runnable or because the current process exceeded its time slice)
 #'
 #'  * `project` (character) -
 #'

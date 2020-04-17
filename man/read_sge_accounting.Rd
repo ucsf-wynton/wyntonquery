@@ -67,10 +67,10 @@ of time spent executing in kernel mode
 \item \code{ru_nvcsw} (numeric) - number of voluntary context switches (number of
 times a context switch resulted due to a process voluntarily giving up
 the processor before its time slice was completed (usually to await
-availability of a resource)* \code{ru_nivcsw} (numeric) - number of
-involuntary context switches (number of times a context switch resulted
-due to a higher priority process becoming runnable or because the current
-process exceeded its time slice)
+availability of a resource)
+\item \code{ru_nivcsw} (numeric) - number of involuntary context switches (number of
+times a context switch resulted due to a higher priority process becoming
+runnable or because the current process exceeded its time slice)
 \item \code{project} (character) -
 \item \code{department} (character) -
 \item \code{granted_pe} (character) - the parallel environment which was selected
