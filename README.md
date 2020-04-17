@@ -1,3 +1,6 @@
+![R-CMD-check](https://github.com/ucsf-wynton/wyntonquery/workflows/R-CMD-check/badge.svg)
+
+
 # R Package: wyntonquery - Query the UCSF Wynton Environment
 
 An R package that provides utility functions for querying the UCSF Wynton environment, in order to gather system details used to populate the information on the [Wynton website](https://ucsf-hpc.github.io/wynton/about/specs.html).
