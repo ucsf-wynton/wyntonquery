@@ -1,6 +1,6 @@
+^.github
 ^.data
 ^.local
 ^.future
 ^.*.rds$
 ^Makefile
-
