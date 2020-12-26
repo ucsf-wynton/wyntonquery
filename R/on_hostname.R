@@ -64,7 +64,7 @@ on_hostname <- function(hostnames, expr, ..., on_error = c("stop", "asis"), cach
                       resources = resources, label = h)
   }
 
-  ## AD HOC: Using values(fs) would work as long all jobs
+  ## AD HOC: Using value(fs) would work as long all jobs
   ## return.  If not, we'll get a FutureError.  The below
   ## approach will allow us to fail for some jobs (=hosts)
   ## while still collecting data from the others.
