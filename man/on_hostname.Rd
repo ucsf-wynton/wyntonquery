@@ -13,7 +13,7 @@ on_hostname(hostnames, expr, ..., on_error = c("stop", "asis"), cache = FALSE)
 
 \item{on_error}{A character string specifying how to handle errors.
 If \code{"stop"} (default), then the error is relayed.
-If \code{"asis"}, then the error (the \link[base:condition]{base::condition} object) is returned.}
+If \code{"asis"}, then the error (the \link[base:conditions]{base::condition} object) is returned.}
 
 \item{cache}{If \code{TRUE}, cached results on file are considered.}
 

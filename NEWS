@@ -1,6 +1,13 @@
 Package: wyntonquery
 ====================
 
+Version: 0.0.0-9004 [2021-01-25]
+
+NEW FEATURES:
+
+ * Add job_summary_by_status().
+ 
+
 Version: 0.0.0-9003 [2020-04-04]
 
 NEW FEATURES:
