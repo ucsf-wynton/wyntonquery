@@ -9,7 +9,9 @@ NEW FEATURES:
  * Add anonymize_raw_sge_accounting().
 
  * Now read_raw_sge_accounting() records file header in attribute 'header'.
-   
+
+ * Added an example SGE 'accounting' file and examples how to process it.
+
 
 Version: 0.0.0-9004 [2021-01-25]
 

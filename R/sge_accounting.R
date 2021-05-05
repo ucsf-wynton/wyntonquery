@@ -11,6 +11,8 @@
 #' the folder \file{$SGE_ROOT/$SGE_CELL/}.  On Wynton HPC, the pathname
 #' is given by `sge_accounting_file()`.
 #'
+#' @example incl/raw_sge_accounting.R
+#'
 #' @importFrom readr read_delim
 #' @export
 read_raw_sge_accounting <- function(file, skip = 4L, ...) {
@@ -463,31 +465,7 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #' was 4.8 GB in size and ~6-8 minutes when it was 12 GB in size.
 #'
 #'
-#' @examples
-#' \donttest{\dontrun{
-#' ## 'accounting' files are *colon*-separated files
-#' data <- read_sge_accounting("accounting.csv", skip=4L)
-#' print(data)
-#'
-#' ## Identify successful and failed jobs
-#' db_success <- subset(db, failed == 0)
-#' db_fail <- subset(db, failed > 0)
-#'
-#' ## CPU time consumed
-#' t <- c(sum(db_success$cpu), sum(db_fail$cpu))
-#' units(t) <- "days"
-#' print(t)
-#' ## Time differences in days
-#' ## [1] 118726.76  44917.09
-#'
-#' ## Fraction of successful and failed CPU time
-#' u <- as.numeric(t)
-#' u <- u / sum(u)
-#' names(u) <- c("success", "failed")
-#' print(u)
-#' ##   success    failed 
-#' ## 0.7255192 0.2744808
-#' }}
+#' @example incl/sge_accounting.R
 #'
 #' @references
 #' * `man accounting`

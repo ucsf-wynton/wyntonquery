@@ -35,3 +35,13 @@ The SGE \file{accounting} file is typically located in a subfolder of
 the folder \file{$SGE_ROOT/$SGE_CELL/}.  On Wynton HPC, the pathname
 is given by \code{sge_accounting_file()}.
 }
+\examples{
+pathname <- system.file("exdata", "accounting", package = "wyntonquery")
+
+jobs <- read_raw_sge_accounting(pathname)
+print(jobs)
+
+## Anonymize (although actually already anonymized)
+jobs_anon <- anonymize_raw_sge_accounting(jobs)
+print(jobs_anon)
+}
