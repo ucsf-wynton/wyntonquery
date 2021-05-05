@@ -11,9 +11,19 @@
 #' the folder \file{$SGE_ROOT/$SGE_CELL/}.  On Wynton HPC, the pathname
 #' is given by `sge_accounting_file()`.
 #'
-#' @importFrom readr read_delim cols col_character col_double col_integer 
+#' @importFrom readr read_delim
 #' @export
 read_raw_sge_accounting <- function(file, skip = 4L, ...) {
+  col_types <- sge_accounting_col_types()
+  col_names <- names(col_types$cols)
+  x <- read_delim(file = file, delim = ":", col_names = col_names, col_types = col_types, skip = skip, ...)
+  class(x) <- c("raw_sge_accounting", class(x))
+  x
+}
+
+
+#' @importFrom readr cols col_character col_double col_integer
+sge_accounting_col_types <- function() {
   ## Source: http://manpages.ubuntu.com/manpages/bionic/man5/sge_accounting.5.html
   col_types <- cols(
     qname           = col_character(), ## Name of the cluster queue in which the job has run
@@ -89,15 +99,11 @@ read_raw_sge_accounting <- function(file, skip = 4L, ...) {
     arid             = col_integer(),     ## Advance reservation identifier
     ar_sub_time      = col_double()       ## [epoch time] Advance reservation submission time if the job uses the resources of an advance reservation; otherwise "0"
   )
-  
-  col_names <- names(col_types$cols)
-  
-  x <- read_delim(file = file, delim = ":", col_names = col_names, col_types = col_types, skip = skip, ...)
-
-  class(x) <- c("raw_sge_accounting", class(x))
-
-  x
 }
+
+
+
+
 
 #' Coerce to an 'sge_accounting' Object
 #'
