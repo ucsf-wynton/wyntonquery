@@ -21,6 +21,28 @@ read_raw_sge_accounting <- function(file, skip = 4L, ...) {
   x
 }
 
+#' @param x (raw_sge_accounting) An `tibble` data frame of class
+#' `raw_sge_accounting`.
+#'
+#' @rdname read_raw_sge_accounting
+#' @importFrom readr write_delim
+#' @export
+write_raw_sge_accounting <- function(x, file, ...) {
+  stopifnot(inherits(x, "raw_sge_accounting"))
+
+  ## AD HOC: Drop trailing zeros in doubles
+  ## FIXME: Some double fields should not undergo this, at least
+  ## if we look at the input data /HB 2021-05-04
+  modes <- vapply(x, FUN = storage.mode, FUN.VALUE = NA_character_)
+  dbl <- which(modes == "double")
+  x[dbl] <- lapply(x[dbl], FUN = function(x) {
+    gsub("[.]0*$", "", sprintf("%f", x))
+  })
+  
+  write_delim(x, file = file, delim = ":", col_names = FALSE, ...)
+}
+
+
 
 #' @importFrom readr cols col_character col_double col_integer
 sge_accounting_col_types <- function() {

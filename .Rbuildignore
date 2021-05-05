@@ -4,3 +4,4 @@
 ^.future
 ^.*.rds$
 ^Makefile
+^.Rdump
