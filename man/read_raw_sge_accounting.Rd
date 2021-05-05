@@ -8,7 +8,7 @@
 \usage{
 read_raw_sge_accounting(file, skip = 4L, ...)
 
-write_raw_sge_accounting(x, file, ...)
+write_raw_sge_accounting(x, file, header = attr(x, "header"), ...)
 
 anonymize_raw_sge_accounting(x, fields = c("group", "owner", "project"))
 }
@@ -19,6 +19,9 @@ anonymize_raw_sge_accounting(x, fields = c("group", "owner", "project"))
 
 \item{x}{(raw_sge_accounting) An \code{tibble} data frame of class
 \code{raw_sge_accounting}.}
+
+\item{header}{(character vector) Zero of more header lines to be written
+at the top of the file.}
 
 \item{fields}{(character vector) Columns to be anonymized.}
 

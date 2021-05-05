@@ -1,6 +1,6 @@
 Package: wyntonquery
 
-Version: 0.0.0-9005 [2021-05-04]
+Version: 0.0.0-9005 [2021-05-05]
 
 NEW FEATURES:
 
@@ -8,6 +8,8 @@ NEW FEATURES:
 
  * Add anonymize_raw_sge_accounting().
 
+ * Now read_raw_sge_accounting() records file header in attribute 'header'.
+   
 
 Version: 0.0.0-9004 [2021-01-25]
 

@@ -16,7 +16,9 @@
 read_raw_sge_accounting <- function(file, skip = 4L, ...) {
   col_types <- sge_accounting_col_types()
   col_names <- names(col_types$cols)
+  header <- if (skip > 0L) readLines(file, n = skip) else character(0L)
   x <- read_delim(file = file, delim = ":", col_names = col_names, col_types = col_types, skip = skip, ...)
+  attr(x, "header") <- header
   class(x) <- c("raw_sge_accounting", class(x))
   x
 }
@@ -24,10 +26,13 @@ read_raw_sge_accounting <- function(file, skip = 4L, ...) {
 #' @param x (raw_sge_accounting) An `tibble` data frame of class
 #' `raw_sge_accounting`.
 #'
+#' @param header (character vector) Zero of more header lines to be written
+#' at the top of the file.
+#'
 #' @rdname read_raw_sge_accounting
 #' @importFrom readr write_delim
 #' @export
-write_raw_sge_accounting <- function(x, file, ...) {
+write_raw_sge_accounting <- function(x, file, header = attr(x, "header"), ...) {
   stopifnot(inherits(x, "raw_sge_accounting"))
 
   ## AD HOC: Drop trailing zeros in doubles
@@ -38,8 +43,11 @@ write_raw_sge_accounting <- function(x, file, ...) {
   x[dbl] <- lapply(x[dbl], FUN = function(x) {
     gsub("[.]0*$", "", sprintf("%f", x))
   })
+
+  has_header <- (length(header) > 0L)
+  if (has_header) writeLines(header, con = file)
   
-  write_delim(x, file = file, delim = ":", col_names = FALSE, ...)
+  write_delim(x, file = file, delim = ":", col_names = FALSE, ..., append = has_header)
 }
 
 
@@ -53,7 +61,7 @@ anonymize_raw_sge_accounting <- function(x, fields = c("group", "owner", "projec
   stopifnot(all(fields %in% colnames(x)))
   
   for (name in fields) {
-    x[[name]] <- fct_anon(as.factor(x[[name]]), prefix = name)
+    x[[name]] <- as.character(fct_anon(as.factor(x[[name]]), prefix = name))
   }
   
   x
