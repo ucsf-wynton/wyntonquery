@@ -43,6 +43,23 @@ write_raw_sge_accounting <- function(x, file, ...) {
 }
 
 
+#' @param fields (character vector) Columns to be anonymized.
+#'
+#' @rdname read_raw_sge_accounting
+#' @importFrom forcats fct_anon
+#' @export
+anonymize_raw_sge_accounting <- function(x, fields = c("group", "owner", "project")) {
+  stopifnot(inherits(x, "raw_sge_accounting"))
+  stopifnot(all(fields %in% colnames(x)))
+  
+  for (name in fields) {
+    x[[name]] <- fct_anon(as.factor(x[[name]]), prefix = name)
+  }
+  
+  x
+}
+
+
 
 #' @importFrom readr cols col_character col_double col_integer
 sge_accounting_col_types <- function() {

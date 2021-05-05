@@ -6,6 +6,8 @@ NEW FEATURES:
 
  * Add write_raw_sge_accounting().
 
+ * Add anonymize_raw_sge_accounting().
+
 
 Version: 0.0.0-9004 [2021-01-25]
 

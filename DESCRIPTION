@@ -3,6 +3,7 @@ Version: 0.0.0-9005
 Depends:
     R (>= 3.5.0)
 Imports:
+    forcats,
     R.cache,
     prettyunits,
     readr,

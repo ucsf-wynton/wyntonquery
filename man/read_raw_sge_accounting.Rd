@@ -3,11 +3,14 @@
 \name{read_raw_sge_accounting}
 \alias{read_raw_sge_accounting}
 \alias{write_raw_sge_accounting}
+\alias{anonymize_raw_sge_accounting}
 \title{Read a tab-delimited SGE accounting file (without parsing it)}
 \usage{
 read_raw_sge_accounting(file, skip = 4L, ...)
 
 write_raw_sge_accounting(x, file, ...)
+
+anonymize_raw_sge_accounting(x, fields = c("group", "owner", "project"))
 }
 \arguments{
 \item{file}{(character) The SGE \file{accounting} file to read.}
@@ -16,6 +19,8 @@ write_raw_sge_accounting(x, file, ...)
 
 \item{x}{(raw_sge_accounting) An \code{tibble} data frame of class
 \code{raw_sge_accounting}.}
+
+\item{fields}{(character vector) Columns to be anonymized.}
 
 \item{\ldots}{(optional) Addition arguments passed to \code{\link[readr:read_delim]{readr::read_delim()}}.}
 }
