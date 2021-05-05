@@ -6,7 +6,7 @@
 #'
 #' @return A named list with two matrices `total` and `fraction`.
 #'
-#' @example
+#' @examples
 #' \donttest{\dontrun{
 #' ## Get all jobs that started during the last 30 days
 #' jobs <- read_sge_accounting("accounting.csv", skip = 4L)
