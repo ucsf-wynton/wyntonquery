@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lists the CPU Information for the Current Machine — cpu_info • wyntonquery</title>
+<title>Anonymize fields in a data.frame — anonymize • wyntonquery</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Lists the CPU Information for the Current Machine — cpu_info" />
-<meta property="og:description" content="Lists the CPU Information for the Current Machine" />
+<meta property="og:title" content="Anonymize fields in a data.frame — anonymize" />
+<meta property="og:description" content="Anonymize fields in a data.frame" />
 
 
 
@@ -126,47 +126,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Lists the CPU Information for the Current Machine</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/R/cpu_info.R'><code>R/cpu_info.R</code></a></small>
-    <div class="hidden name"><code>cpu_info.Rd</code></div>
+    <h1>Anonymize fields in a data.frame</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/R/anonymize.R'><code>R/anonymize.R</code></a></small>
+    <div class="hidden name"><code>anonymize.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Lists the CPU Information for the Current Machine</p>
+    <p>Anonymize fields in a data.frame</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cpu_info</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>anonymize</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>fields</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>The <a href='https://rdrr.io/r/base/data.frame.html'>base::data.frame</a> to be anonymized.</p></td>
+    </tr>
+    <tr>
+      <th>fields</th>
+      <td><p>(character vector) Columns to be anonymized.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Not used.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame (tibble) with the two columns <code>field</code> and <code>value</code>.
-For most CPUs, there will be duplicated <code>field</code>:s.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>A <a href='https://rdrr.io/r/base/data.frame.html'>base::data.frame</a> of the same dimensions as <code>code</code>.</p>
 
-    <p>This function reads/queries <code>/proc/cpuinfo</code> on the current machine.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='lscpu.html'>lscpu()</a></code></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>cpu_info</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 58 x 2</span>
-#&gt;    field      value                                   
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                                   
-#&gt; <span style='color: #BCBCBC;'> 1</span> hostname   hb-x1                                   
-#&gt; <span style='color: #BCBCBC;'> 2</span> processor  0                                       
-#&gt; <span style='color: #BCBCBC;'> 3</span> vendor_id  vendor_GenuineIntel                     
-#&gt; <span style='color: #BCBCBC;'> 4</span> cpu_family 6                                       
-#&gt; <span style='color: #BCBCBC;'> 5</span> model      142                                     
-#&gt; <span style='color: #BCBCBC;'> 6</span> model_name Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz
-#&gt; <span style='color: #BCBCBC;'> 7</span> stepping   10                                      
-#&gt; <span style='color: #BCBCBC;'> 8</span> microcode  0xea                                    
-#&gt; <span style='color: #BCBCBC;'> 9</span> cpu_mhz    3299.839                                
-#&gt; <span style='color: #BCBCBC;'>10</span> cache_size 8192 KB                                 
-#&gt; <span style='color: #949494;'># … with 48 more rows</span></div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

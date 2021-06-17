@@ -118,23 +118,61 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>jobs &lt;-<span class="st"> </span><span class="kw">read_qstat</span>()
-<span class="op">&gt;</span><span class="st"> </span>jobs
-<span class="co"># A tibble: 75,840 x 20</span>
-   job_ID prior ntckts name       user     project  department state cpu            mem        io tckts ovrts otckt ftckt stckt share queue            slots ja_task_ID
-    <span class="op">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">        </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">            </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span>
-<span class="st"> </span><span class="dv">1</span> <span class="dv">259721</span> <span class="fl">0.327</span>  <span class="fl">0.307</span> relion4GPU owner01  chenglab defaultdep dr    <span class="dv">2</span><span class="op">:</span><span class="dv">07</span><span class="op">:</span><span class="dv">14</span><span class="op">:</span><span class="dv">48</span> <span class="fl">296762.</span>  <span class="fl">643.</span>        <span class="dv">97</span>     <span class="dv">0</span>     <span class="dv">0</span>    <span class="dv">97</span>     <span class="dv">0</span>  <span class="fl">0.01</span> gpu.q<span class="op">@</span>cc<span class="op">-</span>idgpu1      <span class="dv">4</span>         <span class="ot">NA</span>
- <span class="dv">2</span> <span class="dv">188295</span> <span class="fl">0.348</span>  <span class="fl">0.331</span> relion4GPU owner02  chenglab defaultdep dr    <span class="dv">2</span><span class="op">:</span><span class="dv">11</span><span class="op">:</span><span class="dv">16</span><span class="op">:</span><span class="dv">15</span> <span class="fl">896993.</span> <span class="fl">3795.</span>       <span class="dv">334</span>     <span class="dv">0</span>     <span class="dv">0</span>   <span class="dv">334</span>     <span class="dv">0</span>  <span class="fl">0.01</span> gpu.q<span class="op">@</span>cc<span class="op">-</span>idgpu2      <span class="dv">4</span>         <span class="ot">NA</span>
- <span class="dv">3</span> <span class="dv">194922</span> <span class="fl">0.327</span>  <span class="fl">0.307</span> relion4GPU owner01  chenglab defaultdep dr    <span class="dv">1</span><span class="op">:</span><span class="dv">12</span><span class="op">:</span><span class="dv">05</span><span class="op">:</span><span class="dv">44</span> <span class="fl">272346.</span> <span class="fl">1427.</span>      <span class="dv">1335</span>     <span class="dv">0</span>     <span class="dv">0</span>  <span class="dv">1335</span>     <span class="dv">0</span>  <span class="fl">0.01</span> gpu.q<span class="op">@</span>cc<span class="op">-</span>idgpu4      <span class="dv">4</span>         <span class="ot">NA</span>
- <span class="dv">4</span> <span class="dv">272071</span> <span class="fl">0.327</span>  <span class="fl">0.307</span> relion2GPU owner01  chenglab defaultdep r     <span class="dv">0</span><span class="op">:</span><span class="dv">03</span><span class="op">:</span><span class="dv">32</span><span class="op">:</span><span class="dv">39</span>  <span class="fl">80698.</span>  <span class="fl">387.</span>       <span class="dv">557</span>     <span class="dv">0</span>     <span class="dv">0</span>   <span class="dv">557</span>     <span class="dv">0</span>  <span class="fl">0.01</span> gpu.q<span class="op">@</span>cc<span class="op">-</span>idgpu5      <span class="dv">2</span>         <span class="ot">NA</span>
- <span class="dv">5</span> <span class="dv">229591</span> <span class="fl">0.165</span>  <span class="fl">0.128</span> tk1cg11t1  owner03  grabelab defaultdep r     <span class="dv">0</span><span class="op">:</span><span class="dv">10</span><span class="op">:</span><span class="dv">28</span><span class="op">:</span><span class="dv">14</span>  <span class="fl">36005.</span>    <span class="fl">0.0560</span>   <span class="dv">294</span>     <span class="dv">0</span>     <span class="dv">0</span>   <span class="dv">294</span>     <span class="dv">0</span>  <span class="dv">0</span>    gpu.q<span class="op">@</span>msg<span class="op">-</span>ihgpu1     <span class="dv">1</span>         <span class="ot">NA</span>
- <span class="dv">6</span> <span class="dv">224427</span> <span class="fl">0.165</span>  <span class="fl">0.128</span> tk1cg11t2  owner03  grabelab defaultdep r     <span class="dv">0</span><span class="op">:</span><span class="dv">07</span><span class="op">:</span><span class="dv">16</span><span class="op">:</span><span class="dv">44</span>  <span class="fl">13504.</span>    <span class="fl">0.0394</span>   <span class="dv">294</span>     <span class="dv">0</span>     <span class="dv">0</span>   <span class="dv">294</span>     <span class="dv">0</span>  <span class="dv">0</span>    gpu.q<span class="op">@</span>msg<span class="op">-</span>iogpu1     <span class="dv">1</span>         <span class="ot">NA</span>
- <span class="dv">7</span> <span class="dv">224772</span> <span class="fl">0.165</span>  <span class="fl">0.128</span> tk1cg12t3  owner03  grabelab defaultdep r     <span class="dv">0</span><span class="op">:</span><span class="dv">07</span><span class="op">:</span><span class="dv">16</span><span class="op">:</span><span class="dv">36</span>  <span class="fl">18106.</span>    <span class="fl">0.0393</span>   <span class="dv">294</span>     <span class="dv">0</span>     <span class="dv">0</span>   <span class="dv">294</span>     <span class="dv">0</span>  <span class="dv">0</span>    gpu.q<span class="op">@</span>msg<span class="op">-</span>iogpu1     <span class="dv">1</span>         <span class="ot">NA</span>
- <span class="dv">8</span> <span class="dv">224340</span> <span class="fl">0.165</span>  <span class="fl">0.128</span> tk1cg09t3  owner03  grabelab defaultdep r     <span class="dv">0</span><span class="op">:</span><span class="dv">07</span><span class="op">:</span><span class="dv">15</span><span class="op">:</span><span class="dv">33</span>  <span class="fl">22679.</span>    <span class="fl">0.0391</span>   <span class="dv">294</span>     <span class="dv">0</span>     <span class="dv">0</span>   <span class="dv">294</span>     <span class="dv">0</span>  <span class="dv">0</span>    gpu.q<span class="op">@</span>msg<span class="op">-</span>iogpu3     <span class="dv">1</span>         <span class="ot">NA</span>
- <span class="dv">9</span> <span class="dv">224686</span> <span class="fl">0.165</span>  <span class="fl">0.128</span> tk1cg12t2  owner03  grabelab defaultdep r     <span class="dv">0</span><span class="op">:</span><span class="dv">07</span><span class="op">:</span><span class="dv">16</span><span class="op">:</span><span class="dv">01</span>  <span class="fl">32674.</span>    <span class="fl">0.0390</span>   <span class="dv">294</span>     <span class="dv">0</span>     <span class="dv">0</span>   <span class="dv">294</span>     <span class="dv">0</span>  <span class="dv">0</span>    gpu.q<span class="op">@</span>msg<span class="op">-</span>iogpu3     <span class="dv">1</span>         <span class="ot">NA</span>
-<span class="dv">10</span> <span class="dv">224254</span> <span class="fl">0.165</span>  <span class="fl">0.128</span> tk1cg09t2  owner03  grabelab defaultdep r     <span class="dv">0</span><span class="op">:</span><span class="dv">07</span><span class="op">:</span><span class="dv">14</span><span class="op">:</span><span class="dv">19</span>  <span class="fl">23597.</span>    <span class="fl">0.0391</span>   <span class="dv">294</span>     <span class="dv">0</span>     <span class="dv">0</span>   <span class="dv">294</span>     <span class="dv">0</span>  <span class="dv">0</span>    gpu.q<span class="op">@</span>msg<span class="op">-</span>iogpu6     <span class="dv">1</span>         <span class="ot">NA</span>
-<span class="co"># … with 75,830 more rows</span>
-<span class="op">&gt;</span><span class="st"> </span></code></pre></div>
+</div>
+<div id="jobs-currently-on-the-sge-queue" class="section level2">
+<h2>Jobs currently on the SGE queue</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qstat &lt;-<span class="st"> </span><span class="kw">read_qstat</span>()
+qstat
+<span class="co"># # A tibble: 2,119 x 13</span>
+<span class="co">#    job_number prio.x name             owner state.x submission_time     slots tasks.x prio.y state.y</span>
+<span class="co">#         &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt;   &lt;dttm&gt;              &lt;int&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;  </span>
+<span class="co">#  1     198026  0.65  wt_D842Z_Z845D.1 owne… qw      2021-06-11 19:34:47     3 NA          NA NA     </span>
+<span class="co">#  2     198027  0.5   wt_D842Z_Z845D.2 owne… qw      2021-06-11 19:34:47     3 NA          NA NA     </span>
+<span class="co">#  3     198028  0.41  wt_D842Z_Z845D.3 owne… qw      2021-06-11 19:34:47     3 NA          NA NA     </span>
+<span class="co">#  4    3050724  0.365 relioncpu        owne… Eqw     2021-04-11 00:22:52   100 NA          NA NA     </span>
+<span class="co">#  5     127221  0.232 relion4GPU-11G   owne… Eqw     2021-06-06 17:46:46     4 NA          NA NA     </span>
+<span class="co">#  6     245277  0.200 singularity-run… owne… qw      2021-06-15 09:28:30     4 NA          NA NA     </span>
+<span class="co">#  7    2316670  0.171 run_phylophlan3… owne… Eqw     2021-03-09 17:11:46    24 NA          NA NA     </span>
+<span class="co">#  8    1125632  0.128 blast_abortus.sh owne… Eqw     2021-01-12 16:59:26     4 NA          NA NA     </span>
+<span class="co">#  9      77151  0.126 genomegenerate   owne… Eqw     2021-06-04 12:27:36     5 NA          NA NA     </span>
+<span class="co"># 10    1280060  0.108 atac.sh          owne… qw      2020-04-23 12:27:00     8 NA          NA NA     </span>
+<span class="co"># # … with 2,109 more rows, and 3 more variables: start_time &lt;dttm&gt;, queue_name &lt;chr&gt;, tasks.y &lt;chr&gt;</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nusers &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">unique</span>(qstat<span class="op">$</span>owner))
+period &lt;-<span class="st"> </span><span class="kw">range</span>(qstat<span class="op">$</span>submission_time)
+start &lt;-<span class="st"> </span><span class="kw">range</span>(qstat<span class="op">$</span>start_time, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of jobs including job-array tasks: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">nrow</span>(qstat)))
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Submission time range: %s - %s</span><span class="ch">\n</span><span class="st">&quot;</span>, period[<span class="dv">1</span>], period[<span class="dv">2</span>]))
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Start time range: %s - %s</span><span class="ch">\n</span><span class="st">&quot;</span>, start[<span class="dv">1</span>], start[<span class="dv">2</span>]))
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of unique users: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, nusers))
+<span class="co"># Number of jobs including job-array tasks: 2119</span>
+<span class="co"># Submission time range: 2019-04-02 10:17:14 - 2021-06-16 23:12:02</span>
+<span class="co"># Start time range: 2021-05-28 13:50:56 - 2021-06-16 23:14:16</span>
+<span class="co"># Number of unique users: 24</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(qstat<span class="op">$</span>state.x)
+<span class="co"># </span>
+<span class="co">#  Eqw  hqw   qw </span>
+<span class="co">#  11  513 1595</span>
+
+<span class="kw">table</span>(qstat<span class="op">$</span>state.y)
+<span class="co">#</span>
+<span class="co">#    r   Rr    t </span>
+<span class="co"># 1549    2    3 </span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+running &lt;-<span class="st"> </span><span class="kw">filter</span>(qstat, <span class="op">!</span><span class="kw">is.na</span>(start_time))
+<span class="kw">select</span>(running, job_number, state.x, submission_time, start_time, slots)
+<span class="co"># # A tibble: 1,554 x 5</span>
+<span class="co">#    job_number state.x submission_time     start_time          slots</span>
+<span class="co">#         &lt;dbl&gt; &lt;chr&gt;   &lt;dttm&gt;              &lt;dttm&gt;              &lt;int&gt;</span>
+<span class="co">#  1      57150 qw      2021-05-11 12:18:21 2021-05-28 13:50:56     1</span>
+<span class="co">#  2      57150 qw      2021-05-11 12:18:21 2021-05-28 16:03:55     1</span>
+<span class="co">#  3      57150 qw      2021-05-11 12:18:21 2021-05-28 16:19:56     1</span>
+<span class="co">#  4      57150 qw      2021-05-11 12:18:21 2021-05-28 16:26:55     1</span>
+<span class="co">#  5      57150 qw      2021-05-11 12:18:21 2021-05-28 16:46:55     1</span>
+<span class="co">#  6      57150 qw      2021-05-11 12:18:21 2021-05-28 17:23:56     1</span>
+<span class="co">#  7      57150 qw      2021-05-11 12:18:21 2021-05-28 17:24:55     1</span>
+<span class="co">#  8      57150 qw      2021-05-11 12:18:21 2021-05-28 17:26:55     1</span>
+<span class="co">#  9      57150 qw      2021-05-11 12:18:21 2021-05-28 17:28:56     1</span>
+<span class="co"># 10      57150 qw      2021-05-11 12:18:21 2021-05-28 17:53:55     1</span></code></pre></div>
 </div>
 
 
