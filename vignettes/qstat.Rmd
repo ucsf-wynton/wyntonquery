@@ -16,9 +16,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Introduction
-
-
 ## Jobs currently on the SGE queue
 
 ```r
