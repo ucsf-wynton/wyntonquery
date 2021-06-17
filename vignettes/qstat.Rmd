@@ -18,22 +18,46 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
+
+## Jobs currently on the SGE queue
+
 ```r
-> qstat <- read_qstat()
-> jobs
-# A tibble: 75,840 x 20
-   job_ID prior ntckts name       user     project  department state cpu            mem        io tckts ovrts otckt ftckt stckt share queue            slots ja_task_ID
-    <dbl> <dbl>  <dbl> <chr>      <chr>    <chr>    <chr>      <chr> <chr>        <dbl>     <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <chr>            <dbl>      <dbl>
- 1 259721 0.327  0.307 relion4GPU owner01  chenglab defaultdep dr    2:07:14:48 296762.  643.        97     0     0    97     0  0.01 gpu.q@cc-idgpu1      4         NA
- 2 188295 0.348  0.331 relion4GPU owner02  chenglab defaultdep dr    2:11:16:15 896993. 3795.       334     0     0   334     0  0.01 gpu.q@cc-idgpu2      4         NA
- 3 194922 0.327  0.307 relion4GPU owner01  chenglab defaultdep dr    1:12:05:44 272346. 1427.      1335     0     0  1335     0  0.01 gpu.q@cc-idgpu4      4         NA
- 4 272071 0.327  0.307 relion2GPU owner01  chenglab defaultdep r     0:03:32:39  80698.  387.       557     0     0   557     0  0.01 gpu.q@cc-idgpu5      2         NA
- 5 229591 0.165  0.128 tk1cg11t1  owner03  grabelab defaultdep r     0:10:28:14  36005.    0.0560   294     0     0   294     0  0    gpu.q@msg-ihgpu1     1         NA
- 6 224427 0.165  0.128 tk1cg11t2  owner03  grabelab defaultdep r     0:07:16:44  13504.    0.0394   294     0     0   294     0  0    gpu.q@msg-iogpu1     1         NA
- 7 224772 0.165  0.128 tk1cg12t3  owner03  grabelab defaultdep r     0:07:16:36  18106.    0.0393   294     0     0   294     0  0    gpu.q@msg-iogpu1     1         NA
- 8 224340 0.165  0.128 tk1cg09t3  owner03  grabelab defaultdep r     0:07:15:33  22679.    0.0391   294     0     0   294     0  0    gpu.q@msg-iogpu3     1         NA
- 9 224686 0.165  0.128 tk1cg12t2  owner03  grabelab defaultdep r     0:07:16:01  32674.    0.0390   294     0     0   294     0  0    gpu.q@msg-iogpu3     1         NA
-10 224254 0.165  0.128 tk1cg09t2  owner03  grabelab defaultdep r     0:07:14:19  23597.    0.0391   294     0     0   294     0  0    gpu.q@msg-iogpu6     1         NA
-# … with 75,830 more rows
-> 
+qstat <- read_qstat()
+qstat
+# A tibble: 70,952 x 20
+   job_ID prior ntckts name  user  project department state cpu      mem      io
+    <dbl> <dbl>  <dbl> <chr> <chr> <chr>   <chr>      <chr> <chr>  <dbl>   <dbl>
+ 1 259721 0.303  0.281 reli… user… projec… departmen… dr    2:07… 2.97e5 6.43e+2
+ 2 188295 0.326  0.306 reli… user… projec… departmen… dr    2:11… 8.97e5 3.79e+3
+ 3 194922 0.303  0.281 reli… user… projec… departmen… dr    1:12… 2.72e5 1.43e+3
+ 4 272071 0.303  0.281 reli… user… projec… departmen… r     0:04… 1.13e5 5.41e+2
+ 5 224427 0.165  0.128 tk1c… user… projec… departmen… r     0:10… 2.15e4 5.54e-2
+ 6 224772 0.165  0.128 tk1c… user… projec… departmen… r     0:10… 2.67e4 5.53e-2
+ 7 229592 0.165  0.128 tk1c… user… projec… departmen… r     0:01… 8.39e3 2.27e-2
+ 8 224340 0.165  0.128 tk1c… user… projec… departmen… r     0:10… 3.33e4 5.49e-2
+ 9 224686 0.165  0.128 tk1c… user… projec… departmen… r     0:10… 4.80e4 5.48e-2
+10 224254 0.165  0.128 tk1c… user… projec… departmen… r     0:10… 3.69e4 5.48e-2
+# … with 70,942 more rows, and 9 more variables: tckts <dbl>, ovrts <dbl>,
+#   otckt <dbl>, ftckt <dbl>, stckt <dbl>, share <dbl>, queue <chr>,
+#   slots <dbl>, ja_task_ID <dbl>
 ```
+
+
+```r
+nusers <- length(unique(qstat$user))
+nprojects <- length(unique(qstat$project))
+cat(sprintf("Number of jobs including job-array tasks: %d\n", nrow(qstat)))
+cat(sprintf("Number of unique users: %d\n", nusers))
+cat(sprintf("Number of unique projects: %d\n", nprojects))
+# Number of jobs: 70952
+# Number of unique users: 78
+# Number of unique projects: 40
+```
+
+```r
+table(qstat$state)
+#
+#   dr    dt   Eqw   hqw    qw     r    Rr     t 
+#   51    43    11   524 62896  7416     2     9
+```
+

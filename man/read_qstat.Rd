@@ -4,7 +4,11 @@
 \alias{read_qstat}
 \title{Get information on jobs currently on the SGE queue}
 \usage{
-read_qstat()
+read_qstat(file = NULL)
+}
+\arguments{
+\item{file}{A file, a connection, or NULL.  If NULL (default), then
+the output of system call \verb{qstat -xml -u '*'} is read.}
 }
 \value{
 A \link[tibble:tibble]{tibble::tibble}

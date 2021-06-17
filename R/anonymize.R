@@ -35,6 +35,12 @@ anonymize.raw_sge_accounting <- function(x, fields = c("group", "owner", "projec
 
 
 #' @export
-anonymize.qstat <- function(x, fields = c("user", "project", "department"), ...) {
+anonymize.qstat_ext <- function(x, fields = c("user", "project", "department"), ...) {
+  NextMethod(fields = fields)
+}
+
+
+#' @export
+anonymize.qstat_xml <- function(x, fields = c("JB_owner"), ...) {
   NextMethod(fields = fields)
 }
