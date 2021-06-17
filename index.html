@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0-9006</span>
       </span>
     </div>
 
@@ -45,6 +45,18 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/sge_accounting_file.html">SGE Accounting File</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="news/index.html">Changelog</a>
@@ -86,75 +98,6 @@
 <div id="usages" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usages" class="anchor"></a>Usages</h2>
-<div id="read-the-sge-accounting-file" class="section level3">
-<h3 class="hasAnchor">
-<a href="#read-the-sge-accounting-file" class="anchor"></a>Read the SGE accounting file</h3>
-<p>As of March 2020, the Wynton HPC accounting file is ~12 GB and takes 6-8 minutes to read in:</p>
-<div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ucsf-wynton/wyntonquery">wyntonquery</a></span><span class="op">)</span>
-<span class="va">pathname</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sge_accounting_file.html">sge_accounting_file</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"File size: %.3g GB\n"</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.info.html">file.size</a></span><span class="op">(</span><span class="va">pathname</span><span class="op">)</span><span class="op">/</span><span class="fl">1024</span><span class="op">^</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># File size: 0.5 GB</span>
-
-<span class="co">## Read all of the accounting file</span>
-<span class="va">jobs_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_sge_accounting.html">read_sge_accounting</a></span><span class="op">(</span><span class="va">pathname</span><span class="op">)</span>
-
-<span class="va">jobs</span> <span class="op">&lt;-</span> <span class="va">jobs_all</span>
-<span class="va">period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">$</span><span class="va">start_time</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Number of entries: %d\n"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Period: %s/%s\n"</span>, <span class="va">period</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">period</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># Number of entries: 1499996</span>
-<span class="co"># Period: 2020-02-25 13:22:10/2020-03-25 15:58:48</span>
-
-<span class="co">## The last 30 days</span>
-<span class="va">jobs_recent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">jobs</span>, <span class="va">start_time</span> <span class="op">&gt;=</span> <span class="va">period</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fl">30</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">3600</span><span class="op">)</span>
-<span class="va">jobs</span> <span class="op">&lt;-</span> <span class="va">jobs_recent</span>
-<span class="va">period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">$</span><span class="va">start_time</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Number of entries: %d\n"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Period: %s/%s\n"</span>, <span class="va">period</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">period</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># Number of entries: 1489563</span>
-<span class="co"># Period: 2020-02-25 13:22:10/2020-03-25 15:58:48</span>
-
-<span class="co">## Get successful and failed jobs</span>
-<span class="va">jobs</span> <span class="op">&lt;-</span> <span class="va">jobs_recent</span>
-<span class="va">jobs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
-  success <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">jobs</span>, <span class="va">failed</span> <span class="op">==</span> <span class="fl">0L</span><span class="op">)</span>,
-  fail    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">jobs</span>, <span class="va">failed</span> <span class="op">&gt;</span> <span class="fl">0L</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">jobs</span>, <span class="va">nrow</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># success    fail </span>
-<span class="co"># 1335219  154344</span>
-   
-<span class="co">## CPU time consumed</span>
-<span class="va">cpu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">jobs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span> <span class="op">{</span> <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">j</span><span class="op">$</span><span class="va">cpu</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/difftime.html">units</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"days"</span>; <span class="va">d</span> <span class="op">}</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">cpu</span><span class="op">)</span>
-<span class="co">#  success     fail </span>
-<span class="co"># 82622.05 37785.55</span>
-
-<span class="co">## CPU-time fractions</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">cpu</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">cpu</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#   success      fail </span>
-<span class="co"># 0.6861863 0.3138137</span></code></pre></div>
-<p>From this, we see that during the last 30-day period, 31% of the CPU time was consumed by jobs that failed. Among the failed jobs, the failure code was distributed as:</p>
-<div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">$</span><span class="va">fail</span><span class="op">$</span><span class="va">failed</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#    14     26     37    100 </span>
-<span class="co">#     1      9 104229  50105</span></code></pre></div>
-<p>From <code><a href="reference/read_sge_accounting.html">help("read_sge_accounting", package="wyntonquery")</a></code> for details on the parsed fields and their data types, these description of these codes are:</p>
-<ul>
-<li>14: ran, but failed before calling epilog</li>
-<li>26: failed opening stderr/stdout file</li>
-<li>37: ran but killed because it exceeded the maximum run time (<code>h_rt</code>), maximum CPU time (<code>h_cpu</code>), or maximum virtual memory (<code>h_vmem</code>)</li>
-<li>100: ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.</li>
-</ul>
-<p>The jobs that exhausted their limits, consumed 28,600 days of CPU time;</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">subset</span>(jobs<span class="op">$</span>fail, failed <span class="op">==</span><span class="st"> </span>37L)<span class="op">$</span>cpu); <span class="kw">units</span>(d) &lt;-<span class="st"> "days"</span>
-<span class="op">&gt;</span><span class="st"> </span>d
-Time difference of <span class="fl">28597.34</span> days</code></pre></div>
-<p>which corresponds to 24% of all CPU time;</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">as.numeric</span>(d<span class="op">/</span><span class="kw">sum</span>(cpu))
-[<span class="dv">1</span>] <span class="fl">0.2375044</span></code></pre></div>
-</div>
 <div id="query-compute-node-information-via-job-submissions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#query-compute-node-information-via-job-submissions" class="anchor"></a>Query compute node information via job submissions</h3>

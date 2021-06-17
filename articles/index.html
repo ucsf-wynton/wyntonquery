@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lists the Memory Information for the Current Machine — mem_info • wyntonquery</title>
+<title>Articles • wyntonquery</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,7 @@
 
 
 
-<meta property="og:title" content="Lists the Memory Information for the Current Machine — mem_info" />
-<meta property="og:description" content="Lists the Memory Information for the Current Machine" />
+<meta property="og:title" content="Articles" />
 
 
 
@@ -59,7 +58,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-topic">
+    <div class="container template-article-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -123,49 +122,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Lists the Memory Information for the Current Machine</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/R/mem_info.R'><code>R/mem_info.R</code></a></small>
-    <div class="hidden name"><code>mem_info.Rd</code></div>
+      <h1>Articles</h1>
     </div>
 
-    <div class="ref-description">
-    <p>Lists the Memory Information for the Current Machine</p>
+    <div class="section ">
+      <h3>All vignettes</h3>
+      <p class="section-desc"></p>
+
+      <dl>
+        <dt><a href="sge_accounting_file.html">SGE Accounting File</a></dt>
+        <dd></dt>
+      </dl>
     </div>
-
-    <pre class="usage"><span class='fu'>mem_info</span><span class='op'>(</span><span class='op'>)</span></pre>
-
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A data.frame (tibble) with the two columns <code>field</code> and <code>value</code>.
-For most CPUs, there will be duplicated <code>field</code>:s.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function reads/queries <code>/proc/meminfo</code> on the current machine.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>mem_info</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 53 x 2</span>
-#&gt;    field                value
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> memtotal       <span style='text-decoration: underline;'>16</span>138<span style='text-decoration: underline;'>332</span>000
-#&gt; <span style='color: #BCBCBC;'> 2</span> memfree         <span style='text-decoration: underline;'>6</span>516<span style='text-decoration: underline;'>336</span>000
-#&gt; <span style='color: #BCBCBC;'> 3</span> memavailable   <span style='text-decoration: underline;'>10</span>661<span style='text-decoration: underline;'>336</span>000
-#&gt; <span style='color: #BCBCBC;'> 4</span> buffers          680<span style='text-decoration: underline;'>480</span>000
-#&gt; <span style='color: #BCBCBC;'> 5</span> cached          <span style='text-decoration: underline;'>4</span>325<span style='text-decoration: underline;'>452</span>000
-#&gt; <span style='color: #BCBCBC;'> 6</span> swapcached               0
-#&gt; <span style='color: #BCBCBC;'> 7</span> active          <span style='text-decoration: underline;'>6</span>187<span style='text-decoration: underline;'>264</span>000
-#&gt; <span style='color: #BCBCBC;'> 8</span> inactive        <span style='text-decoration: underline;'>2</span>037<span style='text-decoration: underline;'>520</span>000
-#&gt; <span style='color: #BCBCBC;'> 9</span> active(anon)    <span style='text-decoration: underline;'>3</span>872<span style='text-decoration: underline;'>920</span>000
-#&gt; <span style='color: #BCBCBC;'>10</span> inactive(anon)   159<span style='text-decoration: underline;'>208</span>000
-#&gt; <span style='color: #949494;'># … with 43 more rows</span></div><div class='input'>
-</div></pre>
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <nav id="toc" data-toggle="toc" class="sticky-top">
-      <h2 data-toc-skip>Contents</h2>
-    </nav>
   </div>
 </div>
 
