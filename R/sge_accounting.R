@@ -15,7 +15,7 @@
 #'
 #' @importFrom readr read_delim
 #' @export
-read_raw_sge_accounting <- function(file, skip = 4L, ...) {
+read_raw_sge_accounting <- function(file, skip = if (is.character(file)) 4L else 0L, ...) {
   col_types <- sge_accounting_col_types()
   col_names <- names(col_types$cols)
   header <- if (skip > 0L) readLines(file, n = skip) else character(0L)
@@ -455,8 +455,8 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #' * `man sge_status`
 #'
 #' @export
-read_sge_accounting <- function(file = sge_accounting_file(), skip = 4L, ...) {
-  data <- read_raw_sge_accounting(file = file, skip = skip, ...)
+read_sge_accounting <- function(file = sge_accounting_file(), ...) {
+  data <- read_raw_sge_accounting(file = file, ...)
   data <- as_sge_accounting(data)
   data
 }

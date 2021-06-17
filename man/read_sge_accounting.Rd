@@ -4,7 +4,7 @@
 \alias{read_sge_accounting}
 \title{Read an SGE accounting}
 \usage{
-read_sge_accounting(file = sge_accounting_file(), skip = 4L, ...)
+read_sge_accounting(file = sge_accounting_file(), ...)
 }
 \arguments{
 \item{file}{(character) The SGE \file{accounting} file to read.}
