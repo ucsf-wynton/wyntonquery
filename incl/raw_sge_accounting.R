@@ -4,5 +4,5 @@ jobs <- read_raw_sge_accounting(pathname)
 print(jobs)
 
 ## Anonymize (although actually already anonymized)
-jobs_anon <- anonymize_raw_sge_accounting(jobs)
+jobs_anon <- anonymize(jobs)
 print(jobs_anon)

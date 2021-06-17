@@ -4,6 +4,9 @@ Version: 0.0.0-9006 [2021-06-16]
 
 NEW FEATURES:
 
+ * Add generic function anonymize() with implementations for 'data.frame',
+   'raw_sge_accounting', and 'qstat' objects.
+
  * Add read_qstat() for getting information on the jobs currently on the
    SGE queue.
  

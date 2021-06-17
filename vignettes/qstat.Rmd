@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 ## Introduction
 
 ```r
-> jobs <- read_qstat()
+> qstat <- read_qstat()
 > jobs
 # A tibble: 75,840 x 20
    job_ID prior ntckts name       user     project  department state cpu            mem        io tckts ovrts otckt ftckt stckt share queue            slots ja_task_ID
