@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lists the Memory Information for the Current Machine — mem_info • wyntonquery</title>
+<title>Open a file connection at given byte position — open_file_at • wyntonquery</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Lists the Memory Information for the Current Machine — mem_info" />
-<meta property="og:description" content="Lists the Memory Information for the Current Machine" />
+<meta property="og:title" content="Open a file connection at given byte position — open_file_at" />
+<meta property="og:description" content="Open a file connection at given byte position" />
 
 
 
@@ -126,44 +126,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Lists the Memory Information for the Current Machine</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/R/mem_info.R'><code>R/mem_info.R</code></a></small>
-    <div class="hidden name"><code>mem_info.Rd</code></div>
+    <h1>Open a file connection at given byte position</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/R/file_index.R'><code>R/file_index.R</code></a></small>
+    <div class="hidden name"><code>open_file_at.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Lists the Memory Information for the Current Machine</p>
+    <p>Open a file connection at given byte position</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mem_info</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>open_file_at</span><span class='op'>(</span><span class='va'>file</span>, position <span class='op'>=</span> <span class='fl'>0</span>, open <span class='op'>=</span> <span class='st'>"rb"</span>, auto_close <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>file</th>
+      <td><p>A pathname to a <code class="file">*.index</code> file to be
+created or read from.</p></td>
+    </tr>
+    <tr>
+      <th>position</th>
+      <td><p>The file byte position where to position the connection
+after being opened.</p></td>
+    </tr>
+    <tr>
+      <th>open</th>
+      <td><p>(character) Mode to open the file connection in, cf.
+<code><a href='https://rdrr.io/r/base/connections.html'>base::file()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>auto_close</th>
+      <td><p>(logical) If TRUE, then the connection is automatically
+closed when garbage collected.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame (tibble) with the two columns <code>field</code> and <code>value</code>.
-For most CPUs, there will be duplicated <code>field</code>:s.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>A file <a href='https://rdrr.io/r/base/connections.html'>base::connection</a> moved to position <code>position</code>.</p>
 
-    <p>This function reads/queries <code>/proc/meminfo</code> on the current machine.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>mem_info</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 53 x 2</span>
-#&gt;    field                value
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> memtotal       <span style='text-decoration: underline;'>16</span>138<span style='text-decoration: underline;'>332</span>000
-#&gt; <span style='color: #BCBCBC;'> 2</span> memfree         <span style='text-decoration: underline;'>2</span>051<span style='text-decoration: underline;'>524</span>000
-#&gt; <span style='color: #BCBCBC;'> 3</span> memavailable    <span style='text-decoration: underline;'>9</span>880<span style='text-decoration: underline;'>156</span>000
-#&gt; <span style='color: #BCBCBC;'> 4</span> buffers         <span style='text-decoration: underline;'>1</span>457<span style='text-decoration: underline;'>048</span>000
-#&gt; <span style='color: #BCBCBC;'> 5</span> cached          <span style='text-decoration: underline;'>6</span>745<span style='text-decoration: underline;'>788</span>000
-#&gt; <span style='color: #BCBCBC;'> 6</span> swapcached               0
-#&gt; <span style='color: #BCBCBC;'> 7</span> active          <span style='text-decoration: underline;'>8</span>433<span style='text-decoration: underline;'>712</span>000
-#&gt; <span style='color: #BCBCBC;'> 8</span> inactive        <span style='text-decoration: underline;'>3</span>697<span style='text-decoration: underline;'>204</span>000
-#&gt; <span style='color: #BCBCBC;'> 9</span> active(anon)    <span style='text-decoration: underline;'>4</span>592<span style='text-decoration: underline;'>744</span>000
-#&gt; <span style='color: #BCBCBC;'>10</span> inactive(anon)   201<span style='text-decoration: underline;'>480</span>000
-#&gt; <span style='color: #949494;'># … with 43 more rows</span></div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
