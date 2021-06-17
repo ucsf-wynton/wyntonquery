@@ -9,7 +9,7 @@ NEW FEATURES:
  
 DOCUMENTATION:
 
- * Add vignette 'SGE Accounting File'.
+ * Add vignettes 'SGE Accounting File' and 'Jobs on the SGE queue'.
  
 
 Version: 0.0.0-9005 [2021-05-05]

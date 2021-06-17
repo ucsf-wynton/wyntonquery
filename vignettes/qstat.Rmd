@@ -1,0 +1,39 @@
+---
+title: "Jobs on the SGE queue"
+author: Henrik Bengtsson
+date: 2021-06-16
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Jobs on the SGE queue}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+```r
+> jobs <- read_qstat()
+> jobs
+# A tibble: 75,840 x 20
+   job_ID prior ntckts name       user     project  department state cpu            mem        io tckts ovrts otckt ftckt stckt share queue            slots ja_task_ID
+    <dbl> <dbl>  <dbl> <chr>      <chr>    <chr>    <chr>      <chr> <chr>        <dbl>     <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <chr>            <dbl>      <dbl>
+ 1 259721 0.327  0.307 relion4GPU owner01  chenglab defaultdep dr    2:07:14:48 296762.  643.        97     0     0    97     0  0.01 gpu.q@cc-idgpu1      4         NA
+ 2 188295 0.348  0.331 relion4GPU owner02  chenglab defaultdep dr    2:11:16:15 896993. 3795.       334     0     0   334     0  0.01 gpu.q@cc-idgpu2      4         NA
+ 3 194922 0.327  0.307 relion4GPU owner01  chenglab defaultdep dr    1:12:05:44 272346. 1427.      1335     0     0  1335     0  0.01 gpu.q@cc-idgpu4      4         NA
+ 4 272071 0.327  0.307 relion2GPU owner01  chenglab defaultdep r     0:03:32:39  80698.  387.       557     0     0   557     0  0.01 gpu.q@cc-idgpu5      2         NA
+ 5 229591 0.165  0.128 tk1cg11t1  owner03  grabelab defaultdep r     0:10:28:14  36005.    0.0560   294     0     0   294     0  0    gpu.q@msg-ihgpu1     1         NA
+ 6 224427 0.165  0.128 tk1cg11t2  owner03  grabelab defaultdep r     0:07:16:44  13504.    0.0394   294     0     0   294     0  0    gpu.q@msg-iogpu1     1         NA
+ 7 224772 0.165  0.128 tk1cg12t3  owner03  grabelab defaultdep r     0:07:16:36  18106.    0.0393   294     0     0   294     0  0    gpu.q@msg-iogpu1     1         NA
+ 8 224340 0.165  0.128 tk1cg09t3  owner03  grabelab defaultdep r     0:07:15:33  22679.    0.0391   294     0     0   294     0  0    gpu.q@msg-iogpu3     1         NA
+ 9 224686 0.165  0.128 tk1cg12t2  owner03  grabelab defaultdep r     0:07:16:01  32674.    0.0390   294     0     0   294     0  0    gpu.q@msg-iogpu3     1         NA
+10 224254 0.165  0.128 tk1cg09t2  owner03  grabelab defaultdep r     0:07:14:19  23597.    0.0391   294     0     0   294     0  0    gpu.q@msg-iogpu6     1         NA
+# … with 75,830 more rows
+> 
+```
