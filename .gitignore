@@ -16,3 +16,4 @@ revdep/library/*
 .Rdump
 docs/
 pkgdown/
+inst/doc

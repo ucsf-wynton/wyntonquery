@@ -1,5 +1,5 @@
 Package: wyntonquery
-Version: 0.0.0-9005
+Version: 0.0.0-9006
 Depends:
     R (>= 3.5.0)
 Imports:
@@ -21,3 +21,7 @@ URL: https://github.com/ucsf-wynton/wyntonquery
 BugReports: https://github.com/ucsf-wynton/wyntonquery/issues
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
+Suggests: 
+    rmarkdown,
+    knitr
+VignetteBuilder: knitr
