@@ -17,7 +17,7 @@ Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
 Description: Functions for querying the current Linux system, with a focus on the UCSF Wynton HPC environment.
 License: LGPL (>= 2.1)
 LazyLoad: TRUE
-URL: https://github.com/UCSF-HPC/wyntonquery
-BugReports: https://github.com/UCSF-HPC/wyntonquery
+URL: https://github.com/ucsf-wynton/wyntonquery
+BugReports: https://github.com/ucsf-wynton/wyntonquery/issues
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
