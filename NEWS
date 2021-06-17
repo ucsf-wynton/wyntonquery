@@ -1,5 +1,17 @@
 Package: wyntonquery
 
+Version: 0.0.0-9006 [2021-06-16]
+
+NEW FEATURES:
+
+ * Add read_qstat() for getting information on the jobs currently on the
+   SGE queue.
+ 
+DOCUMENTATION:
+
+ * Add vignette 'SGE Accounting File'.
+ 
+
 Version: 0.0.0-9005 [2021-05-05]
 
 NEW FEATURES:
