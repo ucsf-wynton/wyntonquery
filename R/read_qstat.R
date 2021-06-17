@@ -5,6 +5,8 @@
 #'
 #' @return A [tibble::tibble]
 #'
+#' @example incl/read_qstat.R
+#'
 #' @importFrom xml2 as_list read_xml
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr left_join

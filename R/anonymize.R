@@ -41,6 +41,6 @@ anonymize.qstat_ext <- function(x, fields = c("user", "project", "department"), 
 
 
 #' @export
-anonymize.qstat_xml <- function(x, fields = c("JB_owner"), ...) {
+anonymize.qstat_xml <- function(x, fields = c("owner"), ...) {
   NextMethod(fields = fields)
 }
