@@ -95,6 +95,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/qstat.html">Jobs on the SGE queue</a>
+    </li>
+    <li>
       <a href="../articles/sge_accounting_file.html">SGE Accounting File</a>
     </li>
   </ul>
@@ -164,8 +167,8 @@ If <code>NULL</code>, all disks are queried.</p></td>
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>               <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                 
 #&gt; <span style='color: #BCBCBC;'> 1</span> udev              8<span style='text-decoration: underline;'>044</span>072         0   8<span style='text-decoration: underline;'>044</span>072     0    /dev                  
 #&gt; <span style='color: #BCBCBC;'> 2</span> tmpfs             1<span style='text-decoration: underline;'>613</span>836      <span style='text-decoration: underline;'>2</span>268   1<span style='text-decoration: underline;'>611</span>568     0.01 /run                  
-#&gt; <span style='color: #BCBCBC;'> 3</span> /dev/nvme0n1…   755<span style='text-decoration: underline;'>812</span>992 667<span style='text-decoration: underline;'>874</span>452  49<span style='text-decoration: underline;'>475</span>616     0.94 /                     
-#&gt; <span style='color: #BCBCBC;'> 4</span> tmpfs             8<span style='text-decoration: underline;'>069</span>164    <span style='text-decoration: underline;'>109</span>068   7<span style='text-decoration: underline;'>960</span>096     0.02 /dev/shm              
+#&gt; <span style='color: #BCBCBC;'> 3</span> /dev/nvme0n1…   755<span style='text-decoration: underline;'>812</span>992 667<span style='text-decoration: underline;'>875</span>408  49<span style='text-decoration: underline;'>474</span>660     0.94 /                     
+#&gt; <span style='color: #BCBCBC;'> 4</span> tmpfs             8<span style='text-decoration: underline;'>069</span>164    <span style='text-decoration: underline;'>110</span>228   7<span style='text-decoration: underline;'>958</span>936     0.02 /dev/shm              
 #&gt; <span style='color: #BCBCBC;'> 5</span> tmpfs                <span style='text-decoration: underline;'>5</span>120         4      <span style='text-decoration: underline;'>5</span>116     0.01 /run/lock             
 #&gt; <span style='color: #BCBCBC;'> 6</span> tmpfs             8<span style='text-decoration: underline;'>069</span>164         0   8<span style='text-decoration: underline;'>069</span>164     0    /sys/fs/cgroup        
 #&gt; <span style='color: #BCBCBC;'> 7</span> /dev/loop0           <span style='text-decoration: underline;'>8</span>320      <span style='text-decoration: underline;'>8</span>320         0     1    /snap/pick-colour-pic…
@@ -181,8 +184,8 @@ If <code>NULL</code>, all disks are queried.</p></td>
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>               <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                 
 #&gt; <span style='color: #BCBCBC;'> 1</span> udev              8<span style='text-decoration: underline;'>044</span>072         0   8<span style='text-decoration: underline;'>044</span>072     0    /dev                  
 #&gt; <span style='color: #BCBCBC;'> 2</span> tmpfs             1<span style='text-decoration: underline;'>613</span>836      <span style='text-decoration: underline;'>2</span>268   1<span style='text-decoration: underline;'>611</span>568     0.01 /run                  
-#&gt; <span style='color: #BCBCBC;'> 3</span> /dev/nvme0n1…   755<span style='text-decoration: underline;'>812</span>992 667<span style='text-decoration: underline;'>874</span>452  49<span style='text-decoration: underline;'>475</span>616     0.94 /                     
-#&gt; <span style='color: #BCBCBC;'> 4</span> tmpfs             8<span style='text-decoration: underline;'>069</span>164    <span style='text-decoration: underline;'>109</span>068   7<span style='text-decoration: underline;'>960</span>096     0.02 /dev/shm              
+#&gt; <span style='color: #BCBCBC;'> 3</span> /dev/nvme0n1…   755<span style='text-decoration: underline;'>812</span>992 667<span style='text-decoration: underline;'>875</span>408  49<span style='text-decoration: underline;'>474</span>660     0.94 /                     
+#&gt; <span style='color: #BCBCBC;'> 4</span> tmpfs             8<span style='text-decoration: underline;'>069</span>164    <span style='text-decoration: underline;'>110</span>228   7<span style='text-decoration: underline;'>958</span>936     0.02 /dev/shm              
 #&gt; <span style='color: #BCBCBC;'> 5</span> tmpfs                <span style='text-decoration: underline;'>5</span>120         4      <span style='text-decoration: underline;'>5</span>116     0.01 /run/lock             
 #&gt; <span style='color: #BCBCBC;'> 6</span> tmpfs             8<span style='text-decoration: underline;'>069</span>164         0   8<span style='text-decoration: underline;'>069</span>164     0    /sys/fs/cgroup        
 #&gt; <span style='color: #BCBCBC;'> 7</span> /dev/loop0           <span style='text-decoration: underline;'>8</span>320      <span style='text-decoration: underline;'>8</span>320         0     1    /snap/pick-colour-pic…
@@ -196,7 +199,7 @@ If <code>NULL</code>, all disks are queried.</p></td>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 7</span>
 #&gt;   filesystem     blocks_1024      used available capacity mounted on   
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> /dev/nvme0n1p5   755<span style='text-decoration: underline;'>812</span>992 667<span style='text-decoration: underline;'>874</span>456  49<span style='text-decoration: underline;'>475</span>612     0.94 /       <span style='color: #BB0000;'>NA</span>   </div><div class='input'>
+#&gt; <span style='color: #BCBCBC;'>1</span> /dev/nvme0n1p5   755<span style='text-decoration: underline;'>812</span>992 667<span style='text-decoration: underline;'>875</span>412  49<span style='text-decoration: underline;'>474</span>656     0.94 /       <span style='color: #BB0000;'>NA</span>   </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
