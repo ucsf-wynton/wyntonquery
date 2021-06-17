@@ -14,3 +14,5 @@ revdep/data.sqlite
 revdep/checks/*
 revdep/library/*
 .Rdump
+docs/
+pkgdown/

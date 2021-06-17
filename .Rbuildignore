@@ -7,3 +7,5 @@
 ^.Rdump
 ^incl
 ^\.github$
+^docs
+^pkgdown
