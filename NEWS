@@ -1,17 +1,21 @@
 Package: wyntonquery
 
-Version: 0.0.0-9006 [2021-06-17]
+Version: 0.0.0-9006 [2021-06-18]
 
 NEW FEATURES:
 
+ * Add users_over_time().
+ 
  * Add generic function anonymize() with implementations for 'data.frame',
    'raw_sge_accounting', and 'qstat' objects.
 
  * Add read_qstat() for getting information on the jobs currently on the
    SGE queue.
 
- * Add file_index_rows().
- 
+ * Add make_file_index(), save_file_index(), and read_file_index().
+
+ * Add open_file_at().
+
 DOCUMENTATION:
 
  * Add vignettes 'SGE Accounting File' and 'Jobs on the SGE queue'.

@@ -3,6 +3,8 @@
 #' @param file A file with a single column of signup dates, or NULL.
 #' If NULL, then the Wynton LDAP server is queried.
 #'
+#' @param since Drop signup dates prior to this date.
+#'
 #' @return A [tibble::tibble] with columns `date` and `count`,
 #' `count` the cumulative sum based on `date` occurances.
 #'

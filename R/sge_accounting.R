@@ -242,8 +242,6 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #'
 #' @param file (character) The SGE \file{accounting} file to read.
 #'
-#' @param skip (integer) The number of lines to skip at the top of the file.
-#'
 #' @param \ldots Additional arguments passed to [read_raw_sge_accounting()].
 #'
 #' @return A `tibble` data frame with columns:

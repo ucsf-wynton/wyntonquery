@@ -9,8 +9,6 @@ read_sge_accounting(file = sge_accounting_file(), ...)
 \arguments{
 \item{file}{(character) The SGE \file{accounting} file to read.}
 
-\item{skip}{(integer) The number of lines to skip at the top of the file.}
-
 \item{\ldots}{Additional arguments passed to \code{\link[=read_raw_sge_accounting]{read_raw_sge_accounting()}}.}
 }
 \value{

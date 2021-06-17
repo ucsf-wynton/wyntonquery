@@ -5,7 +5,7 @@
 \alias{write_raw_sge_accounting}
 \title{Read a tab-delimited SGE accounting file (without parsing it)}
 \usage{
-read_raw_sge_accounting(file, skip = 4L, ...)
+read_raw_sge_accounting(file, skip = if (is.character(file)) 4L else 0L, ...)
 
 write_raw_sge_accounting(x, file, header = attr(x, "header"), ...)
 }
