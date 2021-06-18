@@ -5,12 +5,22 @@
 \alias{write_raw_sge_accounting}
 \title{Read a tab-delimited SGE accounting file (without parsing it)}
 \usage{
-read_raw_sge_accounting(file, skip = if (is.character(file)) 4L else 0L, ...)
+read_raw_sge_accounting(
+  file,
+  offset = 0,
+  n_max = Inf,
+  skip = if (is.character(file) && offset == 0) 4L else 0L,
+  ...
+)
 
 write_raw_sge_accounting(x, file, header = attr(x, "header"), ...)
 }
 \arguments{
 \item{file}{(character) The SGE \file{accounting} file to read.}
+
+\item{offset}{The file byte position from where to start reading.}
+
+\item{n_max}{(numeric) The maximum number of rows to read.}
 
 \item{skip}{(integer) Number of lines to skip before parsing file content.}
 

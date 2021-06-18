@@ -4,13 +4,13 @@
 \alias{open_file_at}
 \title{Open a file connection at given byte position}
 \usage{
-open_file_at(file, position = 0, open = "rb", auto_close = TRUE)
+open_file_at(file, offset = 0, open = "rb", auto_close = TRUE)
 }
 \arguments{
 \item{file}{A pathname to a \file{*.index} file to be
 created or read from.}
 
-\item{position}{The file byte position where to position the connection
+\item{offset}{The file byte position where to position the connection
 after being opened.}
 
 \item{open}{(character) Mode to open the file connection in, cf.
@@ -20,7 +20,7 @@ after being opened.}
 closed when garbage collected.}
 }
 \value{
-A file \link[base:connections]{base::connection} moved to position \code{position}.
+A file \link[base:connections]{base::connection} moved to position \code{offset}.
 }
 \description{
 Open a file connection at given byte position

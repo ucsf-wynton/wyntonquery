@@ -16,10 +16,18 @@ NEW FEATURES:
 
  * Add open_file_at().
 
+ * read_raw_sge_accounting(), and therefore also read_sge_accounting(),
+   gained argument 'offset'.
+
 DOCUMENTATION:
 
  * Add vignettes 'SGE Accounting File' and 'Jobs on the SGE queue'.
- 
+
+BUG FIXES:
+
+ * The 'ru_wallclock' values returned by read_sge_account() were corrupted
+   by "random" NAs.
+
 
 Version: 0.0.0-9005 [2021-05-05]
 

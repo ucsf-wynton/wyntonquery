@@ -2,6 +2,10 @@
 #'
 #' @param file (character) The SGE \file{accounting} file to read.
 #'
+#' @param offset The file byte position from where to start reading.
+#'
+#' @param n_max (numeric) The maximum number of rows to read.
+#'
 #' @param skip (integer) Number of lines to skip before parsing file content.
 #'
 #' @param \ldots (optional) Addition arguments passed to [readr::read_delim()].
@@ -15,11 +19,36 @@
 #'
 #' @importFrom readr read_delim
 #' @export
-read_raw_sge_accounting <- function(file, skip = if (is.character(file)) 4L else 0L, ...) {
+read_raw_sge_accounting <- function(file, offset = 0, n_max = Inf, skip = if (is.character(file) && offset == 0) 4L else 0L, ...) {
+  stopifnot(is.numeric(skip), length(skip) == 1L, !is.na(skip), skip >= 0)
+  stopifnot(is.numeric(offset), length(offset) == 1L, !is.na(offset), offset >= 0)
+  stopifnot(is.numeric(n_max), length(n_max) == 1L, !is.na(n_max), n_max >= 0)
+
+  header <- if (skip > 0L) readLines(file, n = skip) else character(0L)
+  
+  if (offset > 0) {
+    con <- open_file_at(file, offset = offset)
+    on.exit(if (!is.null(con)) close(con))
+    
+    ## WORKAROUND: https://github.com/tidyverse/readr/issues/1221
+    if (is.finite(n_max)) {
+      ## Copy the part of the file we're interested in to a temporary file
+      tf <- tempfile()
+      on.exit(file.remove(tf), add = TRUE)
+      ## TODO: Read in chunks to save memory for large 'n_max'
+      bfr <- readLines(con, n = n_max, warn = FALSE)
+      writeLines(bfr, con = tf)
+      close(con)
+      con <- NULL
+      file <- tf
+    } else {
+      file <- con
+    }
+  }
+  
   col_types <- sge_accounting_col_types()
   col_names <- names(col_types$cols)
-  header <- if (skip > 0L) readLines(file, n = skip) else character(0L)
-  x <- read_delim(file = file, delim = ":", col_names = col_names, col_types = col_types, skip = skip, ...)
+  x <- read_delim(file = file, delim = ":", col_names = col_names, col_types = col_types, skip = skip, n_max = n_max, ...)
   attr(x, "header") <- header
   class(x) <- c("raw_sge_accounting", class(x))
   x
@@ -151,7 +180,7 @@ as_sge_accounting.raw_sge_accounting <- function(x, ...) {
   origin <- as.POSIXct("1970-01-01 00:00.00 UTC", tz = "GMT")
 
   ## Setting missing values
-  x$ru_wallclock[x$failed] <- NA_real_
+  x$ru_wallclock[x$failed != 0] <- NA_real_
   x$arid[x$arid == 0] <- NA_real_
   x$ar_sub_time[is.na(x$arid)] <- NA_real_
   for (name in c("granted_pe", "pe_taskid")) {

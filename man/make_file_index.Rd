@@ -8,9 +8,11 @@
 \usage{
 make_file_index(
   pathname,
+  offset = 0L,
   skip = 0L,
   n_max = Inf,
   newline = "\\n",
+  drop_eof = TRUE,
   bfr_size = 1e+07
 )
 
@@ -21,11 +23,18 @@ read_file_index(file)
 \arguments{
 \item{pathname}{(character) The file to be indexed.}
 
-\item{skip}{(numeric) The number of bytes to skip before start indexing.}
+\item{offset}{(numeric) The number of bytes to skip before start indexing.}
+
+\item{skip}{(numeric) The number of \code{newline} matches to ignore before
+recording them.}
 
 \item{n_max}{(numeric) The maximum number of bytes to scan.}
 
 \item{newline}{(character) The character to scan for.}
+
+\item{drop_eof}{(logical) If TRUE, the last identified byte offset is
+dropped if at the very end of the file, i.e. when there is nothing
+available to read from that position.}
 
 \item{bfr_size}{(numeric) The number of bytes to read in each iteration.}
 
@@ -48,10 +57,12 @@ pathname <- system.file("exdata", "accounting", package = "wyntonquery")
 index <- read_file_index(sprintf("\%s.index", pathname))
 cat(sprintf("Number of jobs: \%d\n", length(index)))
 
-con <- open_file_at(pathname, position = index[1001])
-
-## Get all jobs after the 1000:th job
-jobs <- read_sge_accounting(con)
-close(con)
+## Get all jobs *after* the 500:th job
+jobs <- read_sge_accounting(pathname, offset = index[501])
 print(jobs)
+
+## Get jobs 301 to 350
+jobs <- read_sge_accounting(pathname, offset = index[301], n_max = 50)
+print(jobs)
+
 }

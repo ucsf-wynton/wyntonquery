@@ -2,11 +2,18 @@
 #'
 #' @param pathname (character) The file to be indexed.
 #'
-#' @param skip (numeric) The number of bytes to skip before start indexing.
+#' @param offset (numeric) The number of bytes to skip before start indexing.
+#'
+#' @param skip (numeric) The number of `newline` matches to ignore before
+#' recording them.
 #'
 #' @param n_max (numeric) The maximum number of bytes to scan.
 #'
 #' @param newline (character) The character to scan for.
+#'
+#' @param drop_eof (logical) If TRUE, the last identified byte offset is
+#' dropped if at the very end of the file, i.e. when there is nothing 
+#' available to read from that position.
 #'
 #' @param bfr_size (numeric) The number of bytes to read in each iteration.
 #'
@@ -19,10 +26,10 @@
 #'
 #' @importFrom utils file_test
 #' @export
-make_file_index <- function(pathname, skip = 0L, n_max = Inf, newline = "\n", bfr_size = 10e6) {
+make_file_index <- function(pathname, offset = 0L, skip = 0L, n_max = Inf, newline = "\n", drop_eof = TRUE, bfr_size = 10e6) {
   stopifnot(length(pathname) == 1L, file_test("-f", pathname))
-  stopifnot(length(skip) == 1L, is.numeric(skip), is.finite(skip),
-            skip >= 0)
+  stopifnot(length(offset) == 1L, is.numeric(offset), is.finite(offset), offset >= 0)
+  stopifnot(length(skip) == 1L, is.numeric(skip), is.finite(skip), skip >= 0)
   stopifnot(length(n_max) == 1L, is.numeric(n_max), !is.na(n_max), n_max >= 0)
   stopifnot(length(newline) == 1L, is.character(newline), !is.na(newline))
   stopifnot(length(bfr_size) == 1L, is.numeric(bfr_size), is.finite(bfr_size),
@@ -30,16 +37,16 @@ make_file_index <- function(pathname, skip = 0L, n_max = Inf, newline = "\n", bf
 
   nl <- charToRaw(newline)
 
+  file_size <- file.size(pathname)
   con <- file(pathname, open = "rb")
   on.exit(close(con))
 
-  skip_org <- skip
-  if (skip > 0) {
-    skip <- skip - 1L
-    if (skip > 0) seek(con, where = skip, origin = "start", rw = "read")
+  offset_org <- offset
+  if (offset > 0) {
+    offset <- offset - 1L
+    if (offset > 0) seek(con, where = offset, origin = "start", rw = "read")
   }
 
-  offset <- skip
   pos <- list(offset)
   repeat {
     raw <- readBin(con, what = raw(), n = bfr_size)
@@ -56,6 +63,16 @@ make_file_index <- function(pathname, skip = 0L, n_max = Inf, newline = "\n", bf
   }
   pos <- unlist(pos, use.names = FALSE)
   if (is.finite(n_max)) pos <- pos[pos <= n_max]
+
+  ## Skip?
+  if (skip > 0) pos <- pos[-seq_len(skip)]
+
+  ## Drop last position if at the very end of the file?
+  if (drop_eof) {
+    n <- length(pos)
+    if (pos[n] == file_size) pos <- pos[-n]
+  }
+  
   pos
 }
 
@@ -89,7 +106,7 @@ read_file_index <- function(file) {
 #' @param file A pathname to a \file{*.index} file to be
 #' created or read from.
 #'
-#' @param position The file byte position where to position the connection
+#' @param offset The file byte position where to position the connection
 #' after being opened.
 #'
 #' @param open (character) Mode to open the file connection in, cf.
@@ -98,14 +115,14 @@ read_file_index <- function(file) {
 #' @param auto_close (logical) If TRUE, then the connection is automatically
 #' closed when garbage collected.
 #'
-#' @return A file [base::connection] moved to position `position`.
+#' @return A file [base::connection] moved to position `offset`.
 #'
 #' @importFrom utils file_test
 #' @export
-open_file_at <- function(file, position = 0, open = "rb", auto_close = TRUE) {
+open_file_at <- function(file, offset = 0, open = "rb", auto_close = TRUE) {
   stopifnot(file_test("-f", file))
   file_size <- file.size(file)
-  stopifnot(is.numeric(position), position >= 0, position <= file_size)
+  stopifnot(is.numeric(offset), offset >= 0, offset <= file_size)
   con <- file(file, open = open)
   if (auto_close) {
     env <- new.env()
@@ -115,7 +132,6 @@ open_file_at <- function(file, position = 0, open = "rb", auto_close = TRUE) {
       try(close(e$con), silent = TRUE)
     })
   }
-  if (position > 0L) seek(con, where = position, origin = "start")
+  if (offset > 0L) seek(con, where = offset, origin = "start")
   con
 }
-
