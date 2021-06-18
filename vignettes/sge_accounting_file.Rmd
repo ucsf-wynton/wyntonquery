@@ -1,7 +1,7 @@
 ---
 title: "SGE Accounting File"
 author: Henrik Bengtsson
-date: 2021-06-16
+date: 2021-06-18
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{SGE Accounting File}
@@ -21,100 +21,184 @@ knitr::opts_chunk$set(
 The SGE accounting file holds information on all submitted and _finished_ jobs submitted to the SGE scheduler.  Queued or currently running jobs are _not_ included in this file.  A job is considered "finished" if it completed successfully, terminated due to an error, or was cancelled.  The file is a colon-delimited text file with one job entry per row, with the most recently finished job appended at end.  Contrary to what one might expect, the file is not _perfectly_ ordered by the `end_time` of the jobs.  We might find some entries where the `end_time` of two consequentive entries might differ by a few seconds in the "wrong" order.  It's not clear to me why this is but it might be that the scheduler updates the SGE accounting file at regular intervals, say every few minutes, and when it does it goes through the jobs in order of job index.
 
 
-## Reading recent entries
+## Indexing the SGE accounting file
 
-As of June 2021, the Wynton HPC accounting file is ~54 GB with 160.5 million job entries (using `wc -l`).  In March 2020, it was ~12 GB and took 6-8 minutes to read in full.
+In March 2020, it was ~12 GB and took 6-8 minutes to read in full.  As of June 2021, the Wynton HPC accounting file is ~54 GB with 160.5 million job entries.  It is rare to be interested in all entries.  It is more common to work with a subset of the job entries.  In order to do this efficiently, we start by indexing the SGE accounting using:
 
-Here is how we can read the 1 million most recent entries, i.e. the 1 million jobs, including job-array tasks, that finished most recently.
+```r
+library(wyntonquery)
+progressr::handlers(global = TRUE) ## Report on progress
+
+pathname <- sge_accounting_file()
+cat(sprintf("File size: %.3g GB\n", file.size(pathname)/1024^3))
+# File size: 54.1 GB
+
+## It takes 5-10 minutes to index a 54 GB SGE accounting file
+index <- make_file_index(pathname, skip = 4L)
+cat(sprintf("Number of job entries: %d\n", length(index)))
+# Number of job entries: 160835061
+
+## Save index to file for future use
+save_file_index(index, file = "accounting.index")
+```
+
+
+## Reading job entries in SGE accounting file
+
+Here is how we can read the ~100,000 most recent entries, which only takes a few seconds:
 
 ```r
 library(wyntonquery)
 
 pathname <- sge_accounting_file()
-cat(sprintf("File size: %.3g GB\n", file.size(pathname)/1024^3))
-# File size: 53.9 GB
+index <- read_file_index("accounting.index")
 
-## Read the last 1,000,000 job entries of the accounting file,
-## which takes 15-30 seconds to read
-njobs <- 1e6
-jobs_all <- read_sge_accounting(pipe(sprintf("tail -n %d %s", njobs+4, shQuote(pathname))))
-
-## Statistics of finished jobs
-jobs <- jobs_all
-period <- range(jobs$end_time, na.rm=TRUE)
-nusers <- length(unique(jobs_all$owner))
-cat(sprintf("Period: %s/%s\n", period[1], period[2]))
-cat(sprintf("Number of jobs finished during this period: %d\n", nrow(jobs)))
-cat(sprintf("Number of unique users: %d\n", nusers))
-# Period: 2021-06-13 18:15:30/2021-06-16 19:35:15
-# Number of jobs finished during this period: 1000000
-# Number of unique users: 118
+from <- 100e3
+jobs <- read_sge_accounting(pathname, offset = index[length(index)+1-from])
+print(jobs)
+# A tibble: 103,419 x 45
+   qname  hostname  group  owner job_name   job_number account priority submission_time     start_time          end_time            failed exit_status
+   <chr>  <chr>     <chr>  <chr> <chr>           <int> <chr>      <int> <dttm>              <dttm>              <dttm>               <int>       <int>
+ 1 long.q qb3-id149 group… owne… ddG_satur…     273941 sge           19 2021-06-17 10:15:11 2021-06-17 16:07:29 2021-06-17 19:13:24      0           0
+ 2 long.q qb3-id26  group… owne… ddG_satur…     273941 sge           19 2021-06-17 10:15:11 2021-06-17 16:33:13 2021-06-17 19:13:23      0           0
+ 3 long.q qb3-id78  group… owne… batch_3d       275353 sge           19 2021-06-17 11:38:15 2021-06-17 18:58:08 2021-06-17 19:13:24      0           0
+ 4 short… qb3-id164 group… owne… min111         280589 sge           10 2021-06-17 19:09:28 2021-06-17 19:10:34 2021-06-17 19:13:25      0           0
+ 5 long.q qb3-id176 group… owne… ddG_satur…     273941 sge           19 2021-06-17 10:15:11 2021-06-17 16:44:48 2021-06-17 19:13:25      0           0
+ 6 short… qb3-id176 group… owne… min153         280621 sge           10 2021-06-17 19:09:38 2021-06-17 19:10:34 2021-06-17 19:13:25      0           0
+ 7 long.q qb3-ih59  group… owne… batch_3d       274703 sge           19 2021-06-17 11:28:06 2021-06-17 18:25:42 2021-06-17 19:13:25      0           0
+ 8 short… qb3-ih35  group… owne… min133         280751 sge           10 2021-06-17 19:10:17 2021-06-17 19:13:22 2021-06-17 19:13:26      0         132
+ 9 short… qb3-ih29  group… owne… min62          280708 sge           10 2021-06-17 19:10:04 2021-06-17 19:13:22 2021-06-17 19:13:26      0         132
+10 short… qb3-ih29  group… owne… min69          280714 sge           10 2021-06-17 19:10:06 2021-06-17 19:13:22 2021-06-17 19:13:26      0         132
+# … with 103,409 more rows, and 32 more variables: ru_wallclock <drtn>, ru_utime <drtn>, ru_stime <drtn>, ru_maxrss <chr>,
+#   ru_ixrss <chr>, ru_ismrss <chr>, ru_idrss <chr>, ru_isrss <chr>, ru_minflt <dbl>, ru_majflt <dbl>, ru_nswap <dbl>, ru_inblock <dbl>,
+#   ru_oublock <dbl>, ru_msgsnd <dbl>, ru_msgrcv <dbl>, ru_nsignals <dbl>, ru_nvcsw <dbl>, ru_nivcsw <dbl>, project <chr>,
+#   department <chr>, granted_pe <chr>, slots <int>, task_number <int>, cpu <drtn>, mem <chr>, io <chr>, category <chr>, iow <drtn>,
+#   pe_taskid <chr>, maxvmem <dbl>, arid <dbl>, ar_sub_time <dttm>
 ```
 
+_Comment:_ The reason for getting more than 100,000 job entries is that the SGE accounting file had recorded another 3,419 jobs since we last indexed the file.
 
-### Focus on jobs ended during the last 24 hours
+
+To read, say, 10,000 jobs starting with job entry 120,000,000, use:
 
 ```r
-jobs <- subset(jobs_all, end_time >= period[2] - 24*3600)
-period <- range(jobs$end_time, na.rm=TRUE)
-cat(sprintf("Period: %s/%s\n", period[1], period[2]))
-cat(sprintf("Number of jobs finished during this period: %d\n", nrow(jobs)))
-Period: 2021-06-15 19:35:15/2021-06-16 19:35:15
-Number of jobs finished during this period: 216375
+from <- 120000000
+jobs <- read_sge_accounting(pathname, offset = index[from], n_max = 10000)
+print(jobs)
+# A tibble: 10,000 x 45
+   qname    hostname  group  owner job_name job_number account priority submission_time     start_time          end_time            failed exit_status
+   <chr>    <chr>     <chr>  <chr> <chr>         <int> <chr>      <int> <dttm>              <dttm>              <dttm>               <int>       <int>
+ 1 long.q   qb3-id146 bks    jji   batch_3d    2514714 sge           19 2021-03-18 05:17:48 2021-03-18 07:09:45 2021-03-18 07:40:23      0           0
+ 2 long.q   qb3-id66  bks    jji   batch_3d    2514751 sge           19 2021-03-18 05:26:06 2021-03-18 07:20:45 2021-03-18 07:40:23      0           0
+ 3 member.q qb3-id70  modweb modw… TB_2julA    2515048 sge            0 2021-03-18 06:47:47 2021-03-18 07:38:45 2021-03-18 07:40:23      0           0
+ 4 long.q   qb3-ad9   bks    jji   batch_3d    2514714 sge           19 2021-03-18 05:17:48 2021-03-18 07:10:45 2021-03-18 07:40:24      0           0
+ 5 member.q qb3-id195 modweb modw… TB_2julA    2515048 sge            0 2021-03-18 06:47:47 2021-03-18 07:38:45 2021-03-18 07:40:25      0           0
+ 6 long.q   qb3-id83  bks    jji   batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:30:45 2021-03-18 07:40:26      0           0
+ 7 long.q   qb3-id31  bks    jji   batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:29:45 2021-03-18 07:40:26      0           0
+ 8 long.q   qb3-id124 bks    jji   batch_3d    2514827 sge           19 2021-03-18 05:38:30 2021-03-18 07:33:45 2021-03-18 07:40:26      0           0
+ 9 long.q   qb3-id52  bks    jji   batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:29:45 2021-03-18 07:40:26      0           0
+10 long.q   cc-id1    bks    jji   batch_3d    2514783 sge           19 2021-03-18 05:30:12 2021-03-18 07:23:45 2021-03-18 07:40:27      0           0
+# … with 9,990 more rows, and 32 more variables: ru_wallclock <drtn>, ru_utime <drtn>, ru_stime <drtn>, ru_maxrss <chr>, ru_ixrss <chr>,
+#   ru_ismrss <chr>, ru_idrss <chr>, ru_isrss <chr>, ru_minflt <dbl>, ru_majflt <dbl>, ru_nswap <dbl>, ru_inblock <dbl>, ru_oublock <dbl>,
+#   ru_msgsnd <dbl>, ru_msgrcv <dbl>, ru_nsignals <dbl>, ru_nvcsw <dbl>, ru_nivcsw <dbl>, project <chr>, department <chr>, granted_pe <chr>,
+#   slots <int>, task_number <int>, cpu <drtn>, mem <chr>, io <chr>, category <chr>, iow <drtn>, pe_taskid <chr>, maxvmem <dbl>, arid <dbl>,
+#   ar_sub_time <dttm>
 ```
 
 
-### Summary of successful and failed jobs 
+## Statistics of jobs finished during the last 24 hours
+
+
+```r
+library(wyntonquery)
+
+pathname <- sge_accounting_file()
+index <- read_file_index("accounting.index")
+
+## Read enough job entries to cover 24 hours and more
+from <- 300e3
+jobs <- read_sge_accounting(pathname, offset = index[length(index)+1-from])
+
+period <- range(jobs$end_time, na.rm=TRUE)
+cat(sprintf("Period: %s/%s\n", period[1], period[2]))
+## Period: 2021-06-17 04:23:00/2021-06-18 09:26:06
+
+## Keep jobs for the last 24 hours
+jobs <- subset(jobs, end_time >= period[2] - 24*3600)
+period <- range(jobs$end_time, na.rm=TRUE)
+cat(sprintf("Period: %s/%s\n", period[1], period[2]))
+## Period: 2021-06-15 19:35:15/2021-06-16 19:35:15
+cat(sprintf("Number of jobs finished during this period: %d\n", nrow(jobs)))
+## Number of jobs finished during this period: 197538
+
+nusers <- length(unique(jobs$owner))
+cat(sprintf("Number of unique users: %d\n", nusers))
+# Number of unique users: 79
+```
+
+Let's see how many of the jobs finished succesfully and how many failed.
 
 ```r
 ## Get successful and failed jobs
-jobs <- jobs_all
-jobs <- list(
+groups <- list(
   success = subset(jobs, failed == 0L),
   fail    = subset(jobs, failed > 0L)
 )
-print(sapply(jobs, nrow))
+stats <- sapply(groups, nrow)
+print(stats)
 # success    fail 
-#  979905   20095
+#  191701    5837 
 
+print(stats/sum(stats))
+#    success       fail 
+# 0.97045125 0.02954875
+```
+
+We see that failure rate among the ~200,000 jobs that ran the last 24 hours was ~3%.  Next, let's see how much CPU time this correspondsa to:
+
+```r
 ## CPU time consumed
-cpu <- sapply(jobs, function(j) { d <- sum(j$cpu); units(d) <- "days"; d })
+cpu <- sapply(groups, function(jobs) { d <- sum(jobs$cpu); units(d) <- "days"; d })
+cat(sprintf("Total CPU processing time: %.1f hours\n", sum(cpu)))
+# Total CPU processing time: 7937.3 hours
+
 print(cpu)
 #   success      fail 
-# 17742.775  1390.293
+# 7562.2252  375.1175
 
 ## CPU-time fractions
 print(cpu / sum(cpu))
 #    success       fail 
-# 0.92733561 0.07266439
+# 0.95274017 0.04725983
 ```
 
-From this, we see that during the last 24 hours, 7% of the CPU time was consumed by jobs that failed.  Among the failed jobs, the failure code was distributed as:
+From this, we find that during the last 24 hours, ~5% of the CPU time was consumed by jobs that failed.  Among the failed jobs, the failure code was distributed as:
 
 ```r
-print(table(jobs$fail$failed))
-#     1     8    21    25    26    27    28    37   100 
-#    48     1     1  6873     6     1    11  1639 11515 
+print(table(groups$fail$failed))
+#   25   26   37  100 
+#    5    1 4440 1391
 ```
 
 From `help("read_sge_accounting", package="wyntonquery")` for details on the parsed fields and their data types, these description of some of these codes are:
 
+ *  25: rescheduling
  *  26: failed opening stderr/stdout file
  *  37: ran but killed because it exceeded the maximum run time (`h_rt`), maximum CPU time (`h_cpu`), or maximum virtual memory (`h_vmem`)
  * 100: ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.
 
 
-The jobs that exhausted their limits, consumed 369 days of CPU time;
+The jobs that exhausted their limits, consumed 213 days of CPU time;
 
 ```r
-> d <- sum(subset(jobs$fail, failed == 37)$cpu); units(d) <- "days"
-> d
-Time difference of 368.6784 days
+d <- sum(subset(groups$fail, failed == 37)$cpu); units(d) <- "days"
+print(d)
+# Time difference of 212.8236 days
 ```
 
-which corresponds to ~2% of all CPU time consumed;
+which corresponds to ~3% of all CPU time spent:
 
 ```r
 > as.numeric(d/sum(cpu))
-[1] 0.01926917
+[1] 0.02681296
 ```
