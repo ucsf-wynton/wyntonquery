@@ -27,7 +27,7 @@
 #' @importFrom utils file_test
 #' @importFrom progressr progressor
 #' @export
-make_file_index <- function(pathname, offset = 0, skip = 0L, n_max = Inf, newline = "\n", drop_eof = TRUE, bfr_size = 10e6) {
+make_file_index <- function(pathname, offset = 0, skip = 0L, n_max = Inf, newline = "\n", drop_eof = TRUE, bfr_size = 50e6) {
   stopifnot(length(pathname) == 1L, file_test("-f", pathname))
   stopifnot(length(offset) == 1L, is.numeric(offset), is.finite(offset), offset >= 0)
   stopifnot(length(skip) == 1L, is.numeric(skip), is.finite(skip), skip >= 0)
@@ -50,10 +50,11 @@ make_file_index <- function(pathname, offset = 0, skip = 0L, n_max = Inf, newlin
   ## Coerce to double to avoid integer overflow for large files
   offset <- as.double(offset)
 
-  ## Report on progress
-  max_steps <- if (is.infinite(n_max)) file_size - offset else n_max
+  ## Report on progress (either by MBs or newlines read)
+  max_steps <- if (is.infinite(n_max)) (file_size - offset)/1e6 else n_max
   p <- progressor(max_steps)
-  
+
+  count <- 1
   pos <- list(offset)
   repeat {
     raw <- readBin(con, what = raw(), n = bfr_size)
@@ -65,10 +66,12 @@ make_file_index <- function(pathname, offset = 0, skip = 0L, n_max = Inf, newlin
     idxs <- idxs + offset
     offset <- offset + nraw
     pos[[length(pos) + 1]] <- idxs
+    count <- count + length(idxs)
+    msg <- sprintf("%d indices", count)
     if (is.infinite(n_max)) {
-      p(amount = nraw)
+      p(msg, amount = nraw/1e6)
     } else {
-      p(amount = length(idxs))
+      p(msg, amount = length(idxs))
       if (offset > n_max) break
     }
     idxs <- NULL
