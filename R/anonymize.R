@@ -27,18 +27,20 @@ anonymize.data.frame <- function(x, fields, ...) {
   x
 }
 
-
 #' @export
 anonymize.raw_sge_accounting <- function(x, fields = c("group", "owner", "project"), ...) {
   NextMethod(fields = fields)
 }
 
+#' @export
+anonymize.sge_accounting <- function(x, fields = c("group", "owner", "project"), ...) {
+  NextMethod(fields = fields)
+}
 
 #' @export
 anonymize.qstat_ext <- function(x, fields = c("user", "project", "department"), ...) {
   NextMethod(fields = fields)
 }
-
 
 #' @export
 anonymize.qstat_xml <- function(x, fields = c("owner"), ...) {
