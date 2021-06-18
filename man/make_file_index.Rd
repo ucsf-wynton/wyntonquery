@@ -8,12 +8,12 @@
 \usage{
 make_file_index(
   pathname,
-  offset = 0L,
+  offset = 0,
   skip = 0L,
   n_max = Inf,
   newline = "\\n",
   drop_eof = TRUE,
-  bfr_size = 1e+07
+  bfr_size = 5e+07
 )
 
 save_file_index(index, file)
