@@ -25,8 +25,9 @@
 #' @example incl/make_file_index.R
 #'
 #' @importFrom utils file_test
+#' @importFrom progressr progressor
 #' @export
-make_file_index <- function(pathname, offset = 0L, skip = 0L, n_max = Inf, newline = "\n", drop_eof = TRUE, bfr_size = 10e6) {
+make_file_index <- function(pathname, offset = 0, skip = 0L, n_max = Inf, newline = "\n", drop_eof = TRUE, bfr_size = 10e6) {
   stopifnot(length(pathname) == 1L, file_test("-f", pathname))
   stopifnot(length(offset) == 1L, is.numeric(offset), is.finite(offset), offset >= 0)
   stopifnot(length(skip) == 1L, is.numeric(skip), is.finite(skip), skip >= 0)
@@ -41,12 +42,18 @@ make_file_index <- function(pathname, offset = 0L, skip = 0L, n_max = Inf, newli
   con <- file(pathname, open = "rb")
   on.exit(close(con))
 
-  offset_org <- offset
   if (offset > 0) {
     offset <- offset - 1L
     if (offset > 0) seek(con, where = offset, origin = "start", rw = "read")
   }
 
+  ## Coerce to double to avoid integer overflow for large files
+  offset <- as.double(offset)
+
+  ## Report on progress
+  max_steps <- if (is.infinite(n_max)) file_size - offset else n_max
+  p <- progressor(max_steps)
+  
   pos <- list(offset)
   repeat {
     raw <- readBin(con, what = raw(), n = bfr_size)
@@ -58,8 +65,13 @@ make_file_index <- function(pathname, offset = 0L, skip = 0L, n_max = Inf, newli
     idxs <- idxs + offset
     offset <- offset + nraw
     pos[[length(pos) + 1]] <- idxs
+    if (is.infinite(n_max)) {
+      p(amount = nraw)
+    } else {
+      p(amount = length(idxs))
+      if (offset > n_max) break
+    }
     idxs <- NULL
-    if (offset > n_max) break
   }
   pos <- unlist(pos, use.names = FALSE)
   if (is.finite(n_max)) pos <- pos[pos <= n_max]

@@ -8,7 +8,7 @@
 \usage{
 make_file_index(
   pathname,
-  offset = 0L,
+  offset = 0,
   skip = 0L,
   n_max = Inf,
   newline = "\\n",

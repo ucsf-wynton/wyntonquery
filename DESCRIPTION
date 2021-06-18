@@ -7,6 +7,7 @@ Imports:
     forcats,
     R.cache,
     prettyunits,
+    progressr,
     readr,
     tibble,
     xml2,
