@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0-9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@
     <p>Open a file connection at given byte position</p>
     </div>
 
-    <pre class="usage"><span class='fu'>open_file_at</span><span class='op'>(</span><span class='va'>file</span>, position <span class='op'>=</span> <span class='fl'>0</span>, open <span class='op'>=</span> <span class='st'>"rb"</span>, auto_close <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>open_file_at</span><span class='op'>(</span><span class='va'>file</span>, offset <span class='op'>=</span> <span class='fl'>0</span>, open <span class='op'>=</span> <span class='st'>"rb"</span>, auto_close <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,7 +146,7 @@
 created or read from.</p></td>
     </tr>
     <tr>
-      <th>position</th>
+      <th>offset</th>
       <td><p>The file byte position where to position the connection
 after being opened.</p></td>
     </tr>
@@ -164,7 +164,7 @@ closed when garbage collected.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A file <a href='https://rdrr.io/r/base/connections.html'>base::connection</a> moved to position <code>position</code>.</p>
+    <p>A file <a href='https://rdrr.io/r/base/connections.html'>base::connection</a> moved to position <code>offset</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

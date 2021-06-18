@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0-9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -137,10 +137,12 @@
 
     <pre class="usage"><span class='fu'>make_file_index</span><span class='op'>(</span>
   <span class='va'>pathname</span>,
+  offset <span class='op'>=</span> <span class='fl'>0</span>,
   skip <span class='op'>=</span> <span class='fl'>0L</span>,
   n_max <span class='op'>=</span> <span class='cn'>Inf</span>,
   newline <span class='op'>=</span> <span class='st'>"\n"</span>,
-  bfr_size <span class='op'>=</span> <span class='fl'>1e+07</span>
+  drop_eof <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  bfr_size <span class='op'>=</span> <span class='fl'>5e+07</span>
 <span class='op'>)</span>
 
 <span class='fu'>save_file_index</span><span class='op'>(</span><span class='va'>index</span>, <span class='va'>file</span><span class='op'>)</span>
@@ -155,8 +157,13 @@
       <td><p>(character) The file to be indexed.</p></td>
     </tr>
     <tr>
-      <th>skip</th>
+      <th>offset</th>
       <td><p>(numeric) The number of bytes to skip before start indexing.</p></td>
+    </tr>
+    <tr>
+      <th>skip</th>
+      <td><p>(numeric) The number of <code>newline</code> matches to ignore before
+recording them.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
@@ -165,6 +172,12 @@
     <tr>
       <th>newline</th>
       <td><p>(character) The character to scan for.</p></td>
+    </tr>
+    <tr>
+      <th>drop_eof</th>
+      <td><p>(logical) If TRUE, the last identified byte offset is
+dropped if at the very end of the file, i.e. when there is nothing
+available to read from that position.</p></td>
     </tr>
     <tr>
       <th>bfr_size</th>
@@ -192,30 +205,60 @@ by a <code>newline</code> character.  The first line is at file byte offset
     <pre class="examples"><div class='input'><span class='va'>pathname</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"exdata"</span>, <span class='st'>"accounting"</span>, package <span class='op'>=</span> <span class='st'>"wyntonquery"</span><span class='op'>)</span>
 <span class='va'>index</span> <span class='op'>&lt;-</span> <span class='fu'>read_file_index</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%s.index"</span>, <span class='va'>pathname</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"Number of jobs: %d\n"</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>index</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Number of jobs: 1005</div><div class='input'>
-<span class='va'>con</span> <span class='op'>&lt;-</span> <span class='fu'><a href='open_file_at.html'>open_file_at</a></span><span class='op'>(</span><span class='va'>pathname</span>, position <span class='op'>=</span> <span class='va'>index</span><span class='op'>[</span><span class='fl'>1001</span><span class='op'>]</span><span class='op'>)</span>
-
-<span class='co'>## Get all jobs after the 1000:th job</span>
-<span class='va'>jobs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_sge_accounting.html'>read_sge_accounting</a></span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/connections.html'>close</a></span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Number of jobs: 1000</div><div class='input'>
+<span class='co'>## Get all jobs *after* the 500:th job</span>
+<span class='va'>jobs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_sge_accounting.html'>read_sge_accounting</a></span><span class='op'>(</span><span class='va'>pathname</span>, offset <span class='op'>=</span> <span class='va'>index</span><span class='op'>[</span><span class='fl'>501</span><span class='op'>]</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>jobs</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4 x 45</span>
-#&gt;   qname   hostname  group  owner  job_name           job_number account priority
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> short.q cin-hmid1 group5 owner… qss_process_resam…        425 sge           10
-#&gt; <span style='color: #BCBCBC;'>2</span> short.q cin-hmid1 group5 owner… qss_process_resam…        425 sge           10
-#&gt; <span style='color: #BCBCBC;'>3</span> short.q cin-hmid1 group5 owner… qss_process_resam…        425 sge           10
-#&gt; <span style='color: #BCBCBC;'>4</span> short.q cin-hmid1 group5 owner… qss_process_resam…        425 sge           10
-#&gt; <span style='color: #949494;'># … with 37 more variables: submission_time &lt;dttm&gt;, start_time &lt;dttm&gt;,</span>
-#&gt; <span style='color: #949494;'>#   end_time &lt;dttm&gt;, failed &lt;int&gt;, exit_status &lt;int&gt;, ru_wallclock &lt;drtn&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ru_utime &lt;drtn&gt;, ru_stime &lt;drtn&gt;, ru_maxrss &lt;chr&gt;, ru_ixrss &lt;chr&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;, ru_isrss &lt;chr&gt;, ru_minflt &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;, ru_oublock &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;, ru_nvcsw &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;, department &lt;chr&gt;, granted_pe &lt;chr&gt;,</span>
-#&gt; <span style='color: #949494;'>#   slots &lt;int&gt;, task_number &lt;int&gt;, cpu &lt;drtn&gt;, mem &lt;chr&gt;, io &lt;chr&gt;,</span>
-#&gt; <span style='color: #949494;'>#   category &lt;chr&gt;, iow &lt;drtn&gt;, pe_taskid &lt;chr&gt;, maxvmem &lt;dbl&gt;, arid &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ar_sub_time &lt;dttm&gt;</span></div></pre>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 500 x 45</span>
+#&gt;    qname  hostname  group  owner   job_name  job_number account priority
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> long.q cc-hmid1  group3 owner04 cc-hmid1         238 sge           19
+#&gt; <span style='color: #BCBCBC;'> 2</span> long.q cc-id1    group3 owner04 cc-id1           239 sge           19
+#&gt; <span style='color: #BCBCBC;'> 3</span> long.q cin-hmid1 group3 owner04 cin-hmid1        242 sge           19
+#&gt; <span style='color: #BCBCBC;'> 4</span> long.q qb3-hmid1 group3 owner04 qb3-hmid1        246 sge           19
+#&gt; <span style='color: #BCBCBC;'> 5</span> long.q cin-id3   group3 owner04 cin-id3          245 sge           19
+#&gt; <span style='color: #BCBCBC;'> 6</span> long.q qb3-id1   group3 owner04 qb3-id1          247 sge           19
+#&gt; <span style='color: #BCBCBC;'> 7</span> long.q cin-id2   group3 owner04 cin-id2          244 sge           19
+#&gt; <span style='color: #BCBCBC;'> 8</span> long.q qb3-id2   group3 owner04 qb3-id2          248 sge           19
+#&gt; <span style='color: #BCBCBC;'> 9</span> long.q cc-id3    group3 owner04 cc-id3           241 sge           19
+#&gt; <span style='color: #BCBCBC;'>10</span> long.q cin-id1   group3 owner04 cin-id1          243 sge           19
+#&gt; <span style='color: #949494;'># … with 490 more rows, and 37 more variables: submission_time &lt;dttm&gt;,</span>
+#&gt; <span style='color: #949494;'>#   start_time &lt;dttm&gt;, end_time &lt;dttm&gt;, failed &lt;int&gt;, exit_status &lt;int&gt;,</span>
+#&gt; <span style='color: #949494;'>#   ru_wallclock &lt;drtn&gt;, ru_utime &lt;drtn&gt;, ru_stime &lt;drtn&gt;, ru_maxrss &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   ru_ixrss &lt;chr&gt;, ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;, ru_isrss &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   ru_minflt &lt;dbl&gt;, ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   ru_oublock &lt;dbl&gt;, ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   ru_nvcsw &lt;dbl&gt;, ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;, department &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   granted_pe &lt;chr&gt;, slots &lt;int&gt;, task_number &lt;int&gt;, cpu &lt;drtn&gt;, mem &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   io &lt;chr&gt;, category &lt;chr&gt;, iow &lt;drtn&gt;, pe_taskid &lt;chr&gt;, maxvmem &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   arid &lt;dbl&gt;, ar_sub_time &lt;dttm&gt;</span></div><div class='input'>
+<span class='co'>## Get jobs 301 to 350</span>
+<span class='va'>jobs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_sge_accounting.html'>read_sge_accounting</a></span><span class='op'>(</span><span class='va'>pathname</span>, offset <span class='op'>=</span> <span class='va'>index</span><span class='op'>[</span><span class='fl'>301</span><span class='op'>]</span>, n_max <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>jobs</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 50 x 45</span>
+#&gt;    qname   hostname group  owner job_name            job_number account priority
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> member… qb3-id1  group4 owne… sleep.sh                     2 sge            0
+#&gt; <span style='color: #BCBCBC;'> 2</span> long.q  cc-id3   group6 owne… AD_196_bvFTD_65_mw…          3 sge           19
+#&gt; <span style='color: #BCBCBC;'> 3</span> long.q  qb3-id1  group6 owne… AD_196_bvFTD_65_mw…          4 sge           19
+#&gt; <span style='color: #BCBCBC;'> 4</span> long.q  cc-id2   group6 owne… AD_196_PSP_58_mwc1…          7 sge           19
+#&gt; <span style='color: #BCBCBC;'> 5</span> long.q  cin-id3  group6 owne… bvFTD_65_CONTROL_4…          9 sge           19
+#&gt; <span style='color: #BCBCBC;'> 6</span> long.q  cc-id1   group6 owne… AD_196_svPPA_46_mw…          8 sge           19
+#&gt; <span style='color: #BCBCBC;'> 7</span> long.q  cin-id2  group6 owne… bvFTD_65_nfvPPA_44…         10 sge           19
+#&gt; <span style='color: #BCBCBC;'> 8</span> long.q  cc-hmid1 group6 owne… AD_196_CONTROL_412…          5 sge           19
+#&gt; <span style='color: #BCBCBC;'> 9</span> long.q  cc-id3   group6 owne… CONTROL_412_PSP_58…         14 sge           19
+#&gt; <span style='color: #BCBCBC;'>10</span> long.q  cin-id1  group6 owne… bvFTD_65_PSP_58_mw…         11 sge           19
+#&gt; <span style='color: #949494;'># … with 40 more rows, and 37 more variables: submission_time &lt;dttm&gt;,</span>
+#&gt; <span style='color: #949494;'>#   start_time &lt;dttm&gt;, end_time &lt;dttm&gt;, failed &lt;int&gt;, exit_status &lt;int&gt;,</span>
+#&gt; <span style='color: #949494;'>#   ru_wallclock &lt;drtn&gt;, ru_utime &lt;drtn&gt;, ru_stime &lt;drtn&gt;, ru_maxrss &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   ru_ixrss &lt;chr&gt;, ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;, ru_isrss &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   ru_minflt &lt;dbl&gt;, ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   ru_oublock &lt;dbl&gt;, ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   ru_nvcsw &lt;dbl&gt;, ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;, department &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   granted_pe &lt;chr&gt;, slots &lt;int&gt;, task_number &lt;int&gt;, cpu &lt;drtn&gt;, mem &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   io &lt;chr&gt;, category &lt;chr&gt;, iow &lt;drtn&gt;, pe_taskid &lt;chr&gt;, maxvmem &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   arid &lt;dbl&gt;, ar_sub_time &lt;dttm&gt;</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0-9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -129,9 +129,9 @@
       <small>Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/NEWS'><code>NEWS</code></a></small>
     </div>
 
-    <div id="wyntonquery-0-0-0-9006" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.0-9006">
-<a href="#wyntonquery-0-0-0-9006" class="anchor"></a>wyntonquery 0.0.0-9006</h1>
+    <div id="wyntonquery-0-1-0" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.0">
+<a href="#wyntonquery-0-1-0" class="anchor"></a>wyntonquery 0.1.0</h1>
 <div id="new-features" class="section level3">
 <h3 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New Features</h3>
@@ -141,6 +141,7 @@
 <li><p>Add read_qstat() for getting information on the jobs currently on the SGE queue.</p></li>
 <li><p>Add make_file_index(), save_file_index(), and read_file_index().</p></li>
 <li><p>Add open_file_at().</p></li>
+<li><p>read_raw_sge_accounting(), and therefore also read_sge_accounting(), gained argument ‘offset’.</p></li>
 </ul>
 </div>
 <div id="documentation" class="section level3">
@@ -148,6 +149,13 @@
 <a href="#documentation" class="anchor"></a>Documentation</h3>
 <ul>
 <li>Add vignettes ‘SGE Accounting File’ and ‘Jobs on the SGE queue’.</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
+<ul>
+<li>The ‘ru_wallclock’ values returned by read_sge_account() were corrupted by “random” NAs.</li>
 </ul>
 </div>
 </div>
@@ -193,9 +201,9 @@
 <li>Expand example of read_sge_accounting() to display how to inspect how much CPU time was spent on successful and failed jobs.</li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level3">
+<div id="bug-fixes-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>Package did not pass ‘R CMD check –as-cran’ on systems without ‘qhost’.</li>
 </ul>
@@ -234,9 +242,9 @@
 <li><p>on_hostname() gained argument ‘on_error’ for controlling how errors should be handled.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level3">
+<div id="bug-fixes-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-2" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>cpu_info() did not handle upper-case letters in field names.</li>
 </ul>

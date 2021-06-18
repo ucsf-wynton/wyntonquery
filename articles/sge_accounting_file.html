@@ -12,7 +12,7 @@
 
 <meta name="author" content="Henrik Bengtsson" />
 
-<meta name="date" content="2021-06-16" />
+<meta name="date" content="2021-06-18" />
 
 <title>SGE Accounting File</title>
 
@@ -112,7 +112,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">SGE Accounting File</h1>
 <h4 class="author">Henrik Bengtsson</h4>
-<h4 class="date">2021-06-16</h4>
+<h4 class="date">2021-06-18</h4>
 
 
 
@@ -120,80 +120,149 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>Introduction</h2>
 <p>The SGE accounting file holds information on all submitted and <em>finished</em> jobs submitted to the SGE scheduler. Queued or currently running jobs are <em>not</em> included in this file. A job is considered &quot;finished&quot; if it completed successfully, terminated due to an error, or was cancelled. The file is a colon-delimited text file with one job entry per row, with the most recently finished job appended at end. Contrary to what one might expect, the file is not <em>perfectly</em> ordered by the <code>end_time</code> of the jobs. We might find some entries where the <code>end_time</code> of two consequentive entries might differ by a few seconds in the &quot;wrong&quot; order. It's not clear to me why this is but it might be that the scheduler updates the SGE accounting file at regular intervals, say every few minutes, and when it does it goes through the jobs in order of job index.</p>
 </div>
-<div id="reading-recent-entries" class="section level2">
-<h2>Reading recent entries</h2>
-<p>As of June 2021, the Wynton HPC accounting file is ~54 GB with 160.5 million job entries (using <code>wc -l</code>). In March 2020, it was ~12 GB and took 6-8 minutes to read in full.</p>
-<p>Here is how we can read the 1 million most recent entries, i.e. the 1 million jobs, including job-array tasks, that finished most recently.</p>
+<div id="indexing-the-sge-accounting-file" class="section level2">
+<h2>Indexing the SGE accounting file</h2>
+<p>In March 2020, it was ~12 GB and took 6-8 minutes to read in full. As of June 2021, the Wynton HPC accounting file is ~54 GB with 160.5 million job entries. It is rare to be interested in all entries. It is more common to work with a subset of the job entries. In order to do this efficiently, we start by indexing the SGE accounting using:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(wyntonquery)
+progressr<span class="op">::</span><span class="kw">handlers</span>(<span class="dt">global =</span> <span class="ot">TRUE</span>) ## Report on progress
 
 pathname &lt;-<span class="st"> </span><span class="kw">sge_accounting_file</span>()
 <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;File size: %.3g GB</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">file.size</span>(pathname)<span class="op">/</span><span class="dv">1024</span><span class="op">^</span><span class="dv">3</span>))
-<span class="co"># File size: 53.9 GB</span>
+<span class="co"># File size: 54.1 GB</span>
 
-## Read the last 1,000,000 job entries of the accounting file,
-## which takes 15-30 seconds to read
-njobs &lt;-<span class="st"> </span><span class="fl">1e6</span>
-jobs_all &lt;-<span class="st"> </span><span class="kw">read_sge_accounting</span>(<span class="kw">pipe</span>(<span class="kw">sprintf</span>(<span class="st">&quot;tail -n %d %s&quot;</span>, njobs<span class="op">+</span><span class="dv">4</span>, <span class="kw">shQuote</span>(pathname))))
+## It takes 5-10 minutes to index a 54 GB SGE accounting file
+index &lt;-<span class="st"> </span><span class="kw">make_file_index</span>(pathname, <span class="dt">skip =</span> 4L)
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of job entries: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">length</span>(index)))
+<span class="co"># Number of job entries: 160835061</span>
 
-## Statistics of finished jobs
-jobs &lt;-<span class="st"> </span>jobs_all
-period &lt;-<span class="st"> </span><span class="kw">range</span>(jobs<span class="op">$</span>end_time, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
-nusers &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">unique</span>(jobs_all<span class="op">$</span>owner))
-<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Period: %s/%s</span><span class="ch">\n</span><span class="st">&quot;</span>, period[<span class="dv">1</span>], period[<span class="dv">2</span>]))
-<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of jobs finished during this period: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">nrow</span>(jobs)))
-<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of unique users: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, nusers))
-<span class="co"># Period: 2021-06-13 18:15:30/2021-06-16 19:35:15</span>
-<span class="co"># Number of jobs finished during this period: 1000000</span>
-<span class="co"># Number of unique users: 118</span></code></pre></div>
-<div id="focus-on-jobs-ended-during-the-last-24-hours" class="section level3">
-<h3>Focus on jobs ended during the last 24 hours</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">jobs &lt;-<span class="st"> </span><span class="kw">subset</span>(jobs_all, end_time <span class="op">&gt;=</span><span class="st"> </span>period[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span><span class="dv">24</span><span class="op">*</span><span class="dv">3600</span>)
-period &lt;-<span class="st"> </span><span class="kw">range</span>(jobs<span class="op">$</span>end_time, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
-<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Period: %s/%s</span><span class="ch">\n</span><span class="st">&quot;</span>, period[<span class="dv">1</span>], period[<span class="dv">2</span>]))
-<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of jobs finished during this period: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">nrow</span>(jobs)))
-Period<span class="op">:</span><span class="st"> </span><span class="dv">2021-06-15</span> <span class="dv">19</span><span class="op">:</span><span class="dv">35</span><span class="op">:</span><span class="dv">15</span><span class="op">/</span><span class="dv">2021-06-16</span> <span class="dv">19</span><span class="op">:</span><span class="dv">35</span><span class="op">:</span><span class="dv">15</span>
-Number of jobs finished during this period<span class="op">:</span><span class="st"> </span><span class="dv">216375</span></code></pre></div>
+## Save index to file for future use
+<span class="kw">save_file_index</span>(index, <span class="dt">file =</span> <span class="st">&quot;accounting.index&quot;</span>)</code></pre></div>
 </div>
-<div id="summary-of-successful-and-failed-jobs" class="section level3">
-<h3>Summary of successful and failed jobs</h3>
+<div id="reading-job-entries-in-sge-accounting-file" class="section level2">
+<h2>Reading job entries in SGE accounting file</h2>
+<p>Here is how we can read the ~100,000 most recent entries, which only takes a few seconds:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(wyntonquery)
+
+pathname &lt;-<span class="st"> </span><span class="kw">sge_accounting_file</span>()
+index &lt;-<span class="st"> </span><span class="kw">read_file_index</span>(<span class="st">&quot;accounting.index&quot;</span>)
+
+from &lt;-<span class="st"> </span><span class="fl">100e3</span>
+jobs &lt;-<span class="st"> </span><span class="kw">read_sge_accounting</span>(pathname, <span class="dt">offset =</span> index[<span class="kw">length</span>(index)<span class="op">+</span><span class="dv">1</span><span class="op">-</span>from])
+<span class="kw">print</span>(jobs)
+<span class="co"># A tibble: 103,419 x 45</span>
+   qname  hostname  group  owner job_name   job_number account priority submission_time     start_time          end_time            failed exit_status
+   <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">           </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dttm<span class="op">&gt;</span><span class="st">              </span><span class="er">&lt;</span>dttm<span class="op">&gt;</span><span class="st">              </span><span class="er">&lt;</span>dttm<span class="op">&gt;</span><span class="st">               </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>int<span class="op">&gt;</span>
+<span class="st"> </span><span class="dv">1</span> long.q qb3<span class="op">-</span>id149 group… owne… ddG_satur…     <span class="dv">273941</span> sge           <span class="dv">19</span> <span class="dv">2021-06-17</span> <span class="dv">10</span><span class="op">:</span><span class="dv">15</span><span class="op">:</span><span class="dv">11</span> <span class="dv">2021-06-17</span> <span class="dv">16</span><span class="op">:</span><span class="dv">07</span><span class="op">:</span><span class="dv">29</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">24</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">2</span> long.q qb3<span class="op">-</span>id26  group… owne… ddG_satur…     <span class="dv">273941</span> sge           <span class="dv">19</span> <span class="dv">2021-06-17</span> <span class="dv">10</span><span class="op">:</span><span class="dv">15</span><span class="op">:</span><span class="dv">11</span> <span class="dv">2021-06-17</span> <span class="dv">16</span><span class="op">:</span><span class="dv">33</span><span class="op">:</span><span class="dv">13</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">23</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">3</span> long.q qb3<span class="op">-</span>id78  group… owne… batch_3d       <span class="dv">275353</span> sge           <span class="dv">19</span> <span class="dv">2021-06-17</span> <span class="dv">11</span><span class="op">:</span><span class="dv">38</span><span class="op">:</span><span class="dv">15</span> <span class="dv">2021-06-17</span> <span class="dv">18</span><span class="op">:</span><span class="dv">58</span><span class="op">:</span><span class="dv">08</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">24</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">4</span> short… qb3<span class="op">-</span>id164 group… owne… min111         <span class="dv">280589</span> sge           <span class="dv">10</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">09</span><span class="op">:</span><span class="dv">28</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">10</span><span class="op">:</span><span class="dv">34</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">25</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">5</span> long.q qb3<span class="op">-</span>id176 group… owne… ddG_satur…     <span class="dv">273941</span> sge           <span class="dv">19</span> <span class="dv">2021-06-17</span> <span class="dv">10</span><span class="op">:</span><span class="dv">15</span><span class="op">:</span><span class="dv">11</span> <span class="dv">2021-06-17</span> <span class="dv">16</span><span class="op">:</span><span class="dv">44</span><span class="op">:</span><span class="dv">48</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">25</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">6</span> short… qb3<span class="op">-</span>id176 group… owne… min153         <span class="dv">280621</span> sge           <span class="dv">10</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">09</span><span class="op">:</span><span class="dv">38</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">10</span><span class="op">:</span><span class="dv">34</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">25</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">7</span> long.q qb3<span class="op">-</span>ih59  group… owne… batch_3d       <span class="dv">274703</span> sge           <span class="dv">19</span> <span class="dv">2021-06-17</span> <span class="dv">11</span><span class="op">:</span><span class="dv">28</span><span class="op">:</span><span class="dv">06</span> <span class="dv">2021-06-17</span> <span class="dv">18</span><span class="op">:</span><span class="dv">25</span><span class="op">:</span><span class="dv">42</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">25</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">8</span> short… qb3<span class="op">-</span>ih35  group… owne… min133         <span class="dv">280751</span> sge           <span class="dv">10</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">10</span><span class="op">:</span><span class="dv">17</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">22</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">26</span>      <span class="dv">0</span>         <span class="dv">132</span>
+ <span class="dv">9</span> short… qb3<span class="op">-</span>ih29  group… owne… min62          <span class="dv">280708</span> sge           <span class="dv">10</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">10</span><span class="op">:</span><span class="dv">04</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">22</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">26</span>      <span class="dv">0</span>         <span class="dv">132</span>
+<span class="dv">10</span> short… qb3<span class="op">-</span>ih29  group… owne… min69          <span class="dv">280714</span> sge           <span class="dv">10</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">10</span><span class="op">:</span><span class="dv">06</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">22</span> <span class="dv">2021-06-17</span> <span class="dv">19</span><span class="op">:</span><span class="dv">13</span><span class="op">:</span><span class="dv">26</span>      <span class="dv">0</span>         <span class="dv">132</span>
+<span class="co"># … with 103,409 more rows, and 32 more variables: ru_wallclock &lt;drtn&gt;, ru_utime &lt;drtn&gt;, ru_stime &lt;drtn&gt;, ru_maxrss &lt;chr&gt;,</span>
+<span class="co">#   ru_ixrss &lt;chr&gt;, ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;, ru_isrss &lt;chr&gt;, ru_minflt &lt;dbl&gt;, ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;,</span>
+<span class="co">#   ru_oublock &lt;dbl&gt;, ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;, ru_nvcsw &lt;dbl&gt;, ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;,</span>
+<span class="co">#   department &lt;chr&gt;, granted_pe &lt;chr&gt;, slots &lt;int&gt;, task_number &lt;int&gt;, cpu &lt;drtn&gt;, mem &lt;chr&gt;, io &lt;chr&gt;, category &lt;chr&gt;, iow &lt;drtn&gt;,</span>
+<span class="co">#   pe_taskid &lt;chr&gt;, maxvmem &lt;dbl&gt;, arid &lt;dbl&gt;, ar_sub_time &lt;dttm&gt;</span></code></pre></div>
+<p><em>Comment:</em> The reason for getting more than 100,000 job entries is that the SGE accounting file had recorded another 3,419 jobs since we last indexed the file.</p>
+<p>To read, say, 10,000 jobs starting with job entry 120,000,000, use:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">from &lt;-<span class="st"> </span><span class="dv">120000000</span>
+jobs &lt;-<span class="st"> </span><span class="kw">read_sge_accounting</span>(pathname, <span class="dt">offset =</span> index[from], <span class="dt">n_max =</span> <span class="dv">10000</span>)
+<span class="kw">print</span>(jobs)
+<span class="co"># A tibble: 10,000 x 45</span>
+   qname    hostname  group  owner job_name job_number account priority submission_time     start_time          end_time            failed exit_status
+   <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">         </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dttm<span class="op">&gt;</span><span class="st">              </span><span class="er">&lt;</span>dttm<span class="op">&gt;</span><span class="st">              </span><span class="er">&lt;</span>dttm<span class="op">&gt;</span><span class="st">               </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>int<span class="op">&gt;</span>
+<span class="st"> </span><span class="dv">1</span> long.q   qb3<span class="op">-</span>id146 bks    jji   batch_3d    <span class="dv">2514714</span> sge           <span class="dv">19</span> <span class="dv">2021-03-18</span> <span class="dv">05</span><span class="op">:</span><span class="dv">17</span><span class="op">:</span><span class="dv">48</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">09</span><span class="op">:</span><span class="dv">45</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">40</span><span class="op">:</span><span class="dv">23</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">2</span> long.q   qb3<span class="op">-</span>id66  bks    jji   batch_3d    <span class="dv">2514751</span> sge           <span class="dv">19</span> <span class="dv">2021-03-18</span> <span class="dv">05</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">06</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">20</span><span class="op">:</span><span class="dv">45</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">40</span><span class="op">:</span><span class="dv">23</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">3</span> member.q qb3<span class="op">-</span>id70  modweb modw… TB_2julA    <span class="dv">2515048</span> sge            <span class="dv">0</span> <span class="dv">2021-03-18</span> <span class="dv">06</span><span class="op">:</span><span class="dv">47</span><span class="op">:</span><span class="dv">47</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">38</span><span class="op">:</span><span class="dv">45</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">40</span><span class="op">:</span><span class="dv">23</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">4</span> long.q   qb3<span class="op">-</span>ad9   bks    jji   batch_3d    <span class="dv">2514714</span> sge           <span class="dv">19</span> <span class="dv">2021-03-18</span> <span class="dv">05</span><span class="op">:</span><span class="dv">17</span><span class="op">:</span><span class="dv">48</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">10</span><span class="op">:</span><span class="dv">45</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">40</span><span class="op">:</span><span class="dv">24</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">5</span> member.q qb3<span class="op">-</span>id195 modweb modw… TB_2julA    <span class="dv">2515048</span> sge            <span class="dv">0</span> <span class="dv">2021-03-18</span> <span class="dv">06</span><span class="op">:</span><span class="dv">47</span><span class="op">:</span><span class="dv">47</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">38</span><span class="op">:</span><span class="dv">45</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">40</span><span class="op">:</span><span class="dv">25</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">6</span> long.q   qb3<span class="op">-</span>id83  bks    jji   batch_3d    <span class="dv">2514820</span> sge           <span class="dv">19</span> <span class="dv">2021-03-18</span> <span class="dv">05</span><span class="op">:</span><span class="dv">36</span><span class="op">:</span><span class="dv">24</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">30</span><span class="op">:</span><span class="dv">45</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">40</span><span class="op">:</span><span class="dv">26</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">7</span> long.q   qb3<span class="op">-</span>id31  bks    jji   batch_3d    <span class="dv">2514820</span> sge           <span class="dv">19</span> <span class="dv">2021-03-18</span> <span class="dv">05</span><span class="op">:</span><span class="dv">36</span><span class="op">:</span><span class="dv">24</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">29</span><span class="op">:</span><span class="dv">45</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">40</span><span class="op">:</span><span class="dv">26</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">8</span> long.q   qb3<span class="op">-</span>id124 bks    jji   batch_3d    <span class="dv">2514827</span> sge           <span class="dv">19</span> <span class="dv">2021-03-18</span> <span class="dv">05</span><span class="op">:</span><span class="dv">38</span><span class="op">:</span><span class="dv">30</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">33</span><span class="op">:</span><span class="dv">45</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">40</span><span class="op">:</span><span class="dv">26</span>      <span class="dv">0</span>           <span class="dv">0</span>
+ <span class="dv">9</span> long.q   qb3<span class="op">-</span>id52  bks    jji   batch_3d    <span class="dv">2514820</span> sge           <span class="dv">19</span> <span class="dv">2021-03-18</span> <span class="dv">05</span><span class="op">:</span><span class="dv">36</span><span class="op">:</span><span class="dv">24</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">29</span><span class="op">:</span><span class="dv">45</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">40</span><span class="op">:</span><span class="dv">26</span>      <span class="dv">0</span>           <span class="dv">0</span>
+<span class="dv">10</span> long.q   cc<span class="op">-</span>id1    bks    jji   batch_3d    <span class="dv">2514783</span> sge           <span class="dv">19</span> <span class="dv">2021-03-18</span> <span class="dv">05</span><span class="op">:</span><span class="dv">30</span><span class="op">:</span><span class="dv">12</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">23</span><span class="op">:</span><span class="dv">45</span> <span class="dv">2021-03-18</span> <span class="dv">07</span><span class="op">:</span><span class="dv">40</span><span class="op">:</span><span class="dv">27</span>      <span class="dv">0</span>           <span class="dv">0</span>
+<span class="co"># … with 9,990 more rows, and 32 more variables: ru_wallclock &lt;drtn&gt;, ru_utime &lt;drtn&gt;, ru_stime &lt;drtn&gt;, ru_maxrss &lt;chr&gt;, ru_ixrss &lt;chr&gt;,</span>
+<span class="co">#   ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;, ru_isrss &lt;chr&gt;, ru_minflt &lt;dbl&gt;, ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;, ru_oublock &lt;dbl&gt;,</span>
+<span class="co">#   ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;, ru_nvcsw &lt;dbl&gt;, ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;, department &lt;chr&gt;, granted_pe &lt;chr&gt;,</span>
+<span class="co">#   slots &lt;int&gt;, task_number &lt;int&gt;, cpu &lt;drtn&gt;, mem &lt;chr&gt;, io &lt;chr&gt;, category &lt;chr&gt;, iow &lt;drtn&gt;, pe_taskid &lt;chr&gt;, maxvmem &lt;dbl&gt;, arid &lt;dbl&gt;,</span>
+<span class="co">#   ar_sub_time &lt;dttm&gt;</span></code></pre></div>
+</div>
+<div id="statistics-of-jobs-finished-during-the-last-24-hours" class="section level2">
+<h2>Statistics of jobs finished during the last 24 hours</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(wyntonquery)
+
+pathname &lt;-<span class="st"> </span><span class="kw">sge_accounting_file</span>()
+index &lt;-<span class="st"> </span><span class="kw">read_file_index</span>(<span class="st">&quot;accounting.index&quot;</span>)
+
+## Read enough job entries to cover 24 hours and more
+from &lt;-<span class="st"> </span><span class="fl">300e3</span>
+jobs &lt;-<span class="st"> </span><span class="kw">read_sge_accounting</span>(pathname, <span class="dt">offset =</span> index[<span class="kw">length</span>(index)<span class="op">+</span><span class="dv">1</span><span class="op">-</span>from])
+
+period &lt;-<span class="st"> </span><span class="kw">range</span>(jobs<span class="op">$</span>end_time, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Period: %s/%s</span><span class="ch">\n</span><span class="st">&quot;</span>, period[<span class="dv">1</span>], period[<span class="dv">2</span>]))
+## Period: 2021-06-17 04:23:00/2021-06-18 09:26:06
+
+## Keep jobs for the last 24 hours
+jobs &lt;-<span class="st"> </span><span class="kw">subset</span>(jobs, end_time <span class="op">&gt;=</span><span class="st"> </span>period[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span><span class="dv">24</span><span class="op">*</span><span class="dv">3600</span>)
+period &lt;-<span class="st"> </span><span class="kw">range</span>(jobs<span class="op">$</span>end_time, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Period: %s/%s</span><span class="ch">\n</span><span class="st">&quot;</span>, period[<span class="dv">1</span>], period[<span class="dv">2</span>]))
+## Period: 2021-06-15 19:35:15/2021-06-16 19:35:15
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of jobs finished during this period: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">nrow</span>(jobs)))
+## Number of jobs finished during this period: 197538
+
+nusers &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">unique</span>(jobs<span class="op">$</span>owner))
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of unique users: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, nusers))
+<span class="co"># Number of unique users: 79</span></code></pre></div>
+<p>Let's see how many of the jobs finished succesfully and how many failed.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Get successful and failed jobs
-jobs &lt;-<span class="st"> </span>jobs_all
-jobs &lt;-<span class="st"> </span><span class="kw">list</span>(
+groups &lt;-<span class="st"> </span><span class="kw">list</span>(
   <span class="dt">success =</span> <span class="kw">subset</span>(jobs, failed <span class="op">==</span><span class="st"> </span>0L),
   <span class="dt">fail    =</span> <span class="kw">subset</span>(jobs, failed <span class="op">&gt;</span><span class="st"> </span>0L)
 )
-<span class="kw">print</span>(<span class="kw">sapply</span>(jobs, nrow))
+stats &lt;-<span class="st"> </span><span class="kw">sapply</span>(groups, nrow)
+<span class="kw">print</span>(stats)
 <span class="co"># success    fail </span>
-<span class="co">#  979905   20095</span>
+<span class="co">#  191701    5837 </span>
 
-## CPU time consumed
-cpu &lt;-<span class="st"> </span><span class="kw">sapply</span>(jobs, <span class="cf">function</span>(j) { d &lt;-<span class="st"> </span><span class="kw">sum</span>(j<span class="op">$</span>cpu); <span class="kw">units</span>(d) &lt;-<span class="st"> &quot;days&quot;</span>; d })
+<span class="kw">print</span>(stats<span class="op">/</span><span class="kw">sum</span>(stats))
+<span class="co">#    success       fail </span>
+<span class="co"># 0.97045125 0.02954875</span></code></pre></div>
+<p>We see that failure rate among the ~200,000 jobs that ran the last 24 hours was ~3%. Next, let's see how much CPU time this correspondsa to:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## CPU time consumed
+cpu &lt;-<span class="st"> </span><span class="kw">sapply</span>(groups, <span class="cf">function</span>(jobs) { d &lt;-<span class="st"> </span><span class="kw">sum</span>(jobs<span class="op">$</span>cpu); <span class="kw">units</span>(d) &lt;-<span class="st"> &quot;days&quot;</span>; d })
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Total CPU processing time: %.1f hours</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">sum</span>(cpu)))
+<span class="co"># Total CPU processing time: 7937.3 hours</span>
+
 <span class="kw">print</span>(cpu)
 <span class="co">#   success      fail </span>
-<span class="co"># 17742.775  1390.293</span>
+<span class="co"># 7562.2252  375.1175</span>
 
 ## CPU-time fractions
 <span class="kw">print</span>(cpu <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(cpu))
 <span class="co">#    success       fail </span>
-<span class="co"># 0.92733561 0.07266439</span></code></pre></div>
-<p>From this, we see that during the last 24 hours, 7% of the CPU time was consumed by jobs that failed. Among the failed jobs, the failure code was distributed as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">table</span>(jobs<span class="op">$</span>fail<span class="op">$</span>failed))
-<span class="co">#     1     8    21    25    26    27    28    37   100 </span>
-<span class="co">#    48     1     1  6873     6     1    11  1639 11515 </span></code></pre></div>
+<span class="co"># 0.95274017 0.04725983</span></code></pre></div>
+<p>From this, we find that during the last 24 hours, ~5% of the CPU time was consumed by jobs that failed. Among the failed jobs, the failure code was distributed as:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">table</span>(groups<span class="op">$</span>fail<span class="op">$</span>failed))
+<span class="co">#   25   26   37  100 </span>
+<span class="co">#    5    1 4440 1391</span></code></pre></div>
 <p>From <code>help(&quot;read_sge_accounting&quot;, package=&quot;wyntonquery&quot;)</code> for details on the parsed fields and their data types, these description of some of these codes are:</p>
 <ul>
+<li>25: rescheduling</li>
 <li>26: failed opening stderr/stdout file</li>
 <li>37: ran but killed because it exceeded the maximum run time (<code>h_rt</code>), maximum CPU time (<code>h_cpu</code>), or maximum virtual memory (<code>h_vmem</code>)</li>
 <li>100: ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.</li>
 </ul>
-<p>The jobs that exhausted their limits, consumed 369 days of CPU time;</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>d &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">subset</span>(jobs<span class="op">$</span>fail, failed <span class="op">==</span><span class="st"> </span><span class="dv">37</span>)<span class="op">$</span>cpu); <span class="kw">units</span>(d) &lt;-<span class="st"> &quot;days&quot;</span>
-<span class="op">&gt;</span><span class="st"> </span>d
-Time difference of <span class="fl">368.6784</span> days</code></pre></div>
-<p>which corresponds to ~2% of all CPU time consumed;</p>
+<p>The jobs that exhausted their limits, consumed 213 days of CPU time;</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">subset</span>(groups<span class="op">$</span>fail, failed <span class="op">==</span><span class="st"> </span><span class="dv">37</span>)<span class="op">$</span>cpu); <span class="kw">units</span>(d) &lt;-<span class="st"> &quot;days&quot;</span>
+<span class="kw">print</span>(d)
+<span class="co"># Time difference of 212.8236 days</span></code></pre></div>
+<p>which corresponds to ~3% of all CPU time spent:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">as.numeric</span>(d<span class="op">/</span><span class="kw">sum</span>(cpu))
-[<span class="dv">1</span>] <span class="fl">0.01926917</span></code></pre></div>
-</div>
+[<span class="dv">1</span>] <span class="fl">0.02681296</span></code></pre></div>
 </div>
 
 
