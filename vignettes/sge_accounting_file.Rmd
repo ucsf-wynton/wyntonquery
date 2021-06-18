@@ -55,6 +55,7 @@ index <- read_file_index("accounting.index")
 
 from <- 100e3
 jobs <- read_sge_accounting(pathname, offset = index[length(index)+1-from])
+jobs <- anonymize(jobs)
 print(jobs)
 # A tibble: 103,419 x 45
    qname  hostname  group  owner job_name   job_number account priority submission_time     start_time          end_time            failed exit_status
@@ -84,20 +85,21 @@ To read, say, 10,000 jobs starting with job entry 120,000,000, use:
 ```r
 from <- 120000000
 jobs <- read_sge_accounting(pathname, offset = index[from], n_max = 10000)
+jobs <- anonymize(jobs)
 print(jobs)
 # A tibble: 10,000 x 45
-   qname    hostname  group  owner job_name job_number account priority submission_time     start_time          end_time            failed exit_status
-   <chr>    <chr>     <chr>  <chr> <chr>         <int> <chr>      <int> <dttm>              <dttm>              <dttm>               <int>       <int>
- 1 long.q   qb3-id146 bks    jji   batch_3d    2514714 sge           19 2021-03-18 05:17:48 2021-03-18 07:09:45 2021-03-18 07:40:23      0           0
- 2 long.q   qb3-id66  bks    jji   batch_3d    2514751 sge           19 2021-03-18 05:26:06 2021-03-18 07:20:45 2021-03-18 07:40:23      0           0
- 3 member.q qb3-id70  modweb modw… TB_2julA    2515048 sge            0 2021-03-18 06:47:47 2021-03-18 07:38:45 2021-03-18 07:40:23      0           0
- 4 long.q   qb3-ad9   bks    jji   batch_3d    2514714 sge           19 2021-03-18 05:17:48 2021-03-18 07:10:45 2021-03-18 07:40:24      0           0
- 5 member.q qb3-id195 modweb modw… TB_2julA    2515048 sge            0 2021-03-18 06:47:47 2021-03-18 07:38:45 2021-03-18 07:40:25      0           0
- 6 long.q   qb3-id83  bks    jji   batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:30:45 2021-03-18 07:40:26      0           0
- 7 long.q   qb3-id31  bks    jji   batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:29:45 2021-03-18 07:40:26      0           0
- 8 long.q   qb3-id124 bks    jji   batch_3d    2514827 sge           19 2021-03-18 05:38:30 2021-03-18 07:33:45 2021-03-18 07:40:26      0           0
- 9 long.q   qb3-id52  bks    jji   batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:29:45 2021-03-18 07:40:26      0           0
-10 long.q   cc-id1    bks    jji   batch_3d    2514783 sge           19 2021-03-18 05:30:12 2021-03-18 07:23:45 2021-03-18 07:40:27      0           0
+   qname   hostname  group  owner  job_name job_number account priority submission_time     start_time          end_time            failed exit_status
+   <chr>   <chr>     <chr>  <chr>  <chr>         <int> <chr>      <int> <dttm>              <dttm>              <dttm>               <int>       <int>
+ 1 long.q  qb3-id146 group… owner… batch_3d    2514714 sge           19 2021-03-18 05:17:48 2021-03-18 07:09:45 2021-03-18 07:40:23      0           0
+ 2 long.q  qb3-id66  group… owner… batch_3d    2514751 sge           19 2021-03-18 05:26:06 2021-03-18 07:20:45 2021-03-18 07:40:23      0           0
+ 3 member… qb3-id70  group… owner… TB_2julA    2515048 sge            0 2021-03-18 06:47:47 2021-03-18 07:38:45 2021-03-18 07:40:23      0           0
+ 4 long.q  qb3-ad9   group… owner… batch_3d    2514714 sge           19 2021-03-18 05:17:48 2021-03-18 07:10:45 2021-03-18 07:40:24      0           0
+ 5 member… qb3-id195 group… owner… TB_2julA    2515048 sge            0 2021-03-18 06:47:47 2021-03-18 07:38:45 2021-03-18 07:40:25      0           0
+ 6 long.q  qb3-id83  group… owner… batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:30:45 2021-03-18 07:40:26      0           0
+ 7 long.q  qb3-id31  group… owner… batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:29:45 2021-03-18 07:40:26      0           0
+ 8 long.q  qb3-id124 group… owner… batch_3d    2514827 sge           19 2021-03-18 05:38:30 2021-03-18 07:33:45 2021-03-18 07:40:26      0           0
+ 9 long.q  qb3-id52  group… owner… batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:29:45 2021-03-18 07:40:26      0           0
+10 long.q  cc-id1    group… owner… batch_3d    2514783 sge           19 2021-03-18 05:30:12 2021-03-18 07:23:45 2021-03-18 07:40:27      0           0
 # … with 9,990 more rows, and 32 more variables: ru_wallclock <drtn>, ru_utime <drtn>, ru_stime <drtn>, ru_maxrss <chr>, ru_ixrss <chr>,
 #   ru_ismrss <chr>, ru_idrss <chr>, ru_isrss <chr>, ru_minflt <dbl>, ru_majflt <dbl>, ru_nswap <dbl>, ru_inblock <dbl>, ru_oublock <dbl>,
 #   ru_msgsnd <dbl>, ru_msgrcv <dbl>, ru_nsignals <dbl>, ru_nvcsw <dbl>, ru_nivcsw <dbl>, project <chr>, department <chr>, granted_pe <chr>,
