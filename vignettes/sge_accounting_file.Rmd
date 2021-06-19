@@ -23,11 +23,12 @@ The SGE accounting file holds information on all submitted and _finished_ jobs s
 
 ## Indexing the SGE accounting file
 
-In March 2020, it was ~12 GB and took 6-8 minutes to read in full.  As of June 2021, the Wynton HPC accounting file is ~54 GB with 160.5 million job entries.  It is rare to be interested in all entries.  It is more common to work with a subset of the job entries.  In order to do this efficiently, we start by indexing the SGE accounting using:
+In March 2020, it was ~12 GB and took 6-8 minutes to read in full.  As of June 2021, the Wynton HPC accounting file is ~54 GB with 160.5 million job entries.  It is rare to be interested in all entries.  It is more common to work with a subset of the job entries.  In order to do this efficiently, we start by indexing the SGE accounting file to identify the file byte offset for each job entry;
 
 ```r
 library(wyntonquery)
 progressr::handlers(global = TRUE) ## Report on progress
+progressr::handlers("progress")
 
 pathname <- sge_accounting_file()
 cat(sprintf("File size: %.3g GB\n", file.size(pathname)/1024^3))
@@ -38,23 +39,55 @@ index <- make_file_index(pathname, skip = 4L)
 cat(sprintf("Number of job entries: %d\n", length(index)))
 # Number of job entries: 160835061
 
-## Save index to file for future use
-save_file_index(index, file = "accounting.index")
+## Save per-job index to file
+save_file_index(index, file = "accounting.index_by_row")
 ```
+
+Next, we want to group the job entries by the ISO-6801 week of the job end times.
+
+```r
+library(wyntonquery)
+progressr::handlers(global = TRUE) ## Report on progress
+progressr::handlers("progress")
+
+pathname <- sge_accounting_file()
+index <- read_file_index("accounting.index_by_row")
+week_index <- sge_make_week_index(pathname, index = index)
+saveRDS(week_index, file = filename)
+
+print(week_index)
+# A tibble: 201 x 3
+   week    nbr_of_jobs file_offset
+   <chr>         <dbl>       <dbl>
+ 1 2017W33         406          59
+ 2 2017W34         450      113195
+ 3 2017W35         499      127727
+ 4 2017W36         523      143361
+ 5 2017W37         531      150740
+ 6 2017W38         561      153559
+ 7 2017W39         579      163657
+ 8 2017W40         601      169804
+ 9 2017W41         603      177075
+10 2017W42         621      177695
+# … with 191 more rows
+```
+
 
 
 ## Reading job entries in SGE accounting file
 
-Here is how we can read the ~100,000 most recent entries, which only takes a few seconds:
+Here is an example how we can read the job entries for a couple of weeks:
 
 ```r
 library(wyntonquery)
 
 pathname <- sge_accounting_file()
-index <- read_file_index("accounting.index")
+week_index <- readRDS("accounting.index_by_week.rds")
 
-from <- 100e3
-jobs <- read_sge_accounting(pathname, offset = index[length(index)+1-from])
+weeks <- c("2020W04", "2020W05")
+offset <- week_index$file_offset[weeks[1]]
+n_max <- sum(week_index$nbr_of_jobs[weeks])
+jobs <- read_sge_accounting(pathname, offset = offset, n_max = n_max)
 jobs <- anonymize(jobs)
 print(jobs)
 # A tibble: 103,419 x 45

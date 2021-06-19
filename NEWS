@@ -4,7 +4,7 @@ Version: 0.1.0-9000 [2021-06-18]
 
 NEW FEATURES:
 
- * Add sge_find_weeks().
+ * Add sge_make_week_index().
  
 
 Version: 0.1.0 [2021-06-18]

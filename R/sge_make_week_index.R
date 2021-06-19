@@ -15,13 +15,16 @@
 #'
 #' @param debug (logical) If TRUE, display debug messages.
 #'
-#' @return A named list of file-byte offsets of the first job with
-#' and end time in the corresponding week.  The entries are named
-#' using `%GW%V` week format, e.g. `2021W48`.
+#' @return A [tibble::tibble] with fields:
+#'  * `week` (character) - the ISO-8601 week name, e.g. `"2021W48"`
+#'  * `nbr_of_jobs` (numeric) - number of jobs
+#'  * `file_offset` (numeric) - the file byte offset
+#' The week names uses `%GW%V` week format.
 #'
 #' @importFrom progressr progressor
+#' @importFrom tibble as_tibble
 #' @export
-sge_find_weeks <- function(file, index, until = NULL, n_max = Inf, delta = 100000, debug = FALSE) {
+sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 100000, debug = FALSE) {
   ntry <- function(expr, envir = parent.frame(), tries = 5L, wait = 1.0) {
     expr <- substitute(expr)
     for (kk in seq_len(tries)) {
@@ -30,7 +33,6 @@ sge_find_weeks <- function(file, index, until = NULL, n_max = Inf, delta = 10000
       }, error = identity)
       if (!inherits(value, "error")) return(value)
       Sys.sleep(wait)
-      tries <- tries - 1L
     }
     eval(expr, envir = envir)
   } # ntry()
@@ -41,7 +43,7 @@ sge_find_weeks <- function(file, index, until = NULL, n_max = Inf, delta = 10000
   by <- "end_time"
   
   ## Report on progress along 'index' every 1000:th entries
-  p <- progressor(length(index) / 1000)
+  p <- progressor(length(index) / 1000 + 2)
   
   pos <- 1
 
@@ -71,6 +73,7 @@ sge_find_weeks <- function(file, index, until = NULL, n_max = Inf, delta = 10000
       if (!forward) delta <- max(floor(delta / 2), 1)
       pos <- pos + delta
       forward <- TRUE
+      p(amount = 0)
     } else {
       ## Invalid entry?
       if (is.na(week)) {
@@ -86,6 +89,7 @@ sge_find_weeks <- function(file, index, until = NULL, n_max = Inf, delta = 10000
 	  attr(weeks, "terminated") <- "NA"
           break
 	}
+        p(amount = 0)
 	next
       }
       
@@ -119,11 +123,28 @@ sge_find_weeks <- function(file, index, until = NULL, n_max = Inf, delta = 10000
         pos <- last_same + 1
 	forward <- TRUE
       }
+      p(amount = 0)
     }
     if (debug) str(list(count = count, pos = pos, last_same = last_same, delta = delta))
     stopifnot(pos > last_same)
     count <- count + 1L
   }
-  p(step = length(index))
-  weeks
+  p(step = length(index) / 1000)
+
+  ## Coerce to a named vector
+  stopifnot(all(lengths(weeks) == 1))
+  weeks <- unlist(weeks, use.names = TRUE)
+  weeks <- weeks[!duplicated(weeks)]
+  p("number of jobs per week")
+  
+  week_index <- data.frame(
+    week        = names(weeks),
+    nbr_of_jobs = c(match(weeks, index)[-1] - 1, Inf),
+    file_offset = unname(weeks)
+  )
+  week_index <- as_tibble(week_index)
+
+  p()
+
+  week_index
 }
