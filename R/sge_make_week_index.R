@@ -23,6 +23,7 @@
 #'
 #' @importFrom progressr progressor
 #' @importFrom tibble as_tibble
+#' @importFrom utils str
 #' @export
 sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 100000, debug = FALSE) {
   ntry <- function(expr, envir = parent.frame(), tries = 5L, wait = 1.0) {

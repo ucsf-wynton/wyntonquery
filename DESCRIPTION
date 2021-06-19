@@ -9,6 +9,7 @@ Imports:
     prettyunits,
     progressr,
     readr,
+    utils,
     tibble,
     xml2,
     future,
