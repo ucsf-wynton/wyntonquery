@@ -79,42 +79,42 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
       ## Invalid entry?
       if (is.na(week)) {
         pos <- pos + if (forward) +1 else -1
-	if (pos <= last_same) {
-	  pos <- last_same + 1
-	  forward <- TRUE
-	} else if (pos >= length(index)) {
-	  pos <- length(index) - 1
-	  forward <- FALSE
-	}
-	if (pos <= last_same) {
-	  attr(weeks, "terminated") <- "NA"
+        if (pos <= last_same) {
+          pos <- last_same + 1
+          forward <- TRUE
+        } else if (pos >= length(index)) {
+          pos <- length(index) - 1
+          forward <- FALSE
+        }
+        if (pos <= last_same) {
+          attr(weeks, "terminated") <- "NA"
           break
-	}
+        }
         p(amount = 0)
-	next
+        next
       }
       
       if (delta == 1) {
         if (debug) message("Found next week")
         weeks[[week]] <- c(weeks[[week]], offset)
-	amount <- (pos - last)/1000
-	if (debug) message(sprintf("%s: amount = %.0f / %.0f", week, amount, length(index)/1000))
+        amount <- (pos - last)/1000
+        if (debug) message(sprintf("%s: amount = %.0f / %.0f", week, amount, length(index)/1000))
         p(week, amount = amount)
         last_week <- week
-	delta <- delta_org
+        delta <- delta_org
         last_same <- pos
-	last <- pos
+        last <- pos
         pos <- pos + delta
         forward <- TRUE
         if (length(weeks) >= n_max) {
-	  attr(weeks, "terminated") <- "n_max"
-	  if (debug) message("n_max fulfilled: ", n_max)
-	  break
-	} else if (week %in% until) {
-	  attr(weeks, "terminated") <- "until"
-	  if (debug) message("until fulfilled: ", week)
-	  break
-	}
+          attr(weeks, "terminated") <- "n_max"
+          if (debug) message("n_max fulfilled: ", n_max)
+          break
+        } else if (week %in% until) {
+          attr(weeks, "terminated") <- "until"
+          if (debug) message("until fulfilled: ", week)
+          break
+        }
       }
       if (debug) message("Move back")
       if (forward) delta <- max(floor(delta / 2), 1)
@@ -122,7 +122,7 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
       forward <- FALSE
       if (pos <= last_same) {
         pos <- last_same + 1
-	forward <- TRUE
+        forward <- TRUE
       }
       p(amount = 0)
     }
