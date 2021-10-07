@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lists the Memory Information for the Current Machine — mem_info • wyntonquery</title>
+<title>Contributing to the ‘wyntonquery’ package • wyntonquery</title>
 
 
 <!-- jquery -->
@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script>
+<link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,14 +33,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="Lists the Memory Information for the Current Machine — mem_info" />
-<meta property="og:description" content="Lists the Memory Information for the Current Machine" />
+<meta property="og:title" content="Contributing to the ‘wyntonquery’ package" />
 
 
 
@@ -59,7 +58,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -71,7 +70,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">wyntonquery</a>
+        <a class="navbar-link" href="index.html">wyntonquery</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0-9000</span>
       </span>
     </div>
@@ -79,13 +78,13 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="index.html">
     <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -95,15 +94,15 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/qstat.html">Jobs on the SGE queue</a>
+      <a href="articles/qstat.html">Jobs on the SGE queue</a>
     </li>
     <li>
-      <a href="../articles/sge_accounting_file.html">SGE Accounting File</a>
+      <a href="articles/sge_accounting_file.html">SGE Accounting File</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -124,53 +123,28 @@
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-    <h1>Lists the Memory Information for the Current Machine</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/R/mem_info.R'><code>R/mem_info.R</code></a></small>
-    <div class="hidden name"><code>mem_info.Rd</code></div>
+      <h1>Contributing to the ‘wyntonquery’ package</h1>
     </div>
 
-    <div class="ref-description">
-    <p>Lists the Memory Information for the Current Machine</p>
-    </div>
+<div id="contributing-to-the-wyntonquery-package" class="section level1">
 
-    <pre class="usage"><span class='fu'>mem_info</span><span class='op'>(</span><span class='op'>)</span></pre>
+<p>This Git repository uses the <a href="https://nvie.com/posts/a-successful-git-branching-model/">Git Flow</a> branching model (the <a href="https://github.com/petervanderdoes/gitflow-avh"><code>git flow</code></a> extension is useful for this). The <a href="https://github.com/ucsf-wynton/wyntonquery/tree/develop"><code>develop</code></a> branch contains the latest contributions and other code that will appear in the next release, and the <a href="https://github.com/ucsf-wynton/wyntonquery"><code>master</code></a> branch contains the code of the latest release.</p>
+<p>Contributing to this package is easy. Just send a <a href="https://help.github.com/articles/using-pull-requests/">pull request</a>. When you send your PR, make sure <code>develop</code> is the destination branch on the <a href="https://github.com/ucsf-wynton/wyntonquery">wyntonquery repository</a>. Your PR should pass <code>R CMD check --as-cran</code>, which will also be checked by <a href="https://github.com/ucsf-wynton/wyntonquery/actions?query=workflow%3AR-CMD-check">GitHub Actions</a> and when the PR is submitted.</p>
+<p>We abide to the <a href="https://www.contributor-covenant.org/version/2/0/code_of_conduct/">Code of Conduct</a> of Contributor Covenant.</p>
+</div>
 
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A data.frame (tibble) with the two columns <code>field</code> and <code>value</code>.
-For most CPUs, there will be duplicated <code>field</code>:s.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function reads/queries <code>/proc/meminfo</code> on the current machine.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>mem_info</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 53 × 2</span>
-#&gt;    field                value
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> memtotal       <span style='text-decoration: underline;'>16</span>138<span style='text-decoration: underline;'>332</span>000
-#&gt; <span style='color: #BCBCBC;'> 2</span> memfree         <span style='text-decoration: underline;'>2</span>052<span style='text-decoration: underline;'>944</span>000
-#&gt; <span style='color: #BCBCBC;'> 3</span> memavailable    <span style='text-decoration: underline;'>9</span>006<span style='text-decoration: underline;'>904</span>000
-#&gt; <span style='color: #BCBCBC;'> 4</span> buffers          730<span style='text-decoration: underline;'>216</span>000
-#&gt; <span style='color: #BCBCBC;'> 5</span> cached          <span style='text-decoration: underline;'>6</span>554<span style='text-decoration: underline;'>072</span>000
-#&gt; <span style='color: #BCBCBC;'> 6</span> swapcached           <span style='text-decoration: underline;'>84</span>000
-#&gt; <span style='color: #BCBCBC;'> 7</span> active          <span style='text-decoration: underline;'>9</span>562<span style='text-decoration: underline;'>168</span>000
-#&gt; <span style='color: #BCBCBC;'> 8</span> inactive        <span style='text-decoration: underline;'>2</span>955<span style='text-decoration: underline;'>836</span>000
-#&gt; <span style='color: #BCBCBC;'> 9</span> active(anon)    <span style='text-decoration: underline;'>5</span>347<span style='text-decoration: underline;'>836</span>000
-#&gt; <span style='color: #BCBCBC;'>10</span> inactive(anon)   800<span style='text-decoration: underline;'>632</span>000
-#&gt; <span style='color: #949494;'># … with 43 more rows</span></div><div class='input'>
-</div></pre>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
+
 </div>
+
 
 
       <footer>

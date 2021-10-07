@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lists the Memory Information for the Current Machine — mem_info • wyntonquery</title>
+<title>NA • wyntonquery</title>
 
 
 <!-- jquery -->
@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script>
+<link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,14 +33,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="Lists the Memory Information for the Current Machine — mem_info" />
-<meta property="og:description" content="Lists the Memory Information for the Current Machine" />
+<meta property="og:title" content="NA" />
 
 
 
@@ -59,7 +58,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -71,7 +70,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">wyntonquery</a>
+        <a class="navbar-link" href="index.html">wyntonquery</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0-9000</span>
       </span>
     </div>
@@ -79,13 +78,13 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="index.html">
     <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -95,15 +94,15 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/qstat.html">Jobs on the SGE queue</a>
+      <a href="articles/qstat.html">Jobs on the SGE queue</a>
     </li>
     <li>
-      <a href="../articles/sge_accounting_file.html">SGE Accounting File</a>
+      <a href="articles/sge_accounting_file.html">SGE Accounting File</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -124,53 +123,61 @@
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-    <h1>Lists the Memory Information for the Current Machine</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/R/mem_info.R'><code>R/mem_info.R</code></a></small>
-    <div class="hidden name"><code>mem_info.Rd</code></div>
+      <h1>NA</h1>
     </div>
 
-    <div class="ref-description">
-    <p>Lists the Memory Information for the Current Machine</p>
-    </div>
 
-    <pre class="usage"><span class='fu'>mem_info</span><span class='op'>(</span><span class='op'>)</span></pre>
+<p>An R package that provides utility functions for querying the UCSF Wynton environment, in order to gather system details used to populate the information on the <a href="https://ucsf-hpc.github.io/wynton/about/specs.html">Wynton website</a>.</p>
+<div id="usages" class="section level2">
+<h2 class="hasAnchor">
+<a href="#usages" class="anchor"></a>Usages</h2>
+<div id="query-compute-node-information-via-job-submissions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#query-compute-node-information-via-job-submissions" class="anchor"></a>Query compute node information via job submissions</h3>
+<p>To gather the information, in R, run:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">source</span>(<span class="kw">system.file</span>(<span class="dt">package=</span><span class="st">"wyntonquery"</span>, <span class="st">"scripts"</span>, <span class="st">"system_info.R"</span>), <span class="dt">echo =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>This will identify all compute nodes on the cluster (by querying <code>qhost</code>) and launch a job on each one that gathers details on that particular node. Depending on the amount and type of jobs currently occupying the cluster nodes, this may take anywhere from a few minutes to hours to complete.</p>
+<p>When completed, a tab-delimited file <code>.data/host_table,{date}.tsv</code> will be produced. To deploy this to <a href="https://ucsf-hpc.github.io/wynton/about/specs.html">Wynton website</a>, copy this file to <a href="https://github.com/UCSF-HPC/wynton/blob/master/docs/assets/data/host_table.tsv"><code>docs/assets/data/host_table.tsv</code></a>, then commit and push.</p>
+</div>
+</div>
+<div id="internal-notes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#internal-notes" class="anchor"></a>Internal notes</h2>
+<div id="how-to-rebuild-wynton-hpc-specification-database" class="section level3">
+<h3 class="hasAnchor">
+<a href="#how-to-rebuild-wynton-hpc-specification-database" class="anchor"></a>How to Rebuild Wynton HPC Specification Database</h3>
+<ol>
+<li>Query recently added nodes</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="bu">cd</span> .data
+<span class="bu">export</span> <span class="va">R_WYNTONQUERY_EXCLUDE=</span><span class="st">"</span><span class="va">$(</span><span class="fu">cut</span> -f 1 host_table.tsv <span class="kw">|</span> <span class="fu">tail</span> -n +4<span class="va">)</span><span class="st"> qb3-hmid1"</span>
+<span class="ex">qsub</span> -v R_WYNTONQUERY_EXCLUDE=<span class="st">"</span><span class="va">$R_WYNTONQUERY_EXCLUDE</span><span class="st">"</span> ../inst/scripts/system_info.sge</code></pre></div>
+<ol>
+<li>
+<p>Update current database</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">Rscript</span> merge_all.R</code></pre></div>
+</li>
+<li>
+<p>Deploy</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="fu">cp</span> host_table.tsv ../../wynton/docs/assets/data/</code></pre></div>
+</li>
+</ol>
+</div>
+</div>
 
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A data.frame (tibble) with the two columns <code>field</code> and <code>value</code>.
-For most CPUs, there will be duplicated <code>field</code>:s.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function reads/queries <code>/proc/meminfo</code> on the current machine.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>mem_info</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 53 × 2</span>
-#&gt;    field                value
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> memtotal       <span style='text-decoration: underline;'>16</span>138<span style='text-decoration: underline;'>332</span>000
-#&gt; <span style='color: #BCBCBC;'> 2</span> memfree         <span style='text-decoration: underline;'>2</span>052<span style='text-decoration: underline;'>944</span>000
-#&gt; <span style='color: #BCBCBC;'> 3</span> memavailable    <span style='text-decoration: underline;'>9</span>006<span style='text-decoration: underline;'>904</span>000
-#&gt; <span style='color: #BCBCBC;'> 4</span> buffers          730<span style='text-decoration: underline;'>216</span>000
-#&gt; <span style='color: #BCBCBC;'> 5</span> cached          <span style='text-decoration: underline;'>6</span>554<span style='text-decoration: underline;'>072</span>000
-#&gt; <span style='color: #BCBCBC;'> 6</span> swapcached           <span style='text-decoration: underline;'>84</span>000
-#&gt; <span style='color: #BCBCBC;'> 7</span> active          <span style='text-decoration: underline;'>9</span>562<span style='text-decoration: underline;'>168</span>000
-#&gt; <span style='color: #BCBCBC;'> 8</span> inactive        <span style='text-decoration: underline;'>2</span>955<span style='text-decoration: underline;'>836</span>000
-#&gt; <span style='color: #BCBCBC;'> 9</span> active(anon)    <span style='text-decoration: underline;'>5</span>347<span style='text-decoration: underline;'>836</span>000
-#&gt; <span style='color: #BCBCBC;'>10</span> inactive(anon)   800<span style='text-decoration: underline;'>632</span>000
-#&gt; <span style='color: #949494;'># … with 43 more rows</span></div><div class='input'>
-</div></pre>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
+
 </div>
+
 
 
       <footer>
