@@ -1,5 +1,14 @@
 Package: wyntonquery
 
+Version: 0.2.0 [2021-06-18]
+
+NEW FEATURES:
+
+ * Add sge_make_week_index().
+
+ * Add add_weeks().
+ 
+
 Version: 0.1.0 [2021-06-18]
 
 NEW FEATURES:

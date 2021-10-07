@@ -1,5 +1,5 @@
 Package: wyntonquery
-Version: 0.1.0
+Version: 0.2.0
 Depends:
     R (>= 3.5.0)
 Imports:
@@ -9,6 +9,7 @@ Imports:
     prettyunits,
     progressr,
     readr,
+    utils,
     tibble,
     xml2,
     future,
@@ -17,8 +18,11 @@ Suggests:
     ggplot2,
     rmarkdown,
     knitr
-VignetteBuilder: knitr
-SystemRequirements: Linux, SGE (e.g. Son of Grid Engine)
+VignetteBuilder:
+    knitr
+SystemRequirements:
+    Linux,
+    SGE (e.g. Son of Grid Engine)
 Title: Query the UCSF Wynton Environment
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
@@ -27,6 +31,6 @@ License: LGPL (>= 2.1)
 LazyLoad: TRUE
 URL: https://github.com/ucsf-wynton/wyntonquery
 BugReports: https://github.com/ucsf-wynton/wyntonquery/issues
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8

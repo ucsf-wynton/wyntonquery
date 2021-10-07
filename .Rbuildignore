@@ -1,11 +1,13 @@
 ^.github
 ^.data
+^.make
 ^.local
 ^.future
-^.*.rds$
 ^Makefile
 ^.Rdump
 ^incl
-^\.github$
+^[.]github$
 ^docs
 ^pkgdown
+^CONTRIBUTING[.]md$
+^OVERVIEW[.]md$

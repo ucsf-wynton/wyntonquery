@@ -529,9 +529,9 @@ parse_category.sge_accounting <- function(x, properties = c("h_rt", "s_rt", "mem
       keep <- grep(pattern, category)
       if (length(keep) > 0L) {
         tmp <- gsub(pattern, "\\1", category[keep])
-	tmp <- gsub("G$", "000M", tmp)
-	tmp <- gsub("M$", "000K", tmp)
-	tmp <- gsub("K$", "000", tmp)
+        tmp <- gsub("G$", "000M", tmp)
+        tmp <- gsub("M$", "000K", tmp)
+        tmp <- gsub("K$", "000", tmp)
         value[keep] <- tmp
       }
       value <- as.numeric(value)

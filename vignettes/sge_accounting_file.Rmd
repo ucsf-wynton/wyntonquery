@@ -23,11 +23,12 @@ The SGE accounting file holds information on all submitted and _finished_ jobs s
 
 ## Indexing the SGE accounting file
 
-In March 2020, it was ~12 GB and took 6-8 minutes to read in full.  As of June 2021, the Wynton HPC accounting file is ~54 GB with 160.5 million job entries.  It is rare to be interested in all entries.  It is more common to work with a subset of the job entries.  In order to do this efficiently, we start by indexing the SGE accounting using:
+In March 2020, it was ~12 GB and took 6-8 minutes to read in full.  As of June 2021, the Wynton HPC accounting file is ~54 GB with 160.5 million job entries.  It is rare to be interested in all entries.  It is more common to work with a subset of the job entries.  In order to do this efficiently, we start by indexing the SGE accounting file to identify the file byte offset for each job entry;
 
 ```r
 library(wyntonquery)
 progressr::handlers(global = TRUE) ## Report on progress
+progressr::handlers("progress")
 
 pathname <- sge_accounting_file()
 cat(sprintf("File size: %.3g GB\n", file.size(pathname)/1024^3))
@@ -38,102 +39,105 @@ index <- make_file_index(pathname, skip = 4L)
 cat(sprintf("Number of job entries: %d\n", length(index)))
 # Number of job entries: 160835061
 
-## Save index to file for future use
-save_file_index(index, file = "accounting.index")
+## Save per-job index to file
+save_file_index(index, file = "accounting.index_by_row")
 ```
+
+Next, we want to group the job entries by the ISO-6801 week of the job end times.
+
+```r
+library(wyntonquery)
+progressr::handlers(global = TRUE) ## Report on progress
+progressr::handlers("progress")
+
+pathname <- sge_accounting_file()
+index <- read_file_index("accounting.index_by_row")
+week_index <- sge_make_week_index(pathname, index = index)
+saveRDS(week_index, file = "accounting.index_by_week.rds")
+
+print(week_index)
+# A tibble: 201 x 3
+   week    nbr_of_jobs file_offset
+   <chr>         <dbl>       <dbl>
+ 1 2017W33         406          59
+ 2 2017W34         450      113195
+ 3 2017W35         499      127727
+ 4 2017W36         523      143361
+ 5 2017W37         531      150740
+ 6 2017W38         561      153559
+ 7 2017W39         579      163657
+ 8 2017W40         601      169804
+ 9 2017W41         603      177075
+10 2017W42         621      177695
+# … with 191 more rows
+```
+
 
 
 ## Reading job entries in SGE accounting file
 
-Here is how we can read the ~100,000 most recent entries, which only takes a few seconds:
+Here is an example how we can read the job entries for a couple of weeks:
 
 ```r
 library(wyntonquery)
+library(dplyr)
 
 pathname <- sge_accounting_file()
-index <- read_file_index("accounting.index")
+week_index <- readRDS("accounting.index_by_week.rds")
 
-from <- 100e3
-jobs <- read_sge_accounting(pathname, offset = index[length(index)+1-from])
-print(jobs)
-# A tibble: 103,419 x 45
-   qname  hostname  group  owner job_name   job_number account priority submission_time     start_time          end_time            failed exit_status
-   <chr>  <chr>     <chr>  <chr> <chr>           <int> <chr>      <int> <dttm>              <dttm>              <dttm>               <int>       <int>
- 1 long.q qb3-id149 group… owne… ddG_satur…     273941 sge           19 2021-06-17 10:15:11 2021-06-17 16:07:29 2021-06-17 19:13:24      0           0
- 2 long.q qb3-id26  group… owne… ddG_satur…     273941 sge           19 2021-06-17 10:15:11 2021-06-17 16:33:13 2021-06-17 19:13:23      0           0
- 3 long.q qb3-id78  group… owne… batch_3d       275353 sge           19 2021-06-17 11:38:15 2021-06-17 18:58:08 2021-06-17 19:13:24      0           0
- 4 short… qb3-id164 group… owne… min111         280589 sge           10 2021-06-17 19:09:28 2021-06-17 19:10:34 2021-06-17 19:13:25      0           0
- 5 long.q qb3-id176 group… owne… ddG_satur…     273941 sge           19 2021-06-17 10:15:11 2021-06-17 16:44:48 2021-06-17 19:13:25      0           0
- 6 short… qb3-id176 group… owne… min153         280621 sge           10 2021-06-17 19:09:38 2021-06-17 19:10:34 2021-06-17 19:13:25      0           0
- 7 long.q qb3-ih59  group… owne… batch_3d       274703 sge           19 2021-06-17 11:28:06 2021-06-17 18:25:42 2021-06-17 19:13:25      0           0
- 8 short… qb3-ih35  group… owne… min133         280751 sge           10 2021-06-17 19:10:17 2021-06-17 19:13:22 2021-06-17 19:13:26      0         132
- 9 short… qb3-ih29  group… owne… min62          280708 sge           10 2021-06-17 19:10:04 2021-06-17 19:13:22 2021-06-17 19:13:26      0         132
-10 short… qb3-ih29  group… owne… min69          280714 sge           10 2021-06-17 19:10:06 2021-06-17 19:13:22 2021-06-17 19:13:26      0         132
-# … with 103,409 more rows, and 32 more variables: ru_wallclock <drtn>, ru_utime <drtn>, ru_stime <drtn>, ru_maxrss <chr>,
-#   ru_ixrss <chr>, ru_ismrss <chr>, ru_idrss <chr>, ru_isrss <chr>, ru_minflt <dbl>, ru_majflt <dbl>, ru_nswap <dbl>, ru_inblock <dbl>,
-#   ru_oublock <dbl>, ru_msgsnd <dbl>, ru_msgrcv <dbl>, ru_nsignals <dbl>, ru_nvcsw <dbl>, ru_nivcsw <dbl>, project <chr>,
-#   department <chr>, granted_pe <chr>, slots <int>, task_number <int>, cpu <drtn>, mem <chr>, io <chr>, category <chr>, iow <drtn>,
-#   pe_taskid <chr>, maxvmem <dbl>, arid <dbl>, ar_sub_time <dttm>
-```
+weeks <- subset(week_index, week %in% c("2020W06", "2020W07"))
+print(weeks)
+# # A tibble: 2 x 3
+#   week    nbr_of_jobs file_offset
+#   <chr>         <dbl>       <dbl>
+# 1 2020W06    30504788 11015936052
+# 2 2020W07    31168272 11229385140
 
-_Comment:_ The reason for getting more than 100,000 job entries is that the SGE accounting file had recorded another 3,419 jobs since we last indexed the file.
-
-
-To read, say, 10,000 jobs starting with job entry 120,000,000, use:
-
-```r
-from <- 120000000
-jobs <- read_sge_accounting(pathname, offset = index[from], n_max = 10000)
-print(jobs)
-# A tibble: 10,000 x 45
-   qname    hostname  group  owner job_name job_number account priority submission_time     start_time          end_time            failed exit_status
-   <chr>    <chr>     <chr>  <chr> <chr>         <int> <chr>      <int> <dttm>              <dttm>              <dttm>               <int>       <int>
- 1 long.q   qb3-id146 bks    jji   batch_3d    2514714 sge           19 2021-03-18 05:17:48 2021-03-18 07:09:45 2021-03-18 07:40:23      0           0
- 2 long.q   qb3-id66  bks    jji   batch_3d    2514751 sge           19 2021-03-18 05:26:06 2021-03-18 07:20:45 2021-03-18 07:40:23      0           0
- 3 member.q qb3-id70  modweb modw… TB_2julA    2515048 sge            0 2021-03-18 06:47:47 2021-03-18 07:38:45 2021-03-18 07:40:23      0           0
- 4 long.q   qb3-ad9   bks    jji   batch_3d    2514714 sge           19 2021-03-18 05:17:48 2021-03-18 07:10:45 2021-03-18 07:40:24      0           0
- 5 member.q qb3-id195 modweb modw… TB_2julA    2515048 sge            0 2021-03-18 06:47:47 2021-03-18 07:38:45 2021-03-18 07:40:25      0           0
- 6 long.q   qb3-id83  bks    jji   batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:30:45 2021-03-18 07:40:26      0           0
- 7 long.q   qb3-id31  bks    jji   batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:29:45 2021-03-18 07:40:26      0           0
- 8 long.q   qb3-id124 bks    jji   batch_3d    2514827 sge           19 2021-03-18 05:38:30 2021-03-18 07:33:45 2021-03-18 07:40:26      0           0
- 9 long.q   qb3-id52  bks    jji   batch_3d    2514820 sge           19 2021-03-18 05:36:24 2021-03-18 07:29:45 2021-03-18 07:40:26      0           0
-10 long.q   cc-id1    bks    jji   batch_3d    2514783 sge           19 2021-03-18 05:30:12 2021-03-18 07:23:45 2021-03-18 07:40:27      0           0
-# … with 9,990 more rows, and 32 more variables: ru_wallclock <drtn>, ru_utime <drtn>, ru_stime <drtn>, ru_maxrss <chr>, ru_ixrss <chr>,
-#   ru_ismrss <chr>, ru_idrss <chr>, ru_isrss <chr>, ru_minflt <dbl>, ru_majflt <dbl>, ru_nswap <dbl>, ru_inblock <dbl>, ru_oublock <dbl>,
-#   ru_msgsnd <dbl>, ru_msgrcv <dbl>, ru_nsignals <dbl>, ru_nvcsw <dbl>, ru_nivcsw <dbl>, project <chr>, department <chr>, granted_pe <chr>,
-#   slots <int>, task_number <int>, cpu <drtn>, mem <chr>, io <chr>, category <chr>, iow <drtn>, pe_taskid <chr>, maxvmem <dbl>, arid <dbl>,
+offset <- weeks$file_offset[1]
+n_max <- sum(weeks$nbr_of_jobs)
+jobs <- read_sge_accounting(pathname, offset = offset, n_max = n_max)
+jobs <- anonymize(jobs)
+print(select(jobs, -account))
+# A tibble: 130,010 x 44
+   qname  hostname group owner job_name  job_number priority submission_time    
+   <chr>  <chr>    <chr> <chr> <chr>          <int>    <int> <dttm>             
+ 1 long.q cc-id3   grou… owne… job_qb3.…        361       19 2017-10-24 09:33:46
+ 2 long.q cin-id2  grou… owne… job_qb3.…        360       19 2017-10-23 16:09:59
+ 3 long.q qb3-hmi… grou… owne… job_qb3.…        365       19 2017-10-24 12:01:17
+ 4 long.q qb3-id3  grou… owne… job_mac_…        359       19 2017-10-23 09:52:44
+ 5 long.q qb3-id2  grou… owne… job_qb3.…        363       19 2017-10-24 09:41:57
+ 6 long.q qb3-id1  grou… owne… bmle_int…        368       19 2017-10-25 09:21:41
+ 7 long.q cc-hmid1 grou… owne… bmle_int…        369       19 2017-10-25 09:23:47
+ 8 short… cin-hmi… grou… owne… job_qb3.…        379       10 2017-10-25 10:41:51
+ 9 short… cin-hmi… grou… owne… job_qb3.…        380       10 2017-10-25 10:46:10
+10 short… cin-hmi… grou… owne… job_qb3.…        381       10 2017-10-25 10:48:42
+# … with 130,000 more rows, and 36 more variables: start_time <dttm>,
+#   end_time <dttm>, failed <int>, exit_status <int>, ru_wallclock <drtn>,
+#   ru_utime <drtn>, ru_stime <drtn>, ru_maxrss <chr>, ru_ixrss <chr>,
+#   ru_ismrss <chr>, ru_idrss <chr>, ru_isrss <chr>, ru_minflt <dbl>,
+#   ru_majflt <dbl>, ru_nswap <dbl>, ru_inblock <dbl>, ru_oublock <dbl>,
+#   ru_msgsnd <dbl>, ru_msgrcv <dbl>, ru_nsignals <dbl>, ru_nvcsw <dbl>,
+#   ru_nivcsw <dbl>, project <chr>, department <chr>, granted_pe <chr>,
+#   slots <int>, task_number <int>, cpu <drtn>, mem <chr>, io <chr>,
+#   category <chr>, iow <drtn>, pe_taskid <chr>, maxvmem <dbl>, arid <dbl>,
 #   ar_sub_time <dttm>
 ```
 
 
-## Statistics of jobs finished during the last 24 hours
+## Statistics on these jobs
 
 
 ```r
-library(wyntonquery)
-
-pathname <- sge_accounting_file()
-index <- read_file_index("accounting.index")
-
-## Read enough job entries to cover 24 hours and more
-from <- 300e3
-jobs <- read_sge_accounting(pathname, offset = index[length(index)+1-from])
-
 period <- range(jobs$end_time, na.rm=TRUE)
 cat(sprintf("Period: %s/%s\n", period[1], period[2]))
-## Period: 2021-06-17 04:23:00/2021-06-18 09:26:06
+# Period: 2017-10-24 09:40:46/2017-11-10 14:45:30
 
-## Keep jobs for the last 24 hours
-jobs <- subset(jobs, end_time >= period[2] - 24*3600)
-period <- range(jobs$end_time, na.rm=TRUE)
-cat(sprintf("Period: %s/%s\n", period[1], period[2]))
-## Period: 2021-06-15 19:35:15/2021-06-16 19:35:15
 cat(sprintf("Number of jobs finished during this period: %d\n", nrow(jobs)))
-## Number of jobs finished during this period: 197538
+# Number of jobs finished during this period: 130010
 
 nusers <- length(unique(jobs$owner))
 cat(sprintf("Number of unique users: %d\n", nusers))
-# Number of unique users: 79
+# Number of unique users: 11
 ```
 
 Let's see how many of the jobs finished succesfully and how many failed.

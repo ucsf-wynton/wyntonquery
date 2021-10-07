@@ -1,11 +1,3 @@
-
-
-<div id="badges"><!-- pkgdown markup -->
- <a href="https://github.com/ucsf-wynton/wyntonquery/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/ucsf-wynton/wyntonquery/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"/></a>    <a href="https://codecov.io/gh/ucsf-wynton/wyntonquery"><img border="0" src="https://codecov.io/gh/ucsf-wynton/wyntonquery/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> 
-</div>
-
-# wyntonquery: Query the UCSF Wynton Environment 
-
 An R package that provides utility functions for querying the UCSF Wynton environment, in order to gather system details used to populate the information on the [Wynton website](https://ucsf-hpc.github.io/wynton/about/specs.html).
 
 
@@ -45,21 +37,3 @@ Rscript merge_all.R
 ```sh
 cp host_table.tsv ../../wynton/docs/assets/data/
 ```
-
-## Installation
-R package wyntonquery is only available via [GitHub](https://github.com/ucsf-wynton/wyntonquery) and can be installed in R as:
-```r
-remotes::install_github("ucsf-wynton/wyntonquery", ref="master")
-```
-
-
-### Pre-release version
-
-To install the pre-release version that is available in Git branch `develop` on GitHub, use:
-```r
-remotes::install_github("ucsf-wynton/wyntonquery", ref="develop")
-```
-This will install the package from source.  
-
-<!-- pkgdown-drop-below -->
-
