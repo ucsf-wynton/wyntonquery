@@ -327,7 +327,7 @@ was 4.8 GB in size and ~6-8 minutes when it was 12 GB in size.</p>
 
 <span class='va'>jobs</span> <span class='op'>&lt;-</span> <span class='fu'>read_sge_accounting</span><span class='op'>(</span><span class='va'>pathname</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>jobs</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,000 x 45</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,000 × 45</span>
 #&gt;    qname    hostname group  owner   job_name job_number account priority
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span> member.q cin-id3  group4 owner09 sleep.sh          1 sge            0
@@ -346,10 +346,7 @@ was 4.8 GB in size and ~6-8 minutes when it was 12 GB in size.</p>
 #&gt; <span style='color: #949494;'>#   ru_ixrss &lt;chr&gt;, ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;, ru_isrss &lt;chr&gt;,</span>
 #&gt; <span style='color: #949494;'>#   ru_minflt &lt;dbl&gt;, ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;,</span>
 #&gt; <span style='color: #949494;'>#   ru_oublock &lt;dbl&gt;, ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ru_nvcsw &lt;dbl&gt;, ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;, department &lt;chr&gt;,</span>
-#&gt; <span style='color: #949494;'>#   granted_pe &lt;chr&gt;, slots &lt;int&gt;, task_number &lt;int&gt;, cpu &lt;drtn&gt;, mem &lt;chr&gt;,</span>
-#&gt; <span style='color: #949494;'>#   io &lt;chr&gt;, category &lt;chr&gt;, iow &lt;drtn&gt;, pe_taskid &lt;chr&gt;, maxvmem &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   arid &lt;dbl&gt;, ar_sub_time &lt;dttm&gt;</span></div><div class='input'><span class='co'>## # A tibble: 1,000 x 45</span>
+#&gt; <span style='color: #949494;'>#   ru_nvcsw &lt;dbl&gt;, ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;, department &lt;chr&gt;, …</span></div><div class='input'><span class='co'>## # A tibble: 1,000 x 45</span>
 <span class='co'>##    qname    hostname group  owner   job_name job_number account priority submission_time    </span>
 <span class='co'>##    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;      &lt;int&gt; &lt;dttm&gt;             </span>
 <span class='co'>##  1 member.q cin-id3  group4 owner09 sleep.sh          1 sge            0 2017-08-15 11:59:21</span>

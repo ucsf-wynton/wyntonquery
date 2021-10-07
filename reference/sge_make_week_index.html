@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lists the CPU Information for the Current Machine — lscpu • wyntonquery</title>
+<title>Index the SGE accounting file for ISO-8601 weeks — sge_make_week_index • wyntonquery</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Lists the CPU Information for the Current Machine — lscpu" />
-<meta property="og:description" content="Lists the CPU Information for the Current Machine" />
+<meta property="og:title" content="Index the SGE accounting file for ISO-8601 weeks — sge_make_week_index" />
+<meta property="og:description" content="Index the SGE accounting file for ISO-8601 weeks" />
 
 
 
@@ -126,55 +126,66 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Lists the CPU Information for the Current Machine</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/R/lscpu.R'><code>R/lscpu.R</code></a></small>
-    <div class="hidden name"><code>lscpu.Rd</code></div>
+    <h1>Index the SGE accounting file for ISO-8601 weeks</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/R/sge_make_week_index.R'><code>R/sge_make_week_index.R</code></a></small>
+    <div class="hidden name"><code>sge_make_week_index.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Lists the CPU Information for the Current Machine</p>
+    <p>Index the SGE accounting file for ISO-8601 weeks</p>
     </div>
 
-    <pre class="usage"><span class='fu'>lscpu</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>sge_make_week_index</span><span class='op'>(</span>
+  <span class='va'>file</span>,
+  <span class='va'>index</span>,
+  until <span class='op'>=</span> <span class='cn'>NULL</span>,
+  n_max <span class='op'>=</span> <span class='cn'>Inf</span>,
+  delta <span class='op'>=</span> <span class='fl'>1e+05</span>,
+  debug <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>file</th>
+      <td><p>(character) The SGE <code class="file">accounting</code> file to read.</p></td>
+    </tr>
+    <tr>
+      <th>index</th>
+      <td><p>(numeric vector) File byte offsets of job entries.</p></td>
+    </tr>
+    <tr>
+      <th>until</th>
+      <td><p>(character vector) If a week read that is part of this
+set, the terminate the scanning.  The weeks should be specified
+using <code>%GW%V</code> week format, e.g. <code>2019W01</code>.</p></td>
+    </tr>
+    <tr>
+      <th>n_max</th>
+      <td><p>(numeric) The maximum number of weeks to read.</p></td>
+    </tr>
+    <tr>
+      <th>delta</th>
+      <td><p>(numeric) Maximum number of rows to skip forward and
+backword in the divide-and-conquer search strategy.</p></td>
+    </tr>
+    <tr>
+      <th>debug</th>
+      <td><p>(logical) If TRUE, display debug messages.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame (tibble) with the two columns <code>field</code> and <code>value</code>.
-For most CPUs, there will be duplicated <code>field</code>:s.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>A <a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble</a> with fields:</p><ul>
+<li><p><code>week</code> (character) - the ISO-8601 week name, e.g. <code>"2021W48"</code></p></li>
+<li><p><code>nbr_of_jobs</code> (numeric) - number of jobs</p></li>
+<li><p><code>file_offset</code> (numeric) - the file byte offset
+The week names uses <code>%GW%V</code> week format.</p></li>
+</ul>
 
-    <p>This function queries <code>lscpu</code> on the current machine.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='cpu_info.html'>cpu_info()</a></code></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>lscpu</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 18 parsing failures.</span>
-#&gt; <span class='warning'>row col  expected    actual         file</span>
-#&gt; <span class='warning'>  2  -- 2 columns 4 columns &lt;connection&gt;</span>
-#&gt; <span class='warning'>  3  -- 2 columns 4 columns &lt;connection&gt;</span>
-#&gt; <span class='warning'>  5  -- 2 columns 4 columns &lt;connection&gt;</span>
-#&gt; <span class='warning'>  6  -- 2 columns 4 columns &lt;connection&gt;</span>
-#&gt; <span class='warning'>  7  -- 2 columns 4 columns &lt;connection&gt;</span>
-#&gt; <span class='warning'>... ... ......... ......... ............</span>
-#&gt; <span class='warning'>See problems(...) for more details.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 25 × 2</span>
-#&gt;    field        value      
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      
-#&gt; <span style='color: #BCBCBC;'> 1</span> architecture x86_64     
-#&gt; <span style='color: #BCBCBC;'> 2</span> cpu          op-mode(s):
-#&gt; <span style='color: #BCBCBC;'> 3</span> byte         Order:     
-#&gt; <span style='color: #BCBCBC;'> 4</span> cpus         8          
-#&gt; <span style='color: #BCBCBC;'> 5</span> on_line      CPU(s)     
-#&gt; <span style='color: #BCBCBC;'> 6</span> threads      per        
-#&gt; <span style='color: #BCBCBC;'> 7</span> cores        per        
-#&gt; <span style='color: #BCBCBC;'> 8</span> sockets      1          
-#&gt; <span style='color: #BCBCBC;'> 9</span> numa         node(s):   
-#&gt; <span style='color: #BCBCBC;'>10</span> vendor       ID:        
-#&gt; <span style='color: #949494;'># … with 15 more rows</span></div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

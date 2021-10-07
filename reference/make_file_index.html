@@ -209,7 +209,7 @@ by a <code>newline</code> character.  The first line is at file byte offset
 <span class='co'>## Get all jobs *after* the 500:th job</span>
 <span class='va'>jobs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_sge_accounting.html'>read_sge_accounting</a></span><span class='op'>(</span><span class='va'>pathname</span>, offset <span class='op'>=</span> <span class='va'>index</span><span class='op'>[</span><span class='fl'>501</span><span class='op'>]</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>jobs</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 500 x 45</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 500 × 45</span>
 #&gt;    qname  hostname  group  owner   job_name  job_number account priority
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span> long.q cc-hmid1  group3 owner04 cc-hmid1         238 sge           19
@@ -228,36 +228,30 @@ by a <code>newline</code> character.  The first line is at file byte offset
 #&gt; <span style='color: #949494;'>#   ru_ixrss &lt;chr&gt;, ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;, ru_isrss &lt;chr&gt;,</span>
 #&gt; <span style='color: #949494;'>#   ru_minflt &lt;dbl&gt;, ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;,</span>
 #&gt; <span style='color: #949494;'>#   ru_oublock &lt;dbl&gt;, ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ru_nvcsw &lt;dbl&gt;, ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;, department &lt;chr&gt;,</span>
-#&gt; <span style='color: #949494;'>#   granted_pe &lt;chr&gt;, slots &lt;int&gt;, task_number &lt;int&gt;, cpu &lt;drtn&gt;, mem &lt;chr&gt;,</span>
-#&gt; <span style='color: #949494;'>#   io &lt;chr&gt;, category &lt;chr&gt;, iow &lt;drtn&gt;, pe_taskid &lt;chr&gt;, maxvmem &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   arid &lt;dbl&gt;, ar_sub_time &lt;dttm&gt;</span></div><div class='input'>
+#&gt; <span style='color: #949494;'>#   ru_nvcsw &lt;dbl&gt;, ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;, department &lt;chr&gt;, …</span></div><div class='input'>
 <span class='co'>## Get jobs 301 to 350</span>
 <span class='va'>jobs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_sge_accounting.html'>read_sge_accounting</a></span><span class='op'>(</span><span class='va'>pathname</span>, offset <span class='op'>=</span> <span class='va'>index</span><span class='op'>[</span><span class='fl'>301</span><span class='op'>]</span>, n_max <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>jobs</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 50 x 45</span>
-#&gt;    qname   hostname group  owner job_name            job_number account priority
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> member… qb3-id1  group4 owne… sleep.sh                     2 sge            0
-#&gt; <span style='color: #BCBCBC;'> 2</span> long.q  cc-id3   group6 owne… AD_196_bvFTD_65_mw…          3 sge           19
-#&gt; <span style='color: #BCBCBC;'> 3</span> long.q  qb3-id1  group6 owne… AD_196_bvFTD_65_mw…          4 sge           19
-#&gt; <span style='color: #BCBCBC;'> 4</span> long.q  cc-id2   group6 owne… AD_196_PSP_58_mwc1…          7 sge           19
-#&gt; <span style='color: #BCBCBC;'> 5</span> long.q  cin-id3  group6 owne… bvFTD_65_CONTROL_4…          9 sge           19
-#&gt; <span style='color: #BCBCBC;'> 6</span> long.q  cc-id1   group6 owne… AD_196_svPPA_46_mw…          8 sge           19
-#&gt; <span style='color: #BCBCBC;'> 7</span> long.q  cin-id2  group6 owne… bvFTD_65_nfvPPA_44…         10 sge           19
-#&gt; <span style='color: #BCBCBC;'> 8</span> long.q  cc-hmid1 group6 owne… AD_196_CONTROL_412…          5 sge           19
-#&gt; <span style='color: #BCBCBC;'> 9</span> long.q  cc-id3   group6 owne… CONTROL_412_PSP_58…         14 sge           19
-#&gt; <span style='color: #BCBCBC;'>10</span> long.q  cin-id1  group6 owne… bvFTD_65_PSP_58_mw…         11 sge           19
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 50 × 45</span>
+#&gt;    qname    hostname group  owner   job_name         job_number account priority
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                 <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> member.q qb3-id1  group4 owner09 sleep.sh                  2 sge            0
+#&gt; <span style='color: #BCBCBC;'> 2</span> long.q   cc-id3   group6 owner01 AD_196_bvFTD_65…          3 sge           19
+#&gt; <span style='color: #BCBCBC;'> 3</span> long.q   qb3-id1  group6 owner01 AD_196_bvFTD_65…          4 sge           19
+#&gt; <span style='color: #BCBCBC;'> 4</span> long.q   cc-id2   group6 owner01 AD_196_PSP_58_m…          7 sge           19
+#&gt; <span style='color: #BCBCBC;'> 5</span> long.q   cin-id3  group6 owner01 bvFTD_65_CONTRO…          9 sge           19
+#&gt; <span style='color: #BCBCBC;'> 6</span> long.q   cc-id1   group6 owner01 AD_196_svPPA_46…          8 sge           19
+#&gt; <span style='color: #BCBCBC;'> 7</span> long.q   cin-id2  group6 owner01 bvFTD_65_nfvPPA…         10 sge           19
+#&gt; <span style='color: #BCBCBC;'> 8</span> long.q   cc-hmid1 group6 owner01 AD_196_CONTROL_…          5 sge           19
+#&gt; <span style='color: #BCBCBC;'> 9</span> long.q   cc-id3   group6 owner01 CONTROL_412_PSP…         14 sge           19
+#&gt; <span style='color: #BCBCBC;'>10</span> long.q   cin-id1  group6 owner01 bvFTD_65_PSP_58…         11 sge           19
 #&gt; <span style='color: #949494;'># … with 40 more rows, and 37 more variables: submission_time &lt;dttm&gt;,</span>
 #&gt; <span style='color: #949494;'>#   start_time &lt;dttm&gt;, end_time &lt;dttm&gt;, failed &lt;int&gt;, exit_status &lt;int&gt;,</span>
 #&gt; <span style='color: #949494;'>#   ru_wallclock &lt;drtn&gt;, ru_utime &lt;drtn&gt;, ru_stime &lt;drtn&gt;, ru_maxrss &lt;chr&gt;,</span>
 #&gt; <span style='color: #949494;'>#   ru_ixrss &lt;chr&gt;, ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;, ru_isrss &lt;chr&gt;,</span>
 #&gt; <span style='color: #949494;'>#   ru_minflt &lt;dbl&gt;, ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;,</span>
 #&gt; <span style='color: #949494;'>#   ru_oublock &lt;dbl&gt;, ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   ru_nvcsw &lt;dbl&gt;, ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;, department &lt;chr&gt;,</span>
-#&gt; <span style='color: #949494;'>#   granted_pe &lt;chr&gt;, slots &lt;int&gt;, task_number &lt;int&gt;, cpu &lt;drtn&gt;, mem &lt;chr&gt;,</span>
-#&gt; <span style='color: #949494;'>#   io &lt;chr&gt;, category &lt;chr&gt;, iow &lt;drtn&gt;, pe_taskid &lt;chr&gt;, maxvmem &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   arid &lt;dbl&gt;, ar_sub_time &lt;dttm&gt;</span></div><div class='input'>
+#&gt; <span style='color: #949494;'>#   ru_nvcsw &lt;dbl&gt;, ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;, department &lt;chr&gt;, …</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

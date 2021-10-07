@@ -149,22 +149,30 @@ and <code><a href='cpu_info.html'>cpu_info()</a></code> on the current machine.<
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>info</span> <span class='op'>&lt;-</span> <span class='fu'>system_info</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: The following named parsers don't match the column names: Mounted on</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 48 parsing failures.</span>
+#&gt; <span class='warning'>row col  expected    actual         file</span>
+#&gt; <span class='warning'>  1  -- 7 columns 6 columns &lt;connection&gt;</span>
+#&gt; <span class='warning'>  2  -- 7 columns 6 columns &lt;connection&gt;</span>
+#&gt; <span class='warning'>  3  -- 7 columns 6 columns &lt;connection&gt;</span>
+#&gt; <span class='warning'>  4  -- 7 columns 6 columns &lt;connection&gt;</span>
+#&gt; <span class='warning'>  5  -- 7 columns 6 columns &lt;connection&gt;</span>
+#&gt; <span class='warning'>... ... ......... ......... ............</span>
+#&gt; <span class='warning'>See problems(...) for more details.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>info</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $hostname
 #&gt; [1] "hb-x1"
 #&gt; 
 #&gt; $os_info
-#&gt; <span style='color: #949494;'># A tibble: 5 x 2</span>
+#&gt; <span style='color: #949494;'># A tibble: 5 × 2</span>
 #&gt;   field   value                                              
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                                              
 #&gt; <span style='color: #BCBCBC;'>1</span> sysname Linux                                              
-#&gt; <span style='color: #BCBCBC;'>2</span> release 5.4.0-74-generic                                   
-#&gt; <span style='color: #BCBCBC;'>3</span> version #83~18.04.1-Ubuntu SMP Tue May 11 16:01:00 UTC 2021
+#&gt; <span style='color: #BCBCBC;'>2</span> release 5.4.0-87-generic                                   
+#&gt; <span style='color: #BCBCBC;'>3</span> version #98~18.04.1-Ubuntu SMP Wed Sep 22 10:45:04 UTC 2021
 #&gt; <span style='color: #BCBCBC;'>4</span> machine x86_64                                             
 #&gt; <span style='color: #BCBCBC;'>5</span> os_type unix                                               
 #&gt; 
 #&gt; $cpu_info
-#&gt; <span style='color: #949494;'># A tibble: 58 x 2</span>
+#&gt; <span style='color: #949494;'># A tibble: 58 × 2</span>
 #&gt;    field      value                                   
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                                   
 #&gt; <span style='color: #BCBCBC;'> 1</span> hostname   hb-x1                                   
@@ -175,25 +183,25 @@ and <code><a href='cpu_info.html'>cpu_info()</a></code> on the current machine.<
 #&gt; <span style='color: #BCBCBC;'> 6</span> model_name Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz
 #&gt; <span style='color: #BCBCBC;'> 7</span> stepping   10                                      
 #&gt; <span style='color: #BCBCBC;'> 8</span> microcode  0xea                                    
-#&gt; <span style='color: #BCBCBC;'> 9</span> cpu_mhz    3406.619                                
+#&gt; <span style='color: #BCBCBC;'> 9</span> cpu_mhz    977.302                                 
 #&gt; <span style='color: #BCBCBC;'>10</span> cache_size 8192 KB                                 
 #&gt; <span style='color: #949494;'># … with 48 more rows</span>
 #&gt; 
 #&gt; $disk_free
-#&gt; <span style='color: #949494;'># A tibble: 42 x 6</span>
-#&gt;    filesystem    blocks_1024      used available capacity mounted_on            
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>               <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                 
-#&gt; <span style='color: #BCBCBC;'> 1</span> udev              8<span style='text-decoration: underline;'>044</span>072         0   8<span style='text-decoration: underline;'>044</span>072     0    /dev                  
-#&gt; <span style='color: #BCBCBC;'> 2</span> tmpfs             1<span style='text-decoration: underline;'>613</span>836      <span style='text-decoration: underline;'>2</span>268   1<span style='text-decoration: underline;'>611</span>568     0.01 /run                  
-#&gt; <span style='color: #BCBCBC;'> 3</span> /dev/nvme0n1…   755<span style='text-decoration: underline;'>812</span>992 668<span style='text-decoration: underline;'>638</span>036  48<span style='text-decoration: underline;'>712</span>032     0.94 /                     
-#&gt; <span style='color: #BCBCBC;'> 4</span> tmpfs             8<span style='text-decoration: underline;'>069</span>164    <span style='text-decoration: underline;'>111</span>372   7<span style='text-decoration: underline;'>957</span>792     0.02 /dev/shm              
-#&gt; <span style='color: #BCBCBC;'> 5</span> tmpfs                <span style='text-decoration: underline;'>5</span>120         4      <span style='text-decoration: underline;'>5</span>116     0.01 /run/lock             
-#&gt; <span style='color: #BCBCBC;'> 6</span> tmpfs             8<span style='text-decoration: underline;'>069</span>164         0   8<span style='text-decoration: underline;'>069</span>164     0    /sys/fs/cgroup        
-#&gt; <span style='color: #BCBCBC;'> 7</span> /dev/loop0           <span style='text-decoration: underline;'>8</span>320      <span style='text-decoration: underline;'>8</span>320         0     1    /snap/pick-colour-pic…
-#&gt; <span style='color: #BCBCBC;'> 8</span> /dev/loop1         <span style='text-decoration: underline;'>166</span>784    <span style='text-decoration: underline;'>166</span>784         0     1    /snap/gnome-3-28-1804…
-#&gt; <span style='color: #BCBCBC;'> 9</span> /dev/loop2          <span style='text-decoration: underline;'>17</span>152     <span style='text-decoration: underline;'>17</span>152         0     1    /snap/htop/2185       
-#&gt; <span style='color: #BCBCBC;'>10</span> /dev/loop3            384       384         0     1    /snap/gnome-character…
-#&gt; <span style='color: #949494;'># … with 32 more rows</span>
+#&gt; <span style='color: #949494;'># A tibble: 48 × 7</span>
+#&gt;    filesystem     blocks_1024      used available capacity mounted         on   
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> udev               8<span style='text-decoration: underline;'>044</span>064         0   8<span style='text-decoration: underline;'>044</span>064     0    /dev            <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #BCBCBC;'> 2</span> tmpfs              1<span style='text-decoration: underline;'>613</span>836      <span style='text-decoration: underline;'>2</span>312   1<span style='text-decoration: underline;'>611</span>524     0.01 /run            <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #BCBCBC;'> 3</span> /dev/nvme0n1p5   755<span style='text-decoration: underline;'>812</span>992 677<span style='text-decoration: underline;'>147</span>104  40<span style='text-decoration: underline;'>202</span>964     0.95 /               <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #BCBCBC;'> 4</span> tmpfs              8<span style='text-decoration: underline;'>069</span>164    <span style='text-decoration: underline;'>190</span>800   7<span style='text-decoration: underline;'>878</span>364     0.03 /dev/shm        <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #BCBCBC;'> 5</span> tmpfs                 <span style='text-decoration: underline;'>5</span>120         4      <span style='text-decoration: underline;'>5</span>116     0.01 /run/lock       <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #BCBCBC;'> 6</span> tmpfs              8<span style='text-decoration: underline;'>069</span>164         0   8<span style='text-decoration: underline;'>069</span>164     0    /sys/fs/cgroup  <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #BCBCBC;'> 7</span> /dev/loop3           <span style='text-decoration: underline;'>38</span>528     <span style='text-decoration: underline;'>38</span>528         0     1    /snap/tiv/1     <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #BCBCBC;'> 8</span> /dev/loop2            <span style='text-decoration: underline;'>9</span>600      <span style='text-decoration: underline;'>9</span>600         0     1    /snap/htop/2802 <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #BCBCBC;'> 9</span> /dev/loop5          <span style='text-decoration: underline;'>314</span>880    <span style='text-decoration: underline;'>314</span>880         0     1    /snap/telegram… <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #BCBCBC;'>10</span> /dev/loop4            <span style='text-decoration: underline;'>9</span>728      <span style='text-decoration: underline;'>9</span>728         0     1    /snap/htop/3161 <span style='color: #BB0000;'>NA</span>   
+#&gt; <span style='color: #949494;'># … with 38 more rows</span>
 #&gt; </div><div class='input'>
 </div></pre>
   </div>
