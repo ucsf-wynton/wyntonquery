@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0-9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -88,26 +84,26 @@
 
 <div id="wyntonquery-query-the-ucsf-wynton-environment" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#wyntonquery-query-the-ucsf-wynton-environment" class="anchor"></a>wyntonquery: Query the UCSF Wynton Environment</h1></div>
-<p>An R package that provides utility functions for querying the UCSF Wynton environment, in order to gather system details used to populate the information on the <a href="https://ucsf-hpc.github.io/wynton/about/specs.html">Wynton website</a>.</p>
+<a href="#wyntonquery-query-the-ucsf-wynton-environment" class="anchor" aria-hidden="true"></a>wyntonquery: Query the UCSF Wynton Environment</h1></div>
+<p>An R package that provides utility functions for querying the UCSF Wynton environment, in order to gather system details used to populate the information on the <a href="https://ucsf-hpc.github.io/wynton/about/specs.html" class="external-link">Wynton website</a>.</p>
 <div id="usages" class="section level2">
 <h2 class="hasAnchor">
-<a href="#usages" class="anchor"></a>Usages</h2>
+<a href="#usages" class="anchor" aria-hidden="true"></a>Usages</h2>
 <div id="query-compute-node-information-via-job-submissions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#query-compute-node-information-via-job-submissions" class="anchor"></a>Query compute node information via job submissions</h3>
+<a href="#query-compute-node-information-via-job-submissions" class="anchor" aria-hidden="true"></a>Query compute node information via job submissions</h3>
 <p>To gather the information, in R, run:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">source</span>(<span class="kw">system.file</span>(<span class="dt">package=</span><span class="st">"wyntonquery"</span>, <span class="st">"scripts"</span>, <span class="st">"system_info.R"</span>), <span class="dt">echo =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>This will identify all compute nodes on the cluster (by querying <code>qhost</code>) and launch a job on each one that gathers details on that particular node. Depending on the amount and type of jobs currently occupying the cluster nodes, this may take anywhere from a few minutes to hours to complete.</p>
-<p>When completed, a tab-delimited file <code>.data/host_table,{date}.tsv</code> will be produced. To deploy this to <a href="https://ucsf-hpc.github.io/wynton/about/specs.html">Wynton website</a>, copy this file to <a href="https://github.com/UCSF-HPC/wynton/blob/master/docs/assets/data/host_table.tsv"><code>docs/assets/data/host_table.tsv</code></a>, then commit and push.</p>
+<p>When completed, a tab-delimited file <code>.data/host_table,{date}.tsv</code> will be produced. To deploy this to <a href="https://ucsf-hpc.github.io/wynton/about/specs.html" class="external-link">Wynton website</a>, copy this file to <a href="https://github.com/UCSF-HPC/wynton/blob/master/docs/assets/data/host_table.tsv" class="external-link"><code>docs/assets/data/host_table.tsv</code></a>, then commit and push.</p>
 </div>
 </div>
 <div id="internal-notes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#internal-notes" class="anchor"></a>Internal notes</h2>
+<a href="#internal-notes" class="anchor" aria-hidden="true"></a>Internal notes</h2>
 <div id="how-to-rebuild-wynton-hpc-specification-database" class="section level3">
 <h3 class="hasAnchor">
-<a href="#how-to-rebuild-wynton-hpc-specification-database" class="anchor"></a>How to Rebuild Wynton HPC Specification Database</h3>
+<a href="#how-to-rebuild-wynton-hpc-specification-database" class="anchor" aria-hidden="true"></a>How to Rebuild Wynton HPC Specification Database</h3>
 <ol>
 <li>Query recently added nodes</li>
 </ol>
@@ -128,16 +124,16 @@
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>R package wyntonquery is only available via <a href="https://github.com/ucsf-wynton/wyntonquery">GitHub</a> and can be installed in R as:</p>
+<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h2>
+<p>R package wyntonquery is only available via <a href="https://github.com/ucsf-wynton/wyntonquery" class="external-link">GitHub</a> and can be installed in R as:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"ucsf-wynton/wyntonquery"</span>, ref<span class="op">=</span><span class="st">"master"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ucsf-wynton/wyntonquery"</span>, ref<span class="op">=</span><span class="st">"master"</span><span class="op">)</span></code></pre></div>
 <div id="pre-release-version" class="section level3">
 <h3 class="hasAnchor">
-<a href="#pre-release-version" class="anchor"></a>Pre-release version</h3>
+<a href="#pre-release-version" class="anchor" aria-hidden="true"></a>Pre-release version</h3>
 <p>To install the pre-release version that is available in Git branch <code>develop</code> on GitHub, use:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"ucsf-wynton/wyntonquery"</span>, ref<span class="op">=</span><span class="st">"develop"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ucsf-wynton/wyntonquery"</span>, ref<span class="op">=</span><span class="st">"develop"</span><span class="op">)</span></code></pre></div>
 <p>This will install the package from source.</p>
 </div>
 </div>
@@ -147,7 +143,7 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li>Browse source code at <br><a href="https://github.com/ucsf-wynton/wyntonquery/">https://​github.com/​ucsf-wynton/​wyntonquery/​</a>
 </li>
@@ -155,42 +151,48 @@
 </li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>LGPL (&gt;= 2.1)</li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CONTRIBUTING.html">Contributing guide</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Henrik Bengtsson <br><small class="roles"> Author, maintainer, copyright holder </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/ucsf-wynton/wyntonquery/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/ucsf-wynton/wyntonquery/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"></a></li>
-<li><a href="https://codecov.io/gh/ucsf-wynton/wyntonquery"><img border="0" src="https://codecov.io/gh/ucsf-wynton/wyntonquery/branch/develop/graph/badge.svg" alt="Coverage Status"></a></li>
+<li><a href="https://github.com/ucsf-wynton/wyntonquery/actions?query=workflow%3AR-CMD-check" class="external-link"><img border="0" src="https://github.com/ucsf-wynton/wyntonquery/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"></a></li>
+<li><a href="https://codecov.io/gh/ucsf-wynton/wyntonquery" class="external-link"><img border="0" src="https://codecov.io/gh/ucsf-wynton/wyntonquery/branch/develop/graph/badge.svg" alt="Coverage Status"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Henrik Bengtsson.</p>
+  <p></p>
+<p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
 </div>
 
       </footer>
@@ -198,6 +200,8 @@
 
   
 
+
+  
 
   </body>
 </html>
