@@ -74,7 +74,7 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
       if (!forward) delta <- max(floor(delta / 2), 1)
       pos <- pos + delta
       forward <- TRUE
-      p(amount = 0)
+#      p(amount = 0)
     } else {
       ## Invalid entry?
       if (is.na(week)) {
@@ -90,7 +90,7 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
           attr(weeks, "terminated") <- "NA"
           break
         }
-        p(amount = 0)
+#        p(amount = 0)
         next
       }
       
@@ -124,7 +124,7 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
         pos <- last_same + 1
         forward <- TRUE
       }
-      p(amount = 0)
+#      p(amount = 0)
     }
     if (debug) str(list(count = count, pos = pos, last_same = last_same, delta = delta))
     stopifnot(pos > last_same)
