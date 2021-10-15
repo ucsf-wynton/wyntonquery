@@ -42,6 +42,14 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
   delta_org <- delta
 
   by <- "end_time"
+
+  parse_time <- local({
+    origin <- as.POSIXct("1970-01-01 00:00.00 UTC", tz = "GMT")
+    function(value) {
+      if (value == 0) value <- NA_real_
+      as.POSIXct(value, origin = origin)
+    }
+  })
   
   ## Report on progress along 'index' every 1000:th entries
   p <- progressor(length(index) / 1000 + 2)
@@ -54,9 +62,10 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
   ## Assume first read is the start of the first week
   last <- pos
   offset <- index[pos]
-  job <- ntry(read_sge_accounting(con, offset = offset, n_max = 1L, progress = FALSE))
-  stopifnot(nrow(job) == 1L)
-  week <- format(job[[by]], "%GW%V")
+  job <- read_raw_sge_accounting(con, offset = offset, n_max = 1L, progress = FALSE)
+  time <- parse_time(job[[by]])
+  job <- NULL ## Not needed anymore
+  week <- format(time, "%GW%V")
   weeks[[week]] <- offset
   last_week <- week
   p(week)
@@ -69,11 +78,10 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
   forward <- TRUE
   while (pos <= length(index)) {
     offset <- index[pos]
-    job <- ntry({
-      read_sge_accounting(con, offset = offset, n_max = 1L, progress = FALSE)
-    })
-    stopifnot(nrow(job) == 1L)
-    week <- format(job[[by]], "%GW%V")
+    job <- read_raw_sge_accounting(con, offset = offset, n_max = 1L, progress = FALSE)
+    time <- parse_time(job[[by]])
+    job <- NULL ## Not needed anymore
+    week <- format(time, "%GW%V")
     if (debug) str(list(count = count, pos = pos, week  = week, last_week = last_week))
     if (identical(week, last_week)) {
       last_same <- pos
