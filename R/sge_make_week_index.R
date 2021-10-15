@@ -48,10 +48,14 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
   
   pos <- 1
 
+  con <- file(file, open = "rb")
+  on.exit(close(con))
+  
   ## Assume first read is the start of the first week
   last <- pos
   offset <- index[pos]
-  job <- ntry(read_sge_accounting(file, offset = offset, n_max = 1L, progress = FALSE))
+  job <- ntry(read_sge_accounting(con, offset = offset, n_max = 1L, progress = FALSE))
+  stopifnot(nrow(job) == 1L)
   week <- format(job[[by]], "%GW%V")
   weeks[[week]] <- offset
   last_week <- week
@@ -66,8 +70,9 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
   while (pos <= length(index)) {
     offset <- index[pos]
     job <- ntry({
-      read_sge_accounting(file, offset = offset, n_max = 1L, progress = FALSE)
+      read_sge_accounting(con, offset = offset, n_max = 1L, progress = FALSE)
     })
+    stopifnot(nrow(job) == 1L)
     week <- format(job[[by]], "%GW%V")
     if (debug) str(list(count = count, pos = pos, week  = week, last_week = last_week))
     if (identical(week, last_week)) {
