@@ -36,7 +36,7 @@ read_raw_sge_accounting <- function(file, offset = 0, n_max = Inf, skip = if (is
     stopifnot(isConnectionValid(con))
     if (offset > 0) seek(con, where = offset, origin = "start", rw = "read")
   } else {
-    con <- open_file_at(file, offset = offset)
+    con <- open_file_at(file, offset = offset, auto_close = FALSE)
     stopifnot(isConnectionValid(con))
     on.exit(if (!is.null(con)) close(con), add = TRUE, after = FALSE)
   }
