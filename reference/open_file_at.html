@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0-9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0-9002</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Open a file connection at given byte position</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/R/file_index.R'><code>R/file_index.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/ucsf-wynton/wyntonquery/blob/master/R/open_file_at.R'><code>R/open_file_at.R</code></a></small>
     <div class="hidden name"><code>open_file_at.Rd</code></div>
     </div>
 
@@ -135,7 +135,7 @@
     <p>Open a file connection at given byte position</p>
     </div>
 
-    <pre class="usage"><span class='fu'>open_file_at</span><span class='op'>(</span><span class='va'>file</span>, offset <span class='op'>=</span> <span class='fl'>0</span>, open <span class='op'>=</span> <span class='st'>"rb"</span>, auto_close <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>open_file_at</span><span class='op'>(</span><span class='va'>file</span>, offset <span class='op'>=</span> <span class='fl'>0</span>, open <span class='op'>=</span> <span class='st'>"rb"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,11 +154,6 @@ after being opened.</p></td>
       <th>open</th>
       <td><p>(character) Mode to open the file connection in, cf.
 <code><a href='https://rdrr.io/r/base/connections.html'>base::file()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>auto_close</th>
-      <td><p>(logical) If TRUE, then the connection is automatically
-closed when garbage collected.</p></td>
     </tr>
     </table>
 
