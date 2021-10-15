@@ -12,7 +12,7 @@
 
 <meta name="author" content="Henrik Bengtsson" />
 
-<meta name="date" content="2021-06-18" />
+<meta name="date" content="2021-10-14" />
 
 <title>SGE Accounting File</title>
 
@@ -112,7 +112,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">SGE Accounting File</h1>
 <h4 class="author">Henrik Bengtsson</h4>
-<h4 class="date">2021-06-18</h4>
+<h4 class="date">2021-10-14</h4>
 
 
 
@@ -122,47 +122,57 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="indexing-the-sge-accounting-file" class="section level2">
 <h2>Indexing the SGE accounting file</h2>
-<p>In March 2020, it was ~12 GB and took 6-8 minutes to read in full. As of June 2021, the Wynton HPC accounting file is ~54 GB with 160.5 million job entries. It is rare to be interested in all entries. It is more common to work with a subset of the job entries. In order to do this efficiently, we start by indexing the SGE accounting file to identify the file byte offset for each job entry;</p>
+<p>In March 2020, the Wynton HPC accounting file was ~12 GB and took 6-8 minutes to read. In June 2021, it was ~58 GB and had 161 million job entries. In October 2021, it was ~69 GB and had 192 million job entries. It is rare to be interested in all entries. It is more common to work with a subset of the job entries. In order to do this efficiently, we start by indexing the SGE accounting file to identify the file byte offset for each job entry;</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(wyntonquery)
-progressr<span class="op">::</span><span class="kw">handlers</span>(<span class="dt">global =</span> <span class="ot">TRUE</span>) ## Report on progress
-progressr<span class="op">::</span><span class="kw">handlers</span>(<span class="st">&quot;progress&quot;</span>)
+<span class="kw">library</span>(progressr)
+<span class="kw">handlers</span>(<span class="dt">global =</span> <span class="ot">TRUE</span>) ## Report on progress
+<span class="kw">handlers</span>(<span class="kw">handler_progress</span>(
+  <span class="st">&quot;:spin :current/:total (:message) [:bar] :percent in :elapsed ETA: :eta&quot;</span>
+))
 
 pathname &lt;-<span class="st"> </span><span class="kw">sge_accounting_file</span>()
-<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;File size: %.3g GB</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">file.size</span>(pathname)<span class="op">/</span><span class="dv">1024</span><span class="op">^</span><span class="dv">3</span>))
-<span class="co"># File size: 54.1 GB</span>
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;File size: %.3g GB</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">file.size</span>(pathname)<span class="op">/</span><span class="dv">1000</span><span class="op">^</span><span class="dv">3</span>))
+<span class="co"># File size: 69.3 GB</span>
 
-## It takes 5-10 minutes to index a 54 GB SGE accounting file
+## It takes ~15 minutes to index a 69 GB SGE accounting file
 index &lt;-<span class="st"> </span><span class="kw">make_file_index</span>(pathname, <span class="dt">skip =</span> 4L)
 <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of job entries: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">length</span>(index)))
-<span class="co"># Number of job entries: 160835061</span>
+<span class="co"># Number of job entries: 191745505</span>
 
 ## Save per-job index to file
 <span class="kw">save_file_index</span>(index, <span class="dt">file =</span> <span class="st">&quot;accounting.index_by_row&quot;</span>)</code></pre></div>
 <p>Next, we want to group the job entries by the ISO-6801 week of the job end times.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(wyntonquery)
-progressr<span class="op">::</span><span class="kw">handlers</span>(<span class="dt">global =</span> <span class="ot">TRUE</span>) ## Report on progress
-progressr<span class="op">::</span><span class="kw">handlers</span>(<span class="st">&quot;progress&quot;</span>)
+<span class="kw">library</span>(progressr)
+<span class="kw">handlers</span>(<span class="dt">global =</span> <span class="ot">TRUE</span>) ## Report on progress
+<span class="kw">handlers</span>(<span class="kw">handler_progress</span>(
+  <span class="st">&quot;:spin :current/:total (:message) [:bar] :percent in :elapsed ETA: :eta&quot;</span>
+))
 
 pathname &lt;-<span class="st"> </span><span class="kw">sge_accounting_file</span>()
 index &lt;-<span class="st"> </span><span class="kw">read_file_index</span>(<span class="st">&quot;accounting.index_by_row&quot;</span>)
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of job entries: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">length</span>(index)))
+<span class="co"># Number of job entries: 191745505</span>
+
+## It takes ~15 minutes to build the week index for 192 million entries
 week_index &lt;-<span class="st"> </span><span class="kw">sge_make_week_index</span>(pathname, <span class="dt">index =</span> index)
 <span class="kw">saveRDS</span>(week_index, <span class="dt">file =</span> <span class="st">&quot;accounting.index_by_week.rds&quot;</span>)
 
 <span class="kw">print</span>(week_index)
-<span class="co"># A tibble: 201 x 3</span>
+<span class="co"># A tibble: 218 × 3</span>
    week    nbr_of_jobs file_offset
    <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">         </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span>
 <span class="st"> </span><span class="dv">1</span> 2017W33         <span class="dv">406</span>          <span class="dv">59</span>
- <span class="dv">2</span> 2017W34         <span class="dv">450</span>      <span class="dv">113195</span>
- <span class="dv">3</span> 2017W35         <span class="dv">499</span>      <span class="dv">127727</span>
- <span class="dv">4</span> 2017W36         <span class="dv">523</span>      <span class="dv">143361</span>
- <span class="dv">5</span> 2017W37         <span class="dv">531</span>      <span class="dv">150740</span>
- <span class="dv">6</span> 2017W38         <span class="dv">561</span>      <span class="dv">153559</span>
- <span class="dv">7</span> 2017W39         <span class="dv">579</span>      <span class="dv">163657</span>
- <span class="dv">8</span> 2017W40         <span class="dv">601</span>      <span class="dv">169804</span>
- <span class="dv">9</span> 2017W41         <span class="dv">603</span>      <span class="dv">177075</span>
-<span class="dv">10</span> 2017W42         <span class="dv">621</span>      <span class="dv">177695</span>
-<span class="co"># … with 191 more rows</span></code></pre></div>
+ <span class="dv">2</span> 2017W34          <span class="dv">44</span>      <span class="dv">113195</span>
+ <span class="dv">3</span> 2017W35          <span class="dv">49</span>      <span class="dv">127727</span>
+ <span class="dv">4</span> 2017W36          <span class="dv">24</span>      <span class="dv">143361</span>
+ <span class="dv">5</span> 2017W37           <span class="dv">8</span>      <span class="dv">150740</span>
+ <span class="dv">6</span> 2017W38          <span class="dv">30</span>      <span class="dv">153559</span>
+ <span class="dv">7</span> 2017W39          <span class="dv">18</span>      <span class="dv">163657</span>
+ <span class="dv">8</span> 2017W40          <span class="dv">22</span>      <span class="dv">169804</span>
+ <span class="dv">9</span> 2017W41           <span class="dv">2</span>      <span class="dv">177075</span>
+<span class="dv">10</span> 2017W42          <span class="dv">18</span>      <span class="dv">177695</span>
+<span class="co"># … with 208 more rows</span></code></pre></div>
 </div>
 <div id="reading-job-entries-in-sge-accounting-file" class="section level2">
 <h2>Reading job entries in SGE accounting file</h2>
@@ -175,18 +185,21 @@ week_index &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span c
 
 weeks &lt;-<span class="st"> </span><span class="kw">subset</span>(week_index, week <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;2020W06&quot;</span>, <span class="st">&quot;2020W07&quot;</span>))
 <span class="kw">print</span>(weeks)
-<span class="co"># # A tibble: 2 x 3</span>
-<span class="co">#   week    nbr_of_jobs file_offset</span>
-<span class="co">#   &lt;chr&gt;         &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co"># 1 2020W06    30504788 11015936052</span>
-<span class="co"># 2 2020W07    31168272 11229385140</span>
+<span class="co"># A tibble: 2 × 3</span>
+  week    nbr_of_jobs file_offset
+  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">         </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span>
+<span class="dv">1</span> 2020W06      <span class="dv">627479</span> <span class="dv">11015936052</span>
+<span class="dv">2</span> 2020W07      <span class="dv">663484</span> <span class="dv">11229385140</span>
 
 offset &lt;-<span class="st"> </span>weeks<span class="op">$</span>file_offset[<span class="dv">1</span>]
 n_max &lt;-<span class="st"> </span><span class="kw">sum</span>(weeks<span class="op">$</span>nbr_of_jobs)
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of job entries to read: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, n_max))
+
+## It takes ~5 seconds to read the ~1.3 million job entries of interest
 jobs &lt;-<span class="st"> </span><span class="kw">read_sge_accounting</span>(pathname, <span class="dt">offset =</span> offset, <span class="dt">n_max =</span> n_max)
 jobs &lt;-<span class="st"> </span><span class="kw">anonymize</span>(jobs)
 <span class="kw">print</span>(<span class="kw">select</span>(jobs, <span class="op">-</span>account))
-<span class="co"># A tibble: 130,010 x 44</span>
+<span class="co"># A tibble: 1,290,963 x 44</span>
    qname  hostname group owner job_name  job_number priority submission_time    
    <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">          </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dttm<span class="op">&gt;</span><span class="st">             </span>
 <span class="st"> </span><span class="dv">1</span> long.q cc<span class="op">-</span>id3   grou… owne… job_qb3.…        <span class="dv">361</span>       <span class="dv">19</span> <span class="dv">2017-10-24</span> <span class="dv">09</span><span class="op">:</span><span class="dv">33</span><span class="op">:</span><span class="dv">46</span>
@@ -214,14 +227,19 @@ jobs &lt;-<span class="st"> </span><span class="kw">anonymize</span>(jobs)
 <h2>Statistics on these jobs</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">period &lt;-<span class="st"> </span><span class="kw">range</span>(jobs<span class="op">$</span>end_time, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
 <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Period: %s/%s</span><span class="ch">\n</span><span class="st">&quot;</span>, period[<span class="dv">1</span>], period[<span class="dv">2</span>]))
-<span class="co"># Period: 2017-10-24 09:40:46/2017-11-10 14:45:30</span>
+<span class="co"># Period: 2020-02-03 00:00:01/2020-02-16 23:59:58</span>
+
+jobs &lt;-<span class="st"> </span><span class="kw">add_weeks</span>(jobs)
+period &lt;-<span class="st"> </span><span class="kw">range</span>(jobs<span class="op">$</span>end_time_week, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
+<span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Period (weeks): %s/%s</span><span class="ch">\n</span><span class="st">&quot;</span>, period[<span class="dv">1</span>], period[<span class="dv">2</span>]))
+<span class="co"># Period (weeks): Period: 2020W06/2020W07</span>
 
 <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of jobs finished during this period: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">nrow</span>(jobs)))
-<span class="co"># Number of jobs finished during this period: 130010</span>
+<span class="co"># Number of jobs finished during this period: 1290963</span>
 
 nusers &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">unique</span>(jobs<span class="op">$</span>owner))
 <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Number of unique users: %d</span><span class="ch">\n</span><span class="st">&quot;</span>, nusers))
-<span class="co"># Number of unique users: 11</span></code></pre></div>
+<span class="co"># Number of unique users: 146</span></code></pre></div>
 <p>Let's see how many of the jobs finished succesfully and how many failed.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Get successful and failed jobs
 groups &lt;-<span class="st"> </span><span class="kw">list</span>(
@@ -230,44 +248,49 @@ groups &lt;-<span class="st"> </span><span class="kw">list</span>(
 )
 stats &lt;-<span class="st"> </span><span class="kw">sapply</span>(groups, nrow)
 <span class="kw">print</span>(stats)
-<span class="co"># success    fail </span>
-<span class="co">#  191701    5837 </span>
+success    fail 
+<span class="dv">1227507</span>   <span class="dv">63456</span>
 
 <span class="kw">print</span>(stats<span class="op">/</span><span class="kw">sum</span>(stats))
-<span class="co">#    success       fail </span>
-<span class="co"># 0.97045125 0.02954875</span></code></pre></div>
-<p>We see that failure rate among the ~200,000 jobs that ran the last 24 hours was ~3%. Next, let's see how much CPU time this correspondsa to:</p>
+ success     fail 
+<span class="fl">0.950846</span> <span class="fl">0.049154</span></code></pre></div>
+<p>We see that failure rate among the ~1.3 million jobs that ran during this period was ~5%. Next, let's see how much CPU time this corresponds to:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## CPU time consumed
 cpu &lt;-<span class="st"> </span><span class="kw">sapply</span>(groups, <span class="cf">function</span>(jobs) { d &lt;-<span class="st"> </span><span class="kw">sum</span>(jobs<span class="op">$</span>cpu); <span class="kw">units</span>(d) &lt;-<span class="st"> &quot;days&quot;</span>; d })
 <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Total CPU processing time: %.1f hours</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="kw">sum</span>(cpu)))
-<span class="co"># Total CPU processing time: 7937.3 hours</span>
+<span class="co"># Total CPU processing time: 53069.7 hours</span>
 
 <span class="kw">print</span>(cpu)
-<span class="co">#   success      fail </span>
-<span class="co"># 7562.2252  375.1175</span>
+<span class="co">#  success     fail </span>
+<span class="co"># 37291.05 15778.61</span>
 
 ## CPU-time fractions
 <span class="kw">print</span>(cpu <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(cpu))
-<span class="co">#    success       fail </span>
-<span class="co"># 0.95274017 0.04725983</span></code></pre></div>
-<p>From this, we find that during the last 24 hours, ~5% of the CPU time was consumed by jobs that failed. Among the failed jobs, the failure code was distributed as:</p>
+<span class="co">#  success      fail </span>
+<span class="co">#0.7026811 0.2973189</span></code></pre></div>
+<p>From this, we find that during these two weeks, ~30% of the CPU time was consumed by jobs that failed. Among the failed jobs, the failure code was distributed as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">table</span>(groups<span class="op">$</span>fail<span class="op">$</span>failed))
-<span class="co">#   25   26   37  100 </span>
-<span class="co">#    5    1 4440 1391</span></code></pre></div>
-<p>From <code>help(&quot;read_sge_accounting&quot;, package=&quot;wyntonquery&quot;)</code> for details on the parsed fields and their data types, these description of some of these codes are:</p>
+<span class="co">#    1     8    19    21    26    27    28    37   100 </span>
+<span class="co">#    8    26  2520     8  2762    15 15552  9907 32658</span></code></pre></div>
+<p>From <code>help(&quot;read_sge_accounting&quot;, package=&quot;wyntonquery&quot;)</code> for details on the parsed fields and their data types, these description of these codes are:</p>
 <ul>
-<li>25: rescheduling</li>
+<li>1: failed early in execd</li>
+<li>8: failed in prolog</li>
+<li>19: shepherd didn't write reports correctly - probably program or machine crash</li>
+<li>21: qmaster asked about an unknown job (not in accounting?)</li>
 <li>26: failed opening stderr/stdout file</li>
+<li>27: failed finding specified shell</li>
+<li>28: failed changing to start directory</li>
 <li>37: ran but killed because it exceeded the maximum run time (<code>h_rt</code>), maximum CPU time (<code>h_cpu</code>), or maximum virtual memory (<code>h_vmem</code>)</li>
 <li>100: ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.</li>
 </ul>
-<p>The jobs that exhausted their limits, consumed 213 days of CPU time;</p>
+<p>The jobs that exhausted their limits, consumed 9613 days of CPU time;</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">subset</span>(groups<span class="op">$</span>fail, failed <span class="op">==</span><span class="st"> </span><span class="dv">37</span>)<span class="op">$</span>cpu); <span class="kw">units</span>(d) &lt;-<span class="st"> &quot;days&quot;</span>
 <span class="kw">print</span>(d)
-<span class="co"># Time difference of 212.8236 days</span></code></pre></div>
-<p>which corresponds to ~3% of all CPU time spent:</p>
+<span class="co"># Time difference of 9613.036 days</span></code></pre></div>
+<p>which corresponds to ~18% of all CPU time spent:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">as.numeric</span>(d<span class="op">/</span><span class="kw">sum</span>(cpu))
-[<span class="dv">1</span>] <span class="fl">0.02681296</span></code></pre></div>
+[<span class="dv">1</span>] <span class="fl">0.1811399</span></code></pre></div>
 </div>
 
 
