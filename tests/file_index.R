@@ -27,3 +27,6 @@ stopifnot(all.equal(index_jobs_3, index_jobs))
 
 file.remove(tf)
 
+## Create a week index
+week_index <- sge_make_week_index(pathname, index = index)
+print(week_index)

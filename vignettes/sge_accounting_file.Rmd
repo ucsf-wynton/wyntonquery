@@ -23,21 +23,24 @@ The SGE accounting file holds information on all submitted and _finished_ jobs s
 
 ## Indexing the SGE accounting file
 
-In March 2020, it was ~12 GB and took 6-8 minutes to read in full.  As of June 2021, the Wynton HPC accounting file is ~54 GB with 160.5 million job entries.  It is rare to be interested in all entries.  It is more common to work with a subset of the job entries.  In order to do this efficiently, we start by indexing the SGE accounting file to identify the file byte offset for each job entry;
+In March 2020, the Wynton HPC accounting file was ~12 GB and took 6-8 minutes to read.  In June 2021, it was ~58 GB and had 161 million job entries.  In October 2021, it was ~69 GB and had 192 million job entries. It is rare to be interested in all entries.  It is more common to work with a subset of the job entries.  In order to do this efficiently, we start by indexing the SGE accounting file to identify the file byte offset for each job entry;
 
 ```r
 library(wyntonquery)
-progressr::handlers(global = TRUE) ## Report on progress
-progressr::handlers("progress")
+library(progressr)
+handlers(global = TRUE) ## Report on progress
+handlers(handler_progress(
+  ":spin :current/:total (:message) [:bar] :percent in :elapsed ETA: :eta"
+))
 
 pathname <- sge_accounting_file()
-cat(sprintf("File size: %.3g GB\n", file.size(pathname)/1024^3))
-# File size: 54.1 GB
+cat(sprintf("File size: %.3g GB\n", file.size(pathname)/1000^3))
+# File size: 69.3 GB
 
-## It takes 5-10 minutes to index a 54 GB SGE accounting file
+## It takes ~15 minutes to index a 69 GB SGE accounting file
 index <- make_file_index(pathname, skip = 4L)
 cat(sprintf("Number of job entries: %d\n", length(index)))
-# Number of job entries: 160835061
+# Number of job entries: 191745505
 
 ## Save per-job index to file
 save_file_index(index, file = "accounting.index_by_row")
@@ -47,16 +50,21 @@ Next, we want to group the job entries by the ISO-6801 week of the job end times
 
 ```r
 library(wyntonquery)
-progressr::handlers(global = TRUE) ## Report on progress
-progressr::handlers("progress")
+library(progressr)
+handlers(global = TRUE) ## Report on progress
+handlers(handler_progress(
+  ":spin :current/:total (:message) [:bar] :percent in :elapsed ETA: :eta"
+))
 
 pathname <- sge_accounting_file()
 index <- read_file_index("accounting.index_by_row")
+
+## It takes ~15-20 minutes to build the week index for 192 million entries
 week_index <- sge_make_week_index(pathname, index = index)
 saveRDS(week_index, file = "accounting.index_by_week.rds")
 
 print(week_index)
-# A tibble: 201 x 3
+# A tibble: 218 x 3
    week    nbr_of_jobs file_offset
    <chr>         <dbl>       <dbl>
  1 2017W33         406          59
@@ -69,7 +77,7 @@ print(week_index)
  8 2017W40         601      169804
  9 2017W41         603      177075
 10 2017W42         621      177695
-# … with 191 more rows
+# … with 208 more rows
 ```
 
 
@@ -95,7 +103,10 @@ print(weeks)
 
 offset <- weeks$file_offset[1]
 n_max <- sum(weeks$nbr_of_jobs)
+
+## It takes ~ mins to read the ~130,000 job entries
 jobs <- read_sge_accounting(pathname, offset = offset, n_max = n_max)
+)
 jobs <- anonymize(jobs)
 print(select(jobs, -account))
 # A tibble: 130,010 x 44
@@ -158,7 +169,7 @@ print(stats/sum(stats))
 # 0.97045125 0.02954875
 ```
 
-We see that failure rate among the ~200,000 jobs that ran the last 24 hours was ~3%.  Next, let's see how much CPU time this correspondsa to:
+We see that failure rate among the ~200,000 jobs that ran the last 24 hours was ~3%.  Next, let's see how much CPU time this corresponds to:
 
 ```r
 ## CPU time consumed
