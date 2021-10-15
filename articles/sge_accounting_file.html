@@ -198,8 +198,8 @@ n_max &lt;-<span class="st"> </span><span class="kw">sum</span>(weeks<span class
 ## It takes ~5 seconds to read the ~1.3 million job entries of interest
 jobs &lt;-<span class="st"> </span><span class="kw">read_sge_accounting</span>(pathname, <span class="dt">offset =</span> offset, <span class="dt">n_max =</span> n_max)
 jobs &lt;-<span class="st"> </span><span class="kw">anonymize</span>(jobs)
-<span class="kw">print</span>(<span class="kw">select</span>(jobs, <span class="op">-</span>account))
-<span class="co"># A tibble: 1,290,963 x 44</span>
+<span class="kw">print</span>(<span class="kw">head</span>(<span class="kw">select</span>(jobs, <span class="op">-</span>account)))
+<span class="co"># A tibble: 6 × 44</span>
    qname  hostname group owner job_name  job_number priority submission_time    
    <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">          </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dttm<span class="op">&gt;</span><span class="st">             </span>
 <span class="st"> </span><span class="dv">1</span> long.q cc<span class="op">-</span>id3   grou… owne… job_qb3.…        <span class="dv">361</span>       <span class="dv">19</span> <span class="dv">2017-10-24</span> <span class="dv">09</span><span class="op">:</span><span class="dv">33</span><span class="op">:</span><span class="dv">46</span>
@@ -208,11 +208,7 @@ jobs &lt;-<span class="st"> </span><span class="kw">anonymize</span>(jobs)
  <span class="dv">4</span> long.q qb3<span class="op">-</span>id3  grou… owne… job_mac_…        <span class="dv">359</span>       <span class="dv">19</span> <span class="dv">2017-10-23</span> <span class="dv">09</span><span class="op">:</span><span class="dv">52</span><span class="op">:</span><span class="dv">44</span>
  <span class="dv">5</span> long.q qb3<span class="op">-</span>id2  grou… owne… job_qb3.…        <span class="dv">363</span>       <span class="dv">19</span> <span class="dv">2017-10-24</span> <span class="dv">09</span><span class="op">:</span><span class="dv">41</span><span class="op">:</span><span class="dv">57</span>
  <span class="dv">6</span> long.q qb3<span class="op">-</span>id1  grou… owne… bmle_int…        <span class="dv">368</span>       <span class="dv">19</span> <span class="dv">2017-10-25</span> <span class="dv">09</span><span class="op">:</span><span class="dv">21</span><span class="op">:</span><span class="dv">41</span>
- <span class="dv">7</span> long.q cc<span class="op">-</span>hmid1 grou… owne… bmle_int…        <span class="dv">369</span>       <span class="dv">19</span> <span class="dv">2017-10-25</span> <span class="dv">09</span><span class="op">:</span><span class="dv">23</span><span class="op">:</span><span class="dv">47</span>
- <span class="dv">8</span> short… cin<span class="op">-</span>hmi… grou… owne… job_qb3.…        <span class="dv">379</span>       <span class="dv">10</span> <span class="dv">2017-10-25</span> <span class="dv">10</span><span class="op">:</span><span class="dv">41</span><span class="op">:</span><span class="dv">51</span>
- <span class="dv">9</span> short… cin<span class="op">-</span>hmi… grou… owne… job_qb3.…        <span class="dv">380</span>       <span class="dv">10</span> <span class="dv">2017-10-25</span> <span class="dv">10</span><span class="op">:</span><span class="dv">46</span><span class="op">:</span><span class="dv">10</span>
-<span class="dv">10</span> short… cin<span class="op">-</span>hmi… grou… owne… job_qb3.…        <span class="dv">381</span>       <span class="dv">10</span> <span class="dv">2017-10-25</span> <span class="dv">10</span><span class="op">:</span><span class="dv">48</span><span class="op">:</span><span class="dv">42</span>
-<span class="co"># … with 130,000 more rows, and 36 more variables: start_time &lt;dttm&gt;,</span>
+<span class="co"># … with 36 more rows, and 36 more variables: start_time &lt;dttm&gt;,</span>
 <span class="co">#   end_time &lt;dttm&gt;, failed &lt;int&gt;, exit_status &lt;int&gt;, ru_wallclock &lt;drtn&gt;,</span>
 <span class="co">#   ru_utime &lt;drtn&gt;, ru_stime &lt;drtn&gt;, ru_maxrss &lt;chr&gt;, ru_ixrss &lt;chr&gt;,</span>
 <span class="co">#   ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;, ru_isrss &lt;chr&gt;, ru_minflt &lt;dbl&gt;,</span>
@@ -266,24 +262,28 @@ cpu &lt;-<span class="st"> </span><span class="kw">sapply</span>(groups, <span c
 
 ## CPU-time fractions
 <span class="kw">print</span>(cpu <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(cpu))
-<span class="co">#  success      fail </span>
-<span class="co">#0.7026811 0.2973189</span></code></pre></div>
+<span class="co">#   success      fail </span>
+<span class="co"># 0.7026811 0.2973189</span></code></pre></div>
 <p>From this, we find that during these two weeks, ~30% of the CPU time was consumed by jobs that failed. Among the failed jobs, the failure code was distributed as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">table</span>(groups<span class="op">$</span>fail<span class="op">$</span>failed))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">codes &lt;-<span class="st"> </span>groups<span class="op">$</span>fail<span class="op">$</span>failed
+<span class="kw">print</span>(<span class="kw">table</span>(codes))
 <span class="co">#    1     8    19    21    26    27    28    37   100 </span>
 <span class="co">#    8    26  2520     8  2762    15 15552  9907 32658</span></code></pre></div>
-<p>From <code>help(&quot;read_sge_accounting&quot;, package=&quot;wyntonquery&quot;)</code> for details on the parsed fields and their data types, these description of these codes are:</p>
-<ul>
-<li>1: failed early in execd</li>
-<li>8: failed in prolog</li>
-<li>19: shepherd didn't write reports correctly - probably program or machine crash</li>
-<li>21: qmaster asked about an unknown job (not in accounting?)</li>
-<li>26: failed opening stderr/stdout file</li>
-<li>27: failed finding specified shell</li>
-<li>28: failed changing to start directory</li>
-<li>37: ran but killed because it exceeded the maximum run time (<code>h_rt</code>), maximum CPU time (<code>h_cpu</code>), or maximum virtual memory (<code>h_vmem</code>)</li>
-<li>100: ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.</li>
-</ul>
+<p>From details on these codes, see <code>help(&quot;read_sge_accounting&quot;, package=&quot;wyntonquery&quot;)</code>, or:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">info &lt;-<span class="st"> </span><span class="kw">subset</span>(<span class="kw">sge_failed_codes</span>(), Code <span class="op">%in%</span><span class="st"> </span><span class="kw">unique</span>(codes), <span class="dt">select=</span><span class="kw">c</span>(Code, Explanation))
+<span class="kw">print</span>(info)
+<span class="co"># A tibble: 9 × 2</span>
+   Code Explanation                                                                                                       
+  <span class="op">&lt;</span>int<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">                                                                                                             </span>
+<span class="dv">1</span>     <span class="dv">1</span> failed early <span class="cf">in</span> execd                                                                                             
+<span class="dv">2</span>     <span class="dv">8</span> failed <span class="cf">in</span> prolog                                                                                                  
+<span class="dv">3</span>    <span class="dv">19</span> shepherd didnt write reports correctly <span class="op">-</span><span class="st"> </span>probably program or machine crash                                        
+<span class="dv">4</span>    <span class="dv">21</span> qmaster asked about an unknown <span class="kw">job</span> (not <span class="cf">in</span> accounting?)                                                           
+<span class="dv">5</span>    <span class="dv">26</span> failed opening stderr<span class="op">/</span>stdout file                                                                                 
+<span class="dv">6</span>    <span class="dv">27</span> failed finding specified shell                                                                                    
+<span class="dv">7</span>    <span class="dv">28</span> failed changing to start directory                                                                                
+<span class="dv">8</span>    <span class="dv">37</span> ran, but killed due to exceeding run time limit                                                                   
+<span class="dv">9</span>   <span class="dv">100</span> ran, but killed by a <span class="kw">signal</span> (perhaps due to exceeding resources), task died, shepherd <span class="kw">died</span> (e.g. node crash), etc.</code></pre></div>
 <p>The jobs that exhausted their limits, consumed 9613 days of CPU time;</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">subset</span>(groups<span class="op">$</span>fail, failed <span class="op">==</span><span class="st"> </span><span class="dv">37</span>)<span class="op">$</span>cpu); <span class="kw">units</span>(d) &lt;-<span class="st"> &quot;days&quot;</span>
 <span class="kw">print</span>(d)
