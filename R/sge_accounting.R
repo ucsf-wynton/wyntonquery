@@ -529,3 +529,53 @@ parse_category.sge_accounting <- function(x, properties = c("h_rt", "s_rt", "mem
 
   as_tibble(res)
 }
+
+
+#' Table of SGE failed codes with descriptions
+#'
+#' @return A tibble
+#'
+#' @importFrom readr read_delim
+#' @export
+sge_failed_codes <- local({
+  codes <- NULL
+  function() {
+    if (is.null(codes)) {
+      codes <- read_delim(delim = ";", col_names = TRUE, col_types = "iclc", trim_ws = TRUE, file = 
+        "Code; Description                                  ; OK; Explanation                                            
+            0; no failure                                   ; TRUE  ; and exited normally                              
+            1; assumedly before job                         ; FALSE ; failed early in execd                                  
+            3; before writing config                        ; FALSE ; failed before execd set up local spool                 
+            4; before writing PID                           ; FALSE ; shepherd failed to record its pid - filesystem problem?
+            6; setting processor set                        ; FALSE ; failed setting up processor set (obsolete)             
+            7; before prolog                                ; FALSE ; failed before prolog                                   
+            8; in prolog                                    ; FALSE ; failed in prolog                                       
+            9; before pestart                               ; FALSE ; failed before starting PE                              
+           10; in pestart                                   ; FALSE ; failed in PE starter                                   
+           11; before job                                   ; FALSE ; failed in shepherd before starting job                 
+           12; before pestop                                ; TRUE  ; ran, but failed before calling PE stop procedure       
+           13; in pestop                                    ; TRUE  ; ran, but PE stop procedure failed                      
+           14; before epilog                                ; TRUE  ; ran, but failed before calling epilog                  
+           15; in epilog                                    ; TRUE  ; ran, but failed in epilog                              
+           16; releasing processor set                      ; TRUE  ; ran, but processor set could not be released (obsolete)
+           17; through signal                               ; TRUE  ; job killed by signal (possibly qdel)                   
+           18; shepherd returned error                      ; FALSE ; shepherd died somehow                                  
+           19; before writing exit_status                   ; FALSE ; shepherd didnt write reports correctly - probably program or machine crash
+           20; found unexpected error file                  ; NA    ; shepherd encountered a problem                         
+           21; in recognizing job                           ; FALSE ; qmaster asked about an unknown job (not in accounting?)
+           24; migrating (checkpointing jobs)               ; TRUE  ; ran, will be migrated                                  
+           25; rescheduling                                 ; TRUE  ; ran, will be rescheduled                               
+           26; opening output file                          ; FALSE ; failed opening stderr/stdout file                      
+           27; searching requested shell                    ; FALSE ; failed finding specified shell                         
+           28; changing to working directory                ; FALSE ; failed changing to start directory                     
+           29; AFS setup                                    ; FALSE ; failed setting up AFS security                         
+           30; application error returned                   ; TRUE  ; ran and exited 100 - maybe re-scheduled                
+           36; checking configured daemons                  ; FALSE ; failed because of configured remote startup daemon     
+           38; adding supplementary group                   ; FALSE ; failed adding supplementary gid to job                 
+           37; qmaster enforced h_rt, h_cpu, or h_vmem limit; TRUE  ; ran, but killed due to exceeding run time limit        
+          100; assumedly after job                          ; TRUE  ; ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.
+      ")
+    } # if (is.null(codes)
+    codes
+  }
+})
