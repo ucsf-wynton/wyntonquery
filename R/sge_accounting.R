@@ -89,7 +89,7 @@ sge_accounting_col_types <- function() {
     failed          = col_integer(),   ## Indicates the problem which occurred in case a job failed (at the system level, as opposed to the job script or binary having non-zero exit status)
     exit_status     = col_integer(),   ## Exit status of the job script (or Grid Engine-specific status in case of certain error conditions)
  
-    ru_wallclock    = col_double(),    ## [time interval] Difference between 'end_time' and 'start_time', except that if the job fails, it is zero.
+    ru_wallclock    = col_double(),    ## [time interval] Difference between `end_time` and `start_time`, except that if the job fails, it is zero.
     
     ## struct rusage {
     ##    struct timeval ru_utime; /* user CPU time used */
