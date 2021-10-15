@@ -4,7 +4,7 @@
 \alias{open_file_at}
 \title{Open a file connection at given byte position}
 \usage{
-open_file_at(file, offset = 0, open = "rb", auto_close = TRUE)
+open_file_at(file, offset = 0, open = "rb")
 }
 \arguments{
 \item{file}{A pathname to a \file{*.index} file to be
@@ -15,9 +15,6 @@ after being opened.}
 
 \item{open}{(character) Mode to open the file connection in, cf.
 \code{\link[base:connections]{base::file()}}.}
-
-\item{auto_close}{(logical) If TRUE, then the connection is automatically
-closed when garbage collected.}
 }
 \value{
 A file \link[base:connections]{base::connection} moved to position \code{offset}.
