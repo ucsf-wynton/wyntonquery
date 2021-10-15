@@ -65,7 +65,9 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
   forward <- TRUE
   while (pos <= length(index)) {
     offset <- index[pos]
-    job <- ntry(read_sge_accounting(file, offset = offset, n_max = 1L))
+    job <- ntry({
+      read_sge_accounting(file, offset = offset, n_max = 1L)
+    })
     week <- format(job[[by]], "%GW%V")
     if (debug) str(list(count = count, pos = pos, week  = week, last_week = last_week))
     if (identical(week, last_week)) {
@@ -129,7 +131,7 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
     if (debug) str(list(count = count, pos = pos, last_same = last_same, delta = delta))
     stopifnot(pos > last_same)
     count <- count + 1L
-  }
+  } ## while (pos <= length(index)
   p(step = length(index) / 1000)
 
   ## Coerce to a named vector
@@ -137,10 +139,10 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
   weeks <- unlist(weeks, use.names = TRUE)
   weeks <- weeks[!duplicated(weeks)]
   p("number of jobs per week")
-  
+
   week_index <- data.frame(
     week        = names(weeks),
-    nbr_of_jobs = c(match(weeks, index)[-1] - 1, Inf),
+    nbr_of_jobs = c(diff(match(weeks, index)), +Inf),
     file_offset = unname(weeks)
   )
   week_index <- as_tibble(week_index)

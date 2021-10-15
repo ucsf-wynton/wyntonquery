@@ -1,8 +1,11 @@
 Package: wyntonquery
 
-Version: 0.2.0-9000 [2021-06-18]
+Version: 0.2.0-9001 [2021-10-14]
 
- * ...
+BUG FIXES:
+
+ * Field 'nbr_of_jobs' returned by sge_make_week_index() was a cumulative
+   sum, not number of jobs per week.
  
 
 Version: 0.2.0 [2021-06-18]

@@ -1,5 +1,5 @@
 Package: wyntonquery
-Version: 0.2.0-9000
+Version: 0.2.0-9001
 Depends:
     R (>= 3.5.0)
 Imports:
