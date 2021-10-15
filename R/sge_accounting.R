@@ -1,6 +1,6 @@
 #' Read a tab-delimited SGE accounting file (without parsing it)
 #'
-#' @param file (character) The SGE \file{accounting} file to read.
+#' @param file (character or a file connection) The SGE \file{accounting} file to read.
 #'
 #' @param offset The file byte position from where to start reading.
 #'
@@ -25,30 +25,18 @@ read_raw_sge_accounting <- function(file, offset = 0, n_max = Inf, skip = if (is
   stopifnot(is.numeric(n_max), length(n_max) == 1L, !is.na(n_max), n_max >= 0)
 
   header <- if (skip > 0L) readLines(file, n = skip) else character(0L)
-  
-  if (offset > 0) {
+
+  if (inherits(file, "connection")) {
+    con <- file
+    if (offset > 0) seek(con, where = offset, origin = "start", rw = "read")
+  } else {
     con <- open_file_at(file, offset = offset)
     on.exit(if (!is.null(con)) close(con))
-    
-    ## WORKAROUND: https://github.com/tidyverse/readr/issues/1221
-    if (is.finite(n_max)) {
-      ## Copy the part of the file we're interested in to a temporary file
-      tf <- tempfile()
-      on.exit(file.remove(tf), add = TRUE)
-      ## TODO: Read in chunks to save memory for large 'n_max'
-      bfr <- readLines(con, n = n_max, warn = FALSE)
-      writeLines(bfr, con = tf)
-      close(con)
-      con <- NULL
-      file <- tf
-    } else {
-      file <- con
-    }
   }
   
   col_types <- sge_accounting_col_types()
   col_names <- names(col_types$cols)
-  x <- read_delim(file = file, delim = ":", col_names = col_names, col_types = col_types, skip = skip, n_max = n_max, ...)
+  x <- read_delim(file = con, delim = ":", col_names = col_names, col_types = col_types, skip = skip, n_max = n_max, ...)
   attr(x, "header") <- header
   class(x) <- c("raw_sge_accounting", class(x))
   x

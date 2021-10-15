@@ -16,7 +16,7 @@ read_raw_sge_accounting(
 write_raw_sge_accounting(x, file, header = attr(x, "header"), ...)
 }
 \arguments{
-\item{file}{(character) The SGE \file{accounting} file to read.}
+\item{file}{(character or a file connection) The SGE \file{accounting} file to read.}
 
 \item{offset}{The file byte position from where to start reading.}
 

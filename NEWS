@@ -2,6 +2,11 @@ Package: wyntonquery
 
 Version: 0.2.0-9001 [2021-10-14]
 
+NEW FEATURES:
+
+ * Now read_raw_sge_accounting() and read_sge_accounting() accepts also
+   file connections as input.
+   
 BUG FIXES:
 
  * Field 'nbr_of_jobs' returned by sge_make_week_index() was a cumulative

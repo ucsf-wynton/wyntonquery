@@ -51,7 +51,7 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
   ## Assume first read is the start of the first week
   last <- pos
   offset <- index[pos]
-  job <- ntry(read_sge_accounting(file, offset = offset, n_max = 1L))
+  job <- ntry(read_sge_accounting(file, offset = offset, n_max = 1L, progress = FALSE))
   week <- format(job[[by]], "%GW%V")
   weeks[[week]] <- offset
   last_week <- week
@@ -66,7 +66,7 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
   while (pos <= length(index)) {
     offset <- index[pos]
     job <- ntry({
-      read_sge_accounting(file, offset = offset, n_max = 1L)
+      read_sge_accounting(file, offset = offset, n_max = 1L, progress = FALSE)
     })
     week <- format(job[[by]], "%GW%V")
     if (debug) str(list(count = count, pos = pos, week  = week, last_week = last_week))
@@ -76,7 +76,7 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
       if (!forward) delta <- max(floor(delta / 2), 1)
       pos <- pos + delta
       forward <- TRUE
-      if (count %% 100 == 0) p(amount = 0)
+      p(amount = 0)
     } else {
       ## Invalid entry?
       if (is.na(week)) {
@@ -92,7 +92,7 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
           attr(weeks, "terminated") <- "NA"
           break
         }
-        if (count %% 100 == 0) p(amount = 0)
+        p(amount = 0)
         next
       }
       
@@ -126,7 +126,7 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
         pos <- last_same + 1
         forward <- TRUE
       }
-      if (count %% 100 == 0) p(amount = 0)
+      p(amount = 0)
     }
     if (debug) str(list(count = count, pos = pos, last_same = last_same, delta = delta))
     stopifnot(pos > last_same)

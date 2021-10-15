@@ -8,7 +8,7 @@ Imports:
     R.cache,
     prettyunits,
     progressr,
-    readr,
+    readr (>= 2.0.0),
     utils,
     tibble,
     xml2,
