@@ -17,6 +17,7 @@
 #'
 #' @example incl/raw_sge_accounting.R
 #'
+#' @importFrom parallelly isConnectionValid
 #' @importFrom readr read_delim
 #' @export
 read_raw_sge_accounting <- function(file, offset = 0, n_max = Inf, skip = if (is.character(file) && offset == 0) 4L else 0L, ...) {
@@ -26,12 +27,18 @@ read_raw_sge_accounting <- function(file, offset = 0, n_max = Inf, skip = if (is
 
   header <- if (skip > 0L) readLines(file, n = skip) else character(0L)
 
+  ## Assert that all temporary connections are closed at the end
+  cons <- getAllConnections()
+  on.exit(stopifnot(identical(getAllConnections(), cons)))
+  
   if (inherits(file, "connection")) {
     con <- file
+    stopifnot(isConnectionValid(con))
     if (offset > 0) seek(con, where = offset, origin = "start", rw = "read")
   } else {
     con <- open_file_at(file, offset = offset)
-    on.exit(if (!is.null(con)) close(con))
+    stopifnot(isConnectionValid(con))
+    on.exit(if (!is.null(con)) close(con), add = TRUE, after = FALSE)
   }
   
   col_types <- sge_accounting_col_types()
@@ -471,6 +478,10 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #'
 #' @export
 read_sge_accounting <- function(file = sge_accounting_file(), ...) {
+  ## Assert that all temporary connections are closed at the end
+  cons <- getAllConnections()
+  stopifnot(identical(getAllConnections(), cons))
+  
   data <- read_raw_sge_accounting(file = file, ...)
   data <- as_sge_accounting(data)
   data
