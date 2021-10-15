@@ -90,7 +90,6 @@ Here is an example how we can read the job entries for a couple of weeks:
 
 ```r
 library(wyntonquery)
-library(dplyr)
 
 pathname <- sge_accounting_file()
 week_index <- readRDS("accounting.index_by_week.rds")
@@ -197,23 +196,30 @@ print(cpu / sum(cpu))
 From this, we find that during these two weeks, ~30% of the CPU time was consumed by jobs that failed.  Among the failed jobs, the failure code was distributed as:
 
 ```r
-print(table(groups$fail$failed))
+codes <- groups$fail$failed
+print(table(codes))
 #    1     8    19    21    26    27    28    37   100 
 #    8    26  2520     8  2762    15 15552  9907 32658
 ```
 
-From `help("read_sge_accounting", package="wyntonquery")` for details on the parsed fields and their data types, these description of these codes are:
+From details on these codes, see `help("read_sge_accounting", package="wyntonquery")`, or:
 
- *   1: failed early in execd
- *   8: failed in prolog
- *  19: shepherd didn't write reports correctly - probably program or machine crash
- *  21: qmaster asked about an unknown job (not in accounting?)
- *  26: failed opening stderr/stdout file
- *  27: failed finding specified shell
- *  28: failed changing to start directory
- *  37: ran but killed because it exceeded the maximum run time (`h_rt`), maximum CPU time (`h_cpu`), or maximum virtual memory (`h_vmem`)
- * 100: ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.
-
+```r
+info <- subset(sge_failed_codes(), Code %in% unique(codes), select=c(Code, Explanation))
+print(info)
+# A tibble: 9 × 2
+   Code Explanation                                                                                                       
+  <int> <chr>                                                                                                             
+1     1 failed early in execd                                                                                             
+2     8 failed in prolog                                                                                                  
+3    19 shepherd didnt write reports correctly - probably program or machine crash                                        
+4    21 qmaster asked about an unknown job (not in accounting?)                                                           
+5    26 failed opening stderr/stdout file                                                                                 
+6    27 failed finding specified shell                                                                                    
+7    28 failed changing to start directory                                                                                
+8    37 ran, but killed due to exceeding run time limit                                                                   
+9   100 ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.
+```
 
 The jobs that exhausted their limits, consumed 9613 days of CPU time;
 
