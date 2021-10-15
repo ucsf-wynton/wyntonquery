@@ -22,8 +22,16 @@ stopifnot(all.equal(jobs_3, jobs[301:350, ], check.attributes = FALSE))
 
 ## The same but read from a file connection
 con <- file(pathname, open = "rb")
+print(showConnections())
+str(con)
+print(con)
+
 jobs_3b <- read_sge_accounting(con, offset = index[301], n_max = 50)
-close(con)
 print(jobs_3b)
 stopifnot(all.equal(jobs_3b, jobs_3))
+
+print(showConnections())
+str(con)
+print(con)
+close(con)
 
