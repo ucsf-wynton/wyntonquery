@@ -90,6 +90,7 @@ Here is an example how we can read the job entries for a couple of weeks:
 
 ```r
 library(wyntonquery)
+library(dplyr)
 
 pathname <- sge_accounting_file()
 week_index <- readRDS("accounting.index_by_week.rds")
@@ -109,8 +110,8 @@ cat(sprintf("Number of job entries to read: %d\n", n_max))
 ## It takes ~5 seconds to read the ~1.3 million job entries of interest
 jobs <- read_sge_accounting(pathname, offset = offset, n_max = n_max)
 jobs <- anonymize(jobs)
-print(select(jobs, -account))
-# A tibble: 1,290,963 x 44
+print(head(select(jobs, -account)))
+# A tibble: 6 × 44
    qname  hostname group owner job_name  job_number priority submission_time    
    <chr>  <chr>    <chr> <chr> <chr>          <int>    <int> <dttm>             
  1 long.q cc-id3   grou… owne… job_qb3.…        361       19 2017-10-24 09:33:46
@@ -119,11 +120,7 @@ print(select(jobs, -account))
  4 long.q qb3-id3  grou… owne… job_mac_…        359       19 2017-10-23 09:52:44
  5 long.q qb3-id2  grou… owne… job_qb3.…        363       19 2017-10-24 09:41:57
  6 long.q qb3-id1  grou… owne… bmle_int…        368       19 2017-10-25 09:21:41
- 7 long.q cc-hmid1 grou… owne… bmle_int…        369       19 2017-10-25 09:23:47
- 8 short… cin-hmi… grou… owne… job_qb3.…        379       10 2017-10-25 10:41:51
- 9 short… cin-hmi… grou… owne… job_qb3.…        380       10 2017-10-25 10:46:10
-10 short… cin-hmi… grou… owne… job_qb3.…        381       10 2017-10-25 10:48:42
-# … with 130,000 more rows, and 36 more variables: start_time <dttm>,
+# … with 36 more rows, and 36 more variables: start_time <dttm>,
 #   end_time <dttm>, failed <int>, exit_status <int>, ru_wallclock <drtn>,
 #   ru_utime <drtn>, ru_stime <drtn>, ru_maxrss <chr>, ru_ixrss <chr>,
 #   ru_ismrss <chr>, ru_idrss <chr>, ru_isrss <chr>, ru_minflt <dbl>,
@@ -189,8 +186,8 @@ print(cpu)
 
 ## CPU-time fractions
 print(cpu / sum(cpu))
-#  success      fail 
-#0.7026811 0.2973189
+#   success      fail 
+# 0.7026811 0.2973189
 ```
 
 From this, we find that during these two weeks, ~30% of the CPU time was consumed by jobs that failed.  Among the failed jobs, the failure code was distributed as:
@@ -235,3 +232,4 @@ which corresponds to ~18% of all CPU time spent:
 > as.numeric(d/sum(cpu))
 [1] 0.1811399
 ```
+
