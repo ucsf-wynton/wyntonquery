@@ -17,7 +17,10 @@ BUG FIXES:
 
  * Field 'nbr_of_jobs' returned by sge_make_week_index() was a cumulative
    sum, not number of jobs per week.
- 
+
+ * open_file_at(..., auto_close = TRUE) was not safe; it could end up closing
+   the incorrect connection if the intended one had been closed and another
+   one had been opened.  Dropped options for 'auto_close' to be on safe side.
 
 Version: 0.2.0 [2021-06-18]
 
