@@ -1,7 +1,7 @@
 
 
 <div id="badges"><!-- pkgdown markup -->
- <a href="https://github.com/ucsf-wynton/wyntonquery/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/ucsf-wynton/wyntonquery/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"/></a>    <a href="https://codecov.io/gh/ucsf-wynton/wyntonquery"><img border="0" src="https://codecov.io/gh/ucsf-wynton/wyntonquery/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> 
+ <a href="https://github.com/ucsf-wynton/wyntonquery/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/ucsf-wynton/wyntonquery/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"/></a>     <a href="https://codecov.io/gh/ucsf-wynton/wyntonquery"><img border="0" src="https://codecov.io/gh/ucsf-wynton/wyntonquery/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> 
 </div>
 
 # wyntonquery: Query the UCSF Wynton Environment 
