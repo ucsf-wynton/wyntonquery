@@ -29,7 +29,7 @@ pathname <- sge_accounting_file()
 week_index <- readRDS("accounting.index_by_week.rds")
 
 weeks <- sprintf("2021W%02d", 1:40)
-messages("Weeks: ", paste(weeks, collapse = ", "))
+message("Weeks: ", paste(weeks, collapse = ", "))
 dts <- local({
   p <- progressor(along = weeks)
   future_lapply(weeks, FUN = function(week) {
@@ -37,7 +37,10 @@ dts <- local({
     message("Reading week ", week)
     dt <- tryCatch({
       jobs <- read_sge_accounting_by_weeks(pathname, weeks = week, index = week_index)
-      jobs[, c("cpu", "slots")]
+      jobs <- jobs[, c("cpu", "slots")]
+      ## Drop "invalid" entries
+      jobs <- subset(jobs, slots > 0)
+      jobs
     }, error = function(ex) ex)
     p()
     dt
