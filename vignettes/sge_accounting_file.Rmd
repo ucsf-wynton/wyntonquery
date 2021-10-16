@@ -35,12 +35,12 @@ handlers(handler_progress(
 
 pathname <- sge_accounting_file()
 cat(sprintf("File size: %.3g GB\n", file.size(pathname)/1000^3))
-# File size: 69.3 GB
+#> File size: 69.3 GB
 
 ## It takes ~15 minutes to index a 69 GB SGE accounting file
 index <- make_file_index(pathname, skip = 4L)
 cat(sprintf("Number of job entries: %d\n", length(index)))
-# Number of job entries: 191745505
+#> Number of job entries: 191745505
 
 ## Save per-job index to file
 save_file_index(index, file = "accounting.index_by_row")
@@ -59,27 +59,27 @@ handlers(handler_progress(
 pathname <- sge_accounting_file()
 index <- read_file_index("accounting.index_by_row")
 cat(sprintf("Number of job entries: %d\n", length(index)))
-# Number of job entries: 191745505
+#> Number of job entries: 191745505
 
 ## It takes ~15 minutes to build the week index for 192 million entries
 week_index <- sge_make_week_index(pathname, index = index)
 saveRDS(week_index, file = "accounting.index_by_week.rds")
 
 print(week_index)
-# A tibble: 218 × 3
-   week    nbr_of_jobs file_offset
-   <chr>         <dbl>       <dbl>
- 1 2017W33         406          59
- 2 2017W34          44      113195
- 3 2017W35          49      127727
- 4 2017W36          24      143361
- 5 2017W37           8      150740
- 6 2017W38          30      153559
- 7 2017W39          18      163657
- 8 2017W40          22      169804
- 9 2017W41           2      177075
-10 2017W42          18      177695
-# … with 208 more rows
+#> # A tibble: 218 × 3
+#>    week    nbr_of_jobs file_offset
+#>    <chr>         <dbl>       <dbl>
+#>  1 2017W33         406          59
+#>  2 2017W34          44      113195
+#>  3 2017W35          49      127727
+#>  4 2017W36          24      143361
+#>  5 2017W37           8      150740
+#>  6 2017W38          30      153559
+#>  7 2017W39          18      163657
+#>  8 2017W40          22      169804
+#>  9 2017W41           2      177075
+#> 10 2017W42          18      177695
+#> # … with 208 more rows
 ```
 
 
@@ -97,39 +97,40 @@ week_index <- readRDS("accounting.index_by_week.rds")
 
 weeks <- subset(week_index, week %in% c("2020W06", "2020W07"))
 print(weeks)
-# A tibble: 2 × 3
-  week    nbr_of_jobs file_offset
-  <chr>         <dbl>       <dbl>
-1 2020W06      627479 11015936052
-2 2020W07      663484 11229385140
+#> # A tibble: 2 × 3
+#>   week    nbr_of_jobs file_offset
+#>   <chr>         <dbl>       <dbl>
+#> 1 2020W06      627479 11015936052
+#> 2 2020W07      663484 11229385140
 
 offset <- weeks$file_offset[1]
 n_max <- sum(weeks$nbr_of_jobs)
 cat(sprintf("Number of job entries to read: %d\n", n_max))
+#> Number of job entries to read: 1290963
 
 ## It takes ~5 seconds to read the ~1.3 million job entries of interest
 jobs <- read_sge_accounting(pathname, offset = offset, n_max = n_max)
 jobs <- anonymize(jobs)
 print(head(select(jobs, -account)))
-# A tibble: 6 × 44
-   qname  hostname group owner job_name  job_number priority submission_time    
-   <chr>  <chr>    <chr> <chr> <chr>          <int>    <int> <dttm>             
- 1 long.q cc-id3   grou… owne… job_qb3.…        361       19 2017-10-24 09:33:46
- 2 long.q cin-id2  grou… owne… job_qb3.…        360       19 2017-10-23 16:09:59
- 3 long.q qb3-hmi… grou… owne… job_qb3.…        365       19 2017-10-24 12:01:17
- 4 long.q qb3-id3  grou… owne… job_mac_…        359       19 2017-10-23 09:52:44
- 5 long.q qb3-id2  grou… owne… job_qb3.…        363       19 2017-10-24 09:41:57
- 6 long.q qb3-id1  grou… owne… bmle_int…        368       19 2017-10-25 09:21:41
-# … with 36 more rows, and 36 more variables: start_time <dttm>,
-#   end_time <dttm>, failed <int>, exit_status <int>, ru_wallclock <drtn>,
-#   ru_utime <drtn>, ru_stime <drtn>, ru_maxrss <chr>, ru_ixrss <chr>,
-#   ru_ismrss <chr>, ru_idrss <chr>, ru_isrss <chr>, ru_minflt <dbl>,
-#   ru_majflt <dbl>, ru_nswap <dbl>, ru_inblock <dbl>, ru_oublock <dbl>,
-#   ru_msgsnd <dbl>, ru_msgrcv <dbl>, ru_nsignals <dbl>, ru_nvcsw <dbl>,
-#   ru_nivcsw <dbl>, project <chr>, department <chr>, granted_pe <chr>,
-#   slots <int>, task_number <int>, cpu <drtn>, mem <chr>, io <chr>,
-#   category <chr>, iow <drtn>, pe_taskid <chr>, maxvmem <dbl>, arid <dbl>,
-#   ar_sub_time <dttm>
+#> # A tibble: 6 × 44
+#>    qname  hostname group owner job_name  job_number priority submission_time    
+#>    <chr>  <chr>    <chr> <chr> <chr>          <int>    <int> <dttm>             
+#>  1 long.q cc-id3   grou… owne… job_qb3.…        361       19 2017-10-24 09:33:46
+#>  2 long.q cin-id2  grou… owne… job_qb3.…        360       19 2017-10-23 16:09:59
+#>  3 long.q qb3-hmi… grou… owne… job_qb3.…        365       19 2017-10-24 12:01:17
+#>  4 long.q qb3-id3  grou… owne… job_mac_…        359       19 2017-10-23 09:52:44
+#>  5 long.q qb3-id2  grou… owne… job_qb3.…        363       19 2017-10-24 09:41:57
+#>  6 long.q qb3-id1  grou… owne… bmle_int…        368       19 2017-10-25 09:21:41
+#> # … with 36 more rows, and 36 more variables: start_time <dttm>,
+#> #   end_time <dttm>, failed <int>, exit_status <int>, ru_wallclock <drtn>,
+#> #   ru_utime <drtn>, ru_stime <drtn>, ru_maxrss <chr>, ru_ixrss <chr>,
+#> #   ru_ismrss <chr>, ru_idrss <chr>, ru_isrss <chr>, ru_minflt <dbl>,
+#> #   ru_majflt <dbl>, ru_nswap <dbl>, ru_inblock <dbl>, ru_oublock <dbl>,
+#> #   ru_msgsnd <dbl>, ru_msgrcv <dbl>, ru_nsignals <dbl>, ru_nvcsw <dbl>,
+#> #   ru_nivcsw <dbl>, project <chr>, department <chr>, granted_pe <chr>,
+#> #   slots <int>, task_number <int>, cpu <drtn>, mem <chr>, io <chr>,
+#> #   category <chr>, iow <drtn>, pe_taskid <chr>, maxvmem <dbl>, arid <dbl>,
+#> #   ar_sub_time <dttm>
 ```
 
 
@@ -139,19 +140,19 @@ print(head(select(jobs, -account)))
 ```r
 period <- range(jobs$end_time, na.rm=TRUE)
 cat(sprintf("Period: %s/%s\n", period[1], period[2]))
-# Period: 2020-02-03 00:00:01/2020-02-16 23:59:58
+#> Period: 2020-02-03 00:00:01/2020-02-16 23:59:58
 
 jobs <- add_weeks(jobs)
 period <- range(jobs$end_time_week, na.rm=TRUE)
 cat(sprintf("Period (weeks): %s/%s\n", period[1], period[2]))
-# Period (weeks): Period: 2020W06/2020W07
+#> Period (weeks): Period: 2020W06/2020W07
 
 cat(sprintf("Number of jobs finished during this period: %d\n", nrow(jobs)))
-# Number of jobs finished during this period: 1290963
+#> Number of jobs finished during this period: 1290963
 
 nusers <- length(unique(jobs$owner))
 cat(sprintf("Number of unique users: %d\n", nusers))
-# Number of unique users: 146
+#> Number of unique users: 146
 ```
 
 Let's see how many of the jobs finished succesfully and how many failed.
@@ -164,30 +165,37 @@ groups <- list(
 )
 stats <- sapply(groups, nrow)
 print(stats)
-success    fail 
-1227507   63456
+#> success    fail 
+#> 1227507   63456
 
 print(stats/sum(stats))
- success     fail 
-0.950846 0.049154
+#>  success     fail 
+#> 0.950846 0.049154
 ```
 
 We see that failure rate among the ~1.3 million jobs that ran during this period was ~5%.  Next, let's see how much CPU time this corresponds to:
 
 ```r
 ## CPU time consumed
-cpu <- sapply(groups, function(jobs) { d <- sum(jobs$cpu); units(d) <- "days"; d })
-cat(sprintf("Total CPU processing time: %.1f hours\n", sum(cpu)))
-# Total CPU processing time: 53069.7 hours
+cpu <- lapply(groups, function(jobs) { d <- sum(jobs$cpu); units(d) <- "days"; d })
+total <- tibble(outcome = names(cpu), cpu = do.call(c, cpu))
+cat(sprintf("Total CPU processing time: %.1f %s\n", sum(total$cpu), units(total$cpu)))
+#> Total CPU processing time: 53069.7 days
 
-print(cpu)
-#  success     fail 
-# 37291.05 15778.61
+print(total)
+#>   outcome cpu          
+#>   <chr>   <drtn>       
+#> 1 success 37291.05 days
+#> 2 fail    15778.61 days
 
 ## CPU-time fractions
-print(cpu / sum(cpu))
-#   success      fail 
-# 0.7026811 0.2973189
+ratio <- mutate(total, cpu = { x <- as.numeric(cpu); x / sum(x) })
+print(ratio)
+#> # A tibble: 2 × 2
+#>   outcome   cpu
+#>   <chr>   <dbl>
+#> 1 success 0.703
+#> 2 fail    0.297
 ```
 
 From this, we find that during these two weeks, ~30% of the CPU time was consumed by jobs that failed.  Among the failed jobs, the failure code was distributed as:
@@ -195,30 +203,30 @@ From this, we find that during these two weeks, ~30% of the CPU time was consume
 ```r
 codes <- groups$fail$failed
 print(table(codes))
-#    1     8    19    21    26    27    28    37   100 
-#    8    26  2520     8  2762    15 15552  9907 32658
+#>    1     8    19    21    26    27    28    37   100 
+#>    8    26  2520     8  2762    15 15552  9907 32658
 ```
 
 From details on these codes, see `help("read_sge_accounting", package="wyntonquery")`, or:
 
 ```r
-info <- subset(sge_failed_codes(), Code %in% unique(codes), select=c(Code, Explanation))
-print(info)
-# A tibble: 9 × 2
-   Code Explanation                                                                                                       
-  <int> <chr>                                                                                                             
-1     1 failed early in execd                                                                                             
-2     8 failed in prolog                                                                                                  
-3    19 shepherd didnt write reports correctly - probably program or machine crash                                        
-4    21 qmaster asked about an unknown job (not in accounting?)                                                           
-5    26 failed opening stderr/stdout file                                                                                 
-6    27 failed finding specified shell                                                                                    
-7    28 failed changing to start directory                                                                                
-8    37 ran, but killed due to exceeding run time limit                                                                   
-9   100 ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.
+subset(sge_failed_codes(), Code %in% unique(codes), select=c(Code, Explanation))
+#> # A tibble: 9 × 2
+#>    Code Explanation                                                                                                       
+#>   <int> <chr>                                                                                                             
+#> 1     1 failed early in execd
+#> 2     8 failed in prolog
+#> 3    19 shepherd didnt write reports correctly - probably program or machine crash
+#> 4    21 qmaster asked about an unknown job (not in accounting?)
+#> 5    26 failed opening stderr/stdout file
+#> 6    27 failed finding specified shell
+#> 7    28 failed changing to start directory
+#> 8    37 ran, but killed due to exceeding run time limit
+#> 9   100 ran, but killed by a signal (perhaps due to exceeding resources),
+#>         task died, shepherd died (e.g. node crash), etc.
 ```
 
-The jobs that exhausted their limits, consumed 9613 days of CPU time;
+The jobs that exhausted their limits, consumed 9,613 days of CPU time;
 
 ```r
 d <- sum(subset(groups$fail, failed == 37)$cpu); units(d) <- "days"
@@ -229,7 +237,7 @@ print(d)
 which corresponds to ~18% of all CPU time spent:
 
 ```r
-> as.numeric(d/sum(cpu))
+> as.numeric(d)/sum(as.numeric(total$cpu))
 [1] 0.1811399
 ```
 

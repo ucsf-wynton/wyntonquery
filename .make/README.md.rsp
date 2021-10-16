@@ -185,7 +185,7 @@ covr <- function() {
     }
   }
   if (!any(grepl("covr::codecov", bfr, fixed=TRUE))) return()
-  a("https://codecov.io/gh/%s", github_repos(), body=img("https://codecov.io/gh/%s/branch/develop/graph/badge.svg", github_repos(), alt="Coverage Status"))
+  a("https://app.codecov.io/gh/%s", github_repos(), body=img("https://codecov.io/gh/%s/branch/develop/graph/badge.svg", github_repos(), alt="Coverage Status"))
 }
 %>
 
