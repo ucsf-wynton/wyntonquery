@@ -20,9 +20,19 @@
 #' @importFrom readr read_delim
 #' @export
 read_raw_sge_accounting <- function(file, offset = 0, n_max = Inf, skip = if (is.character(file) && offset == 0) 4L else 0L, ...) {
-  stopifnot(is.numeric(skip), length(skip) == 1L, !is.na(skip), skip >= 0)
+  if (inherits(offset, "sge_accounting_index_by_week")) {
+    week_index <- offset
+    jobs <- list()
+    for (kk in seq_len(nrow(offset))) {
+       jobs[[kk]] <- Recall(file = file, offset = week_index$file_offset[kk], n_max = week_index$nbr_of_jobs[kk], skip = 0L, ...)
+    }
+    jobs <- do.call(rbind, jobs)
+    return(jobs)
+  }
+
   stopifnot(is.numeric(offset), length(offset) == 1L, !is.na(offset), offset >= 0)
   stopifnot(is.numeric(n_max), length(n_max) == 1L, !is.na(n_max), n_max >= 0)
+  stopifnot(is.numeric(skip), length(skip) == 1L, !is.na(skip), skip >= 0)
 
   header <- if (skip > 0L) readLines(file, n = skip) else character(0L)
 

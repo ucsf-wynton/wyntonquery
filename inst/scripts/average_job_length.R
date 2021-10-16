@@ -19,7 +19,6 @@ read_sge_accounting_by_weeks <- function(pathname, weeks, index = NULL, ...) {
 
   index <- subset(index, week %in% weeks)
   stopifnot(nrow(index) > 0)
-  
   offset <- index$file_offset[1]
   n_max <- sum(index$nbr_of_jobs)
   read_sge_accounting(pathname, offset = offset, n_max = n_max, ...)

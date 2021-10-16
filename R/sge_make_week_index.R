@@ -159,6 +159,7 @@ sge_make_week_index <- function(file, index, until = NULL, n_max = Inf, delta = 
     file_offset = unname(weeks)
   )
   week_index <- as_tibble(week_index)
+  class(week_index) <- c("sge_accounting_index_by_week", "sge_accounting_index", class(week_index))
 
   p()
 
