@@ -434,8 +434,8 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #' |  29 | AFS setup                                      | N  | failed setting up AFS security                          |
 #' |  30 | application error returned                     | Y  | ran and exited 100 - maybe re-scheduled                 |
 #' |  36 | checking configured daemons                    | N  | failed because of configured remote startup daemon      |
-#' |  38 | adding supplementary group                     | N  | failed adding supplementary gid to job                  |
 #' |  37 | qmaster enforced h_rt, h_cpu, or h_vmem limit  | Y  | ran, but killed due to exceeding run time limit         |
+#' |  38 | adding supplementary group                     | N  | failed adding supplementary gid to job                  |
 #' | 100 | assumedly after job                            | Y  | ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc. |
 #' 
 #' 

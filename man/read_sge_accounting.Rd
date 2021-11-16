@@ -126,8 +126,8 @@ Read an SGE accounting
    29 \tab AFS setup \tab N \tab failed setting up AFS security \cr
    30 \tab application error returned \tab Y \tab ran and exited 100 - maybe re-scheduled \cr
    36 \tab checking configured daemons \tab N \tab failed because of configured remote startup daemon \cr
-   38 \tab adding supplementary group \tab N \tab failed adding supplementary gid to job \cr
    37 \tab qmaster enforced h_rt, h_cpu, or h_vmem limit \tab Y \tab ran, but killed due to exceeding run time limit \cr
+   38 \tab adding supplementary group \tab N \tab failed adding supplementary gid to job \cr
    100 \tab assumedly after job \tab Y \tab ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc. \cr
 }
 
