@@ -1,6 +1,6 @@
 Package: wyntonquery
 
-Version: 0.2.0-9002 [2021-10-15]
+Version: 0.2.0-9003 [2022-04-07]
 
 NEW FEATURES:
 
@@ -16,6 +16,8 @@ NEW FEATURES:
 DOCUMENTATION:
 
  * Updated SGE accounting vignette.
+
+ * Updated example data for number of users over time.
  
 BUG FIXES:
 

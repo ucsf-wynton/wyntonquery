@@ -6,7 +6,7 @@
 
 # wyntonquery: Query the UCSF Wynton Environment 
 
-An R package that provides utility functions for querying the UCSF Wynton environment, in order to gather system details used to populate the information on the [Wynton website](https://ucsf-hpc.github.io/wynton/about/specs.html).
+An R package that provides utility functions for querying the UCSF Wynton environment, in order to gather system details used to populate the information on the [Wynton website](https://wynton.ucsf.edu/hpc/about/specs.html).
 
 
 ## Usages
@@ -21,7 +21,7 @@ To gather the information, in R, run:
 
 This will identify all compute nodes on the cluster (by querying `qhost`) and launch a job on each one that gathers details on that particular node.  Depending on the amount and type of jobs currently occupying the cluster nodes, this may take anywhere from a few minutes to hours to complete.
 
-When completed, a tab-delimited file `.data/host_table,{date}.tsv` will be produced.  To deploy this to [Wynton website](https://ucsf-hpc.github.io/wynton/about/specs.html), copy this file to [`docs/assets/data/host_table.tsv`](https://github.com/UCSF-HPC/wynton/blob/master/docs/assets/data/host_table.tsv), then commit and push.
+When completed, a tab-delimited file `.data/host_table,{date}.tsv` will be produced.  To deploy this to [Wynton website](https://wynton.ucsf.edu/hpc/about/specs.html), copy this file to [`docs/assets/data/host_table.tsv`](https://github.com/ucsf-wynton/wynton-website-hpc/blob/master/docs/assets/data/host_table.tsv), then commit and push.
 
 
 ## Internal notes
