@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0-9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0-9004</span>
       </span>
     </div>
 
@@ -61,20 +61,20 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.0-9003" id="wyntonquery-020-9003">wyntonquery 0.2.0-9003<a class="anchor" aria-label="anchor" href="#wyntonquery-020-9003"></a></h2>
+<h2 class="page-header" data-toc-text="0.2.0-9004" id="wyntonquery-020-9004">wyntonquery 0.2.0-9004<a class="anchor" aria-label="anchor" href="#wyntonquery-020-9004"></a></h2>
 <div class="section level4">
-<h4 id="new-features-0-2-0-9003">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0-9003"></a></h4>
+<h4 id="new-features-0-2-0-9004">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0-9004"></a></h4>
 <ul><li><p>Now read_raw_sge_accounting() and read_sge_accounting() can read the subset of data that is given by an ‘sge_accounting_index_by_week’ week index table. This is one by passing to to argument ‘offset’.</p></li>
 <li><p>Now read_raw_sge_accounting() and read_sge_accounting() accepts also file connections as input.</p></li>
 <li><p>Add sge_failed_codes().</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="documentation-0-2-0-9003">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-2-0-9003"></a></h4>
+<h4 id="documentation-0-2-0-9004">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-2-0-9004"></a></h4>
 <ul><li><p>Updated SGE accounting vignette.</p></li>
 <li><p>Updated example data for number of users over time.</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="bug-fixes-0-2-0-9003">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0-9003"></a></h4>
+<h4 id="bug-fixes-0-2-0-9004">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0-9004"></a></h4>
 <ul><li><p>Field ‘nbr_of_jobs’ returned by sge_make_week_index() was a cumulative sum, not number of jobs per week.</p></li>
 <li><p>open_file_at(…, auto_close = TRUE) was not safe; it could end up closing the incorrect connection if the intended one had been closed and another one had been opened. Dropped options for ‘auto_close’ to be on safe side.</p></li>
 </ul></div>
