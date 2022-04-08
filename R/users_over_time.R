@@ -5,8 +5,8 @@
 #'
 #' @param since Drop signup dates prior to this date.
 #'
-#' @return A [tibble::tibble] with columns `date` and `count`,
-#' `count` the cumulative sum based on `date` occurances.
+#' @return A [tibble::tibble] with columns `date` and `total`,
+#' `total` the cumulative sum based on `date` occurances.
 #'
 #' @example incl/users_over_time.R
 #'

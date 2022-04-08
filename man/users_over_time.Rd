@@ -13,8 +13,8 @@ If NULL, then the Wynton LDAP server is queried.}
 \item{since}{Drop signup dates prior to this date.}
 }
 \value{
-A \link[tibble:tibble]{tibble::tibble} with columns \code{date} and \code{count},
-\code{count} the cumulative sum based on \code{date} occurances.
+A \link[tibble:tibble]{tibble::tibble} with columns \code{date} and \code{total},
+\code{total} the cumulative sum based on \code{date} occurances.
 }
 \description{
 The number of Wynton users over time
