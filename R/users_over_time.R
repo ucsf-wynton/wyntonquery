@@ -1,4 +1,4 @@
-#' The the number of Wynton users over time
+#' The number of Wynton users over time
 #'
 #' @param file A file with a single column of signup dates, or NULL.
 #' If NULL, then the Wynton LDAP server is queried.
@@ -20,7 +20,7 @@ users_over_time <- function(file = NULL, since = "2017-01-01") {
   }
 
   data <- read_tsv(file, col_names = "date", cols(date = col_date(format = "")))
-  data <- cbind(data, count = seq_len(nrow(data)))
+  data <- cbind(data, total = seq_len(nrow(data)))
   if (!is.null(since)) data <- subset(data, date >= since)
   data <- as_tibble(data)
   
