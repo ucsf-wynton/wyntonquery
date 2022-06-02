@@ -28,7 +28,7 @@
 #' @export
 disk_free <- function(mounts = NULL, local = FALSE) {
   col_types <- cols(
-  Available = col_double(),
+    Available     = col_double(),
     Filesystem    = col_character(),
     `1024-blocks` = col_double(),
     Used          = col_double(),

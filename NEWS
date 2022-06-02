@@ -1,9 +1,11 @@
 Package: wyntonquery
 
-Version: 0.2.0-9004 [2022-04-07]
+Version: 0.2.0-9005 [2022-06-02]
 
 NEW FEATURES:
 
+ * Add beegfs_quota().
+ 
  * Now read_raw_sge_accounting() and read_sge_accounting() can read
    the subset of data that is given by an 'sge_accounting_index_by_week'
    week index table.  This is one by passing to to argument 'offset'.
