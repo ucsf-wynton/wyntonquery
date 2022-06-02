@@ -1,0 +1,9 @@
+exdata: inst/exdata/ldap_wynton_dates.txt inst/exdata/ldap_wynton_phi_dates.txt
+
+inst/exdata/ldap_wynton_dates.txt: FORCE
+	ldapsearch -H 'ldap://m1,ldap://m2' -x wyntonAccess=TRUE -x -LLL + | grep -E '^(createTimestamp:)' | sed 's/.* //' | sed -E 's/([0-9]{4})([0-9]{2})([0-9]{2}).*/\1-\2-\3/' > "$@"
+
+inst/exdata/ldap_wynton_phi_dates.txt: FORCE
+	ldapsearch -H 'ldap://m1,ldap://m2' -x '(&(wyntonAccess=TRUE)(ProtectedAccess=TRUE))' -x -LLL + | grep -E '^(createTimestamp:)' | sed 's/.* //' | sed -E 's/([0-9]{4})([0-9]{2})([0-9]{2}).*/\1-\2-\3/' > "$@"
+
+FORCE:
