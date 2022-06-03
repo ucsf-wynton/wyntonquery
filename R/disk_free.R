@@ -27,29 +27,47 @@
 #' @importFrom readr read_table cols col_character col_double
 #' @export
 disk_free <- function(mounts = NULL, local = FALSE) {
-  col_types <- cols(
-    Available     = col_double(),
-    Filesystem    = col_character(),
-    `1024-blocks` = col_double(),
-    Used          = col_double(),
-    Available     = col_double(),
-    Capacity      = col_character(),
-    `Mounted on`  = col_character()
-  )
+  bin <- Sys.which("df")
+  stopifnot(file_test("-f", bin), file_test("-x", bin))
 
-  cmd <- "df -P"
-  if (local) cmd <- paste(cmd, "-l")
-  if (!is.null(mounts)) cmd <- paste(c(cmd, mounts), collapse = " ")
-  
-  df <- read_table(pipe(cmd), col_types = col_types)
+  args <- c("-P")
+  if (local) args <- c(args, "-l")
+  if (!is.null(mounts)) args <- c(args, mounts)
 
-  names <- tolower(colnames(df))
-  names[names == "1024-blocks"] <- "blocks_1024"
-  names <- gsub(" ", "_", names, fixed = TRUE)
-  colnames(df) <- names
+  bfr <- system2(bin, args = args, stdout = TRUE)
+  status <- attr(bfr, "status")
+  if (!is.null(status)) {
+    stop(sprintf("Failed to query %s. Status code: %s",
+                 paste(c(bin, args), collapse = " "), status))
+  }
+
+  ## Prune data so it's parsable
+  bfr <- gsub("Mounted on", "Mounted_on", bfr, fixed = TRUE)
+  bfr <- gsub("[[:space:]]+", ",", bfr)
 
   ## Parse
-  df[["capacity"]] <- as.numeric(sub("%", "", df[["capacity"]], fixed = TRUE)) / 100
+  col_types <- cols(
+    Filesystem    = col_character(),
+    Used          = col_double(),
+    Available     = col_double(),
+    `Mounted_on`  = col_character()
+  )
+  df <- readr::read_csv(I(bfr), col_names = TRUE, col_types = col_types)
+
+  names <- tolower(colnames(df))
+  names[names %in% c("1024-blocks", "1k-blocks")] <- "blocks_1024"
+  names <- gsub("%", "", names)
+  colnames(df) <- names
+
+  ## Parse percentage
+  for (name in names) {
+    value <- df[[name]]
+    if (!is.character(value)) next
+    if (!all(grepl("%$", value))) next
+    value <- gsub("%$", "", value)
+    value <- as.numeric(value) / 100
+    df[[name]] <- value
+  }
   
   df
 }

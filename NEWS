@@ -23,6 +23,8 @@ DOCUMENTATION:
  
 BUG FIXES:
 
+ * disk_free() failed because some columns were not recognized.
+
  * Field 'nbr_of_jobs' returned by sge_make_week_index() was a cumulative
    sum, not number of jobs per week.
 
