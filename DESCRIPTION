@@ -1,5 +1,5 @@
 Package: wyntonquery
-Version: 0.2.0-9007
+Version: 0.2.0-9008
 Depends:
     R (>= 3.5.0)
 Imports:
@@ -13,9 +13,9 @@ Imports:
     utils,
     tibble,
     xml2,
-    future,
-    future.batchtools
+    future
 Suggests:
+    future.batchtools,
     ggplot2,
     rmarkdown,
     knitr

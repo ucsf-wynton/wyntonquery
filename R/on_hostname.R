@@ -30,7 +30,6 @@
 #'
 #' @importFrom R.cache loadCache saveCache
 #' @importFrom future future value plan
-#' @importFrom future.batchtools batchtools_sge
 #' @export
 on_hostname <- function(hostnames, expr, ..., on_error = c("stop", "asis"), cache = FALSE) {
   stopifnot(is.character(hostnames), !anyNA(hostnames))
@@ -39,7 +38,7 @@ on_hostname <- function(hostnames, expr, ..., on_error = c("stop", "asis"), cach
   
   template <- system.file(package = "wyntonquery",
                           "batchtools.sge.tmpl", mustWork = TRUE)
-  oplan <- plan(batchtools_sge, template = template)
+  oplan <- plan(future.batchtools::batchtools_sge, template = template)
   on.exit(plan(oplan))
 
   dirs <- c("wyntonquery")
