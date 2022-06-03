@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0-9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9000</span>
       </span>
     </div>
 
@@ -57,127 +57,134 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/ucsf-wynton/wyntonquery/blob/HEAD/NEWS" class="external-link"><code>NEWS</code></a></small>
+      <small>Source: <a href="https://github.com/ucsf-wynton/wyntonquery/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.0-9004" id="wyntonquery-020-9004">wyntonquery 0.2.0-9004<a class="anchor" aria-label="anchor" href="#wyntonquery-020-9004"></a></h2>
-<div class="section level4">
-<h4 id="new-features-0-2-0-9004">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0-9004"></a></h4>
-<ul><li><p>Now read_raw_sge_accounting() and read_sge_accounting() can read the subset of data that is given by an ‘sge_accounting_index_by_week’ week index table. This is one by passing to to argument ‘offset’.</p></li>
-<li><p>Now read_raw_sge_accounting() and read_sge_accounting() accepts also file connections as input.</p></li>
-<li><p>Add sge_failed_codes().</p></li>
+<h2 class="page-header" data-toc-text="0.3.0-9000" id="version-030-9000">Version 0.3.0-9000<a class="anchor" aria-label="anchor" href="#version-030-9000"></a></h2>
+<ul><li>…</li>
 </ul></div>
-<div class="section level4">
-<h4 id="documentation-0-2-0-9004">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-2-0-9004"></a></h4>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.3.0" id="version-030">Version 0.3.0<a class="anchor" aria-label="anchor" href="#version-030"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h3>
+<ul><li><p>Add <code><a href="../reference/beegfs_quota.html">beegfs_quota()</a></code>.</p></li>
+<li><p>Now <code><a href="../reference/read_raw_sge_accounting.html">read_raw_sge_accounting()</a></code> and <code>ead_sge_accounting()</code> can read the subset of data that is given by an <code>sge_accounting_index_by_week</code> week index table. This is one by passing to to argument <code>offset</code>.</p></li>
+<li><p>Now <code><a href="../reference/read_raw_sge_accounting.html">read_raw_sge_accounting()</a></code> and <code><a href="../reference/read_sge_accounting.html">read_sge_accounting()</a></code> accepts also file connections as input.</p></li>
+<li><p>Add <code><a href="../reference/sge_failed_codes.html">sge_failed_codes()</a></code>.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-3-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-3-0"></a></h3>
 <ul><li><p>Updated SGE accounting vignette.</p></li>
 <li><p>Updated example data for number of users over time.</p></li>
 </ul></div>
-<div class="section level4">
-<h4 id="bug-fixes-0-2-0-9004">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0-9004"></a></h4>
-<ul><li><p>Field ‘nbr_of_jobs’ returned by sge_make_week_index() was a cumulative sum, not number of jobs per week.</p></li>
-<li><p>open_file_at(…, auto_close = TRUE) was not safe; it could end up closing the incorrect connection if the intended one had been closed and another one had been opened. Dropped options for ‘auto_close’ to be on safe side.</p></li>
+<div class="section level3">
+<h3 id="bug-fixes-0-3-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-0"></a></h3>
+<ul><li><p><code><a href="../reference/disk_free.html">disk_free()</a></code> failed because some columns were not recognized.</p></li>
+<li><p>Field <code>nbr_of_jobs</code> returned by <code><a href="../reference/sge_make_week_index.html">sge_make_week_index()</a></code> was a cumulative sum, not number of jobs per week.</p></li>
+<li><p><code>open_file_at(..., auto_close = TRUE)</code> was not safe; it could end up closing the incorrect connection if the intended one had been closed and another one had been opened. Dropped options for <code>auto_close</code> to be on safe side.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.0" id="wyntonquery-020">wyntonquery 0.2.0<a class="anchor" aria-label="anchor" href="#wyntonquery-020"></a></h2>
-<div class="section level4">
-<h4 id="new-features-0-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h4>
-<ul><li><p>Add sge_make_week_index().</p></li>
-<li><p>Add add_weeks().</p></li>
+<h2 class="page-header" data-toc-text="0.2.0" id="version-020">Version 0.2.0<a class="anchor" aria-label="anchor" href="#version-020"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
+<ul><li><p>Add <code><a href="../reference/sge_make_week_index.html">sge_make_week_index()</a></code>.</p></li>
+<li><p>Add <code><a href="../reference/add_weeks.html">add_weeks()</a></code>.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.0" id="wyntonquery-010">wyntonquery 0.1.0<a class="anchor" aria-label="anchor" href="#wyntonquery-010"></a></h2>
-<div class="section level4">
-<h4 id="new-features-0-1-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h4>
-<ul><li><p>Add users_over_time().</p></li>
-<li><p>Add generic function anonymize() with implementations for ‘data.frame’, ‘raw_sge_accounting’, and ‘qstat’ objects.</p></li>
-<li><p>Add read_qstat() for getting information on the jobs currently on the SGE queue.</p></li>
-<li><p>Add make_file_index(), save_file_index(), and read_file_index().</p></li>
-<li><p>Add open_file_at().</p></li>
-<li><p>read_raw_sge_accounting(), and therefore also read_sge_accounting(), gained argument ‘offset’.</p></li>
+<h2 class="page-header" data-toc-text="0.1.0" id="version-010">Version 0.1.0<a class="anchor" aria-label="anchor" href="#version-010"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-1-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h3>
+<ul><li><p>Add <code><a href="../reference/users_over_time.html">users_over_time()</a></code>.</p></li>
+<li><p>Add generic function <code><a href="../reference/anonymize.html">anonymize()</a></code> with implementations for <code>data.frame</code>, <code>raw_sge_accounting</code>, and <code>qstat</code> objects.</p></li>
+<li><p>Add <code><a href="../reference/read_qstat.html">read_qstat()</a></code> for getting information on the jobs currently on the SGE queue.</p></li>
+<li><p>Add <code><a href="../reference/make_file_index.html">make_file_index()</a></code>, <code><a href="../reference/make_file_index.html">save_file_index()</a></code>, and <code>qread_file_index()</code>.</p></li>
+<li><p>Add <code><a href="../reference/open_file_at.html">open_file_at()</a></code>.</p></li>
+<li><p><code><a href="../reference/read_raw_sge_accounting.html">read_raw_sge_accounting()</a></code>, and therefore also <code><a href="../reference/read_sge_accounting.html">read_sge_accounting()</a></code>, gained argument <code>offset</code>.</p></li>
 </ul></div>
-<div class="section level4">
-<h4 id="documentation-0-1-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-0"></a></h4>
+<div class="section level3">
+<h3 id="documentation-0-1-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-0"></a></h3>
 <ul><li>Add vignettes ‘SGE Accounting File’ and ‘Jobs on the SGE queue’.</li>
 </ul></div>
-<div class="section level4">
-<h4 id="bug-fixes-0-1-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-0"></a></h4>
-<ul><li>The ‘ru_wallclock’ values returned by read_sge_account() were corrupted by “random” NAs.</li>
+<div class="section level3">
+<h3 id="bug-fixes-0-1-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-0"></a></h3>
+<ul><li>The <code>ru_wallclock</code> values returned by <code>read_sge_account()</code> were corrupted by “random” NAs.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0-9005" id="wyntonquery-000-9005">wyntonquery 0.0.0-9005<a class="anchor" aria-label="anchor" href="#wyntonquery-000-9005"></a></h2>
-<div class="section level4">
-<h4 id="new-features-0-0-0-9005">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9005"></a></h4>
-<ul><li><p>Add write_raw_sge_accounting().</p></li>
-<li><p>Add anonymize_raw_sge_accounting().</p></li>
-<li><p>Now read_raw_sge_accounting() records file header in attribute ‘header’.</p></li>
-<li><p>Added an example SGE ‘accounting’ file and examples how to process it.</p></li>
+<h2 class="page-header" data-toc-text="0.0.0-9005" id="version-000-9005">Version 0.0.0-9005<a class="anchor" aria-label="anchor" href="#version-000-9005"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-0-0-9005">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9005"></a></h3>
+<ul><li><p>Add <code><a href="../reference/read_raw_sge_accounting.html">write_raw_sge_accounting()</a></code>.</p></li>
+<li><p>Add <code>anonymize_raw_sge_accounting()</code>.</p></li>
+<li><p>Now <code><a href="../reference/read_raw_sge_accounting.html">read_raw_sge_accounting()</a></code> records file header in attribute <code>header</code>.</p></li>
+<li><p>Added an example SGE <code>accounting</code> file and examples how to process it.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0-9004" id="wyntonquery-000-9004">wyntonquery 0.0.0-9004<a class="anchor" aria-label="anchor" href="#wyntonquery-000-9004"></a></h2>
-<div class="section level4">
-<h4 id="new-features-0-0-0-9004">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9004"></a></h4>
-<ul><li>Add job_summary_by_status().</li>
+<h2 class="page-header" data-toc-text="0.0.0-9004" id="version-000-9004">Version 0.0.0-9004<a class="anchor" aria-label="anchor" href="#version-000-9004"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-0-0-9004">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9004"></a></h3>
+<ul><li>Add <code><a href="../reference/job_summary_by_status.html">job_summary_by_status()</a></code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0-9003" id="wyntonquery-000-9003">wyntonquery 0.0.0-9003<a class="anchor" aria-label="anchor" href="#wyntonquery-000-9003"></a></h2>
-<div class="section level4">
-<h4 id="new-features-0-0-0-9003">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9003"></a></h4>
-<ul><li>Add parse_category() for ‘sge_accounting’ objects.</li>
+<h2 class="page-header" data-toc-text="0.0.0-9003" id="version-000-9003">Version 0.0.0-9003<a class="anchor" aria-label="anchor" href="#version-000-9003"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-0-0-9003">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9003"></a></h3>
+<ul><li>Add <code><a href="../reference/parse_category.html">parse_category()</a></code> for <code>sge_accounting</code> objects.</li>
 </ul></div>
-<div class="section level4">
-<h4 id="documentation-0-0-0-9003">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-0-0-9003"></a></h4>
-<ul><li>Expand example of read_sge_accounting() to display how to inspect how much CPU time was spent on successful and failed jobs.</li>
+<div class="section level3">
+<h3 id="documentation-0-0-0-9003">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-0-0-9003"></a></h3>
+<ul><li>Expand example of <code><a href="../reference/read_sge_accounting.html">read_sge_accounting()</a></code> to display how to inspect how much CPU time was spent on successful and failed jobs.</li>
 </ul></div>
-<div class="section level4">
-<h4 id="bug-fixes-0-0-0-9003">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-0-9003"></a></h4>
-<ul><li>Package did not pass ‘R CMD check –as-cran’ on systems without ‘qhost’.</li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0-9002" id="wyntonquery-000-9002">wyntonquery 0.0.0-9002<a class="anchor" aria-label="anchor" href="#wyntonquery-000-9002"></a></h2>
-<div class="section level4">
-<h4 id="new-features-0-0-0-9002">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9002"></a></h4>
-<ul><li><p>Add sge_accounting_file() and read_sge_accounting().</p></li>
-<li><p>Renamed host_table() column ‘# Physical Cores’ to ‘Physical Cores’ so that it does not conflict with ‘#’-comment lines in tab-delimited files.</p></li>
+<div class="section level3">
+<h3 id="bug-fixes-0-0-0-9003">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-0-9003"></a></h3>
+<ul><li>Package did not pass <code>R CMD check --as-cran</code> on systems without <code>qhost</code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0-9001" id="wyntonquery-000-9001">wyntonquery 0.0.0-9001<a class="anchor" aria-label="anchor" href="#wyntonquery-000-9001"></a></h2>
-<div class="section level4">
-<h4 id="significiant-changes-0-0-0-9001">Significiant Changes<a class="anchor" aria-label="anchor" href="#significiant-changes-0-0-0-9001"></a></h4>
-<ul><li><p>The system(“scripts”, “system_info.R”, package=“wyntonquery”) script is now robust against errors; if there’s an error querying a particular host, then that host is dropped from the final out.</p></li>
-<li><p>The system(“scripts”, “system_info.R”, package=“wyntonquery”) script now caches results from individual compute nodes.</p></li>
-<li><p>host_info() now reports on ‘cpu_model’, which corresponds to the cpu_info() field ‘model_name’, e.g. “Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz”. Previously, it tried to report on the CPU speed but that fluctuated from run to run because it was incorrectly inferred from the ‘cpu_mhz’ field.</p></li>
-</ul></div>
-<div class="section level4">
-<h4 id="new-features-0-0-0-9001">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9001"></a></h4>
-<ul><li><p>on_hostname() gained argument ‘cache’ for controlling whether cached results should be considered or not.</p></li>
-<li><p>It’s now possible to specify which hosts to query via environment variable ‘R_WYNTONQUERY_INCLUDE’.</p></li>
-<li><p>on_hostname() gained argument ‘on_error’ for controlling how errors should be handled.</p></li>
-</ul></div>
-<div class="section level4">
-<h4 id="bug-fixes-0-0-0-9001">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-0-9001"></a></h4>
-<ul><li>cpu_info() did not handle upper-case letters in field names.</li>
+<h2 class="page-header" data-toc-text="0.0.0-9002" id="version-000-9002">Version 0.0.0-9002<a class="anchor" aria-label="anchor" href="#version-000-9002"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-0-0-9002">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9002"></a></h3>
+<ul><li><p>Add <code><a href="../reference/sge_accounting_file.html">sge_accounting_file()</a></code> and <code><a href="../reference/read_sge_accounting.html">read_sge_accounting()</a></code>.</p></li>
+<li><p>Renamed <code><a href="../reference/host_table.html">host_table()</a></code> column <code># Physical Cores</code> to <code>Physical    Cores</code> so that it does not conflict with <code>#</code>-comment lines in tab-delimited files.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0-9000" id="wyntonquery-000-9000">wyntonquery 0.0.0-9000<a class="anchor" aria-label="anchor" href="#wyntonquery-000-9000"></a></h2>
-<div class="section level4">
-<h4 id="new-features-0-0-0-9000">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9000"></a></h4>
-<ul><li><p>Add host_table().</p></li>
-<li><p>Add round_ram().</p></li>
-<li><p>Add lscpu().</p></li>
-<li><p>Add system_info().</p></li>
-<li><p>Add disk_free().</p></li>
-<li><p>Add queues().</p></li>
-<li><p>Add on_hostname().</p></li>
-<li><p>Add qhost() and cpu_info().</p></li>
+<h2 class="page-header" data-toc-text="0.0.0-9001" id="version-000-9001">Version 0.0.0-9001<a class="anchor" aria-label="anchor" href="#version-000-9001"></a></h2>
+<div class="section level3">
+<h3 id="significant-changes-0-0-0-9001">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-0-0-9001"></a></h3>
+<ul><li><p>The <code>system("scripts", "system_info.R", package="wyntonquery")</code> script is now robust against errors; if there’s an error querying a particular host, then that host is dropped from the final out.</p></li>
+<li><p>The <code>system("scripts", "system_info.R", package="wyntonquery")</code> script now caches results from individual compute nodes.</p></li>
+<li><p><code><a href="../reference/host_info.html">host_info()</a></code> now reports on <code>cpu_model</code>, which corresponds to the <code><a href="../reference/cpu_info.html">cpu_info()</a></code> field <code>model_name</code>, e.g. “Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz”. Previously, it tried to report on the CPU speed but that fluctuated from run to run because it was incorrectly inferred from the <code>cpu_mhz</code> field.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-0-0-0-9001">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9001"></a></h3>
+<ul><li><p><code><a href="../reference/on_hostname.html">on_hostname()</a></code> gained argument <code>cache</code> for controlling whether cached results should be considered or not.</p></li>
+<li><p>It’s now possible to specify which hosts to query via environment variable <code>R_WYNTONQUERY_INCLUDE</code>.</p></li>
+<li><p><code><a href="../reference/on_hostname.html">on_hostname()</a></code> gained argument <code>on_error</code> for controlling how errors should be handled.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-0-0-9001">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-0-9001"></a></h3>
+<ul><li>
+<code><a href="../reference/cpu_info.html">cpu_info()</a></code> did not handle upper-case letters in field names.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.0-9000" id="version-000-9000">Version 0.0.0-9000<a class="anchor" aria-label="anchor" href="#version-000-9000"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-0-0-9000">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9000"></a></h3>
+<ul><li><p>Add <code><a href="../reference/host_table.html">host_table()</a></code>.</p></li>
+<li><p>Add <code><a href="../reference/round_ram.html">round_ram()</a></code>.</p></li>
+<li><p>Add <code><a href="../reference/lscpu.html">lscpu()</a></code>.</p></li>
+<li><p>Add <code><a href="../reference/system_info.html">system_info()</a></code>.</p></li>
+<li><p>Add <code><a href="../reference/disk_free.html">disk_free()</a></code>.</p></li>
+<li><p>Add <code><a href="../reference/queues.html">queues()</a></code>.</p></li>
+<li><p>Add <code><a href="../reference/on_hostname.html">on_hostname()</a></code>.</p></li>
+<li><p>Add <code><a href="../reference/qhost.html">qhost()</a></code> and <code><a href="../reference/cpu_info.html">cpu_info()</a></code>.</p></li>
 </ul></div>
 </div>
   </div>
@@ -194,7 +201,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

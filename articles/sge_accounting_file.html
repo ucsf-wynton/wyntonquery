@@ -340,11 +340,30 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>The SGE accounting file holds information on all submitted and <em>finished</em> jobs submitted to the SGE scheduler. Queued or currently running jobs are <em>not</em> included in this file. A job is considered “finished” if it completed successfully, terminated due to an error, or was cancelled. The file is a colon-delimited text file with one job entry per row, with the most recently finished job appended at end. Contrary to what one might expect, the file is not <em>perfectly</em> ordered by the <code>end_time</code> of the jobs. We might find some entries where the <code>end_time</code> of two consequentive entries might differ by a few seconds in the “wrong” order. It’s not clear to me why this is but it might be that the scheduler updates the SGE accounting file at regular intervals, say every few minutes, and when it does it goes through the jobs in order of job index.</p>
+<p>The SGE accounting file holds information on all submitted and
+<em>finished</em> jobs submitted to the SGE scheduler. Queued or
+currently running jobs are <em>not</em> included in this file. A job is
+considered “finished” if it completed successfully, terminated due to an
+error, or was cancelled. The file is a colon-delimited text file with
+one job entry per row, with the most recently finished job appended at
+end. Contrary to what one might expect, the file is not
+<em>perfectly</em> ordered by the <code>end_time</code> of the jobs. We
+might find some entries where the <code>end_time</code> of two
+consequentive entries might differ by a few seconds in the “wrong”
+order. It’s not clear to me why this is but it might be that the
+scheduler updates the SGE accounting file at regular intervals, say
+every few minutes, and when it does it goes through the jobs in order of
+job index.</p>
 </div>
 <div id="indexing-the-sge-accounting-file" class="section level2">
 <h2>Indexing the SGE accounting file</h2>
-<p>In March 2020, the Wynton HPC accounting file was ~12 GB and took 6-8 minutes to read. In June 2021, it was ~58 GB and had 161 million job entries. In October 2021, it was ~69 GB and had 192 million job entries. It is rare to be interested in all entries. It is more common to work with a subset of the job entries. In order to do this efficiently, we start by indexing the SGE accounting file to identify the file byte offset for each job entry;</p>
+<p>In March 2020, the Wynton HPC accounting file was ~12 GB and took 6-8
+minutes to read. In June 2021, it was ~58 GB and had 161 million job
+entries. In October 2021, it was ~69 GB and had 192 million job entries.
+It is rare to be interested in all entries. It is more common to work
+with a subset of the job entries. In order to do this efficiently, we
+start by indexing the SGE accounting file to identify the file byte
+offset for each job entry;</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wyntonquery)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(progressr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">handlers</span>(<span class="at">global =</span> <span class="cn">TRUE</span>) <span class="do">## Report on progress</span></span>
@@ -363,7 +382,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Save per-job index to file</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">save_file_index</span>(index, <span class="at">file =</span> <span class="st">&quot;accounting.index_by_row&quot;</span>)</span></code></pre></div>
-<p>Next, we want to group the job entries by the ISO-6801 week of the job end times.</p>
+<p>Next, we want to group the job entries by the ISO-6801 week of the
+job end times.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wyntonquery)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(progressr)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">handlers</span>(<span class="at">global =</span> <span class="cn">TRUE</span>) <span class="do">## Report on progress</span></span>
@@ -398,7 +418,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="reading-job-entries-in-sge-accounting-file" class="section level2">
 <h2>Reading job entries in SGE accounting file</h2>
-<p>Here is an example how we can read the job entries for a couple of weeks:</p>
+<p>Here is an example how we can read the job entries for a couple of
+weeks:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wyntonquery)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -459,7 +480,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>nusers <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(jobs<span class="sc">$</span>owner))</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Number of unique users: %d</span><span class="sc">\n</span><span class="st">&quot;</span>, nusers))</span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of unique users: 146</span></span></code></pre></div>
-<p>Let’s see how many of the jobs finished succesfully and how many failed.</p>
+<p>Let’s see how many of the jobs finished succesfully and how many
+failed.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Get successful and failed jobs</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">success =</span> <span class="fu">subset</span>(jobs, failed <span class="sc">==</span> 0L),</span>
@@ -473,7 +495,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(stats<span class="sc">/</span><span class="fu">sum</span>(stats))</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  success     fail </span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.950846 0.049154</span></span></code></pre></div>
-<p>We see that failure rate among the ~1.3 million jobs that ran during this period was ~5%. Next, let’s see how much CPU time this corresponds to:</p>
+<p>We see that failure rate among the ~1.3 million jobs that ran during
+this period was ~5%. Next, let’s see how much CPU time this corresponds
+to:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## CPU time consumed</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>cpu <span class="ot">&lt;-</span> <span class="fu">lapply</span>(groups, <span class="cf">function</span>(jobs) { d <span class="ot">&lt;-</span> <span class="fu">sum</span>(jobs<span class="sc">$</span>cpu); <span class="fu">units</span>(d) <span class="ot">&lt;-</span> <span class="st">&quot;days&quot;</span>; d })</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>total <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">outcome =</span> <span class="fu">names</span>(cpu), <span class="at">cpu =</span> <span class="fu">do.call</span>(c, cpu))</span>
@@ -494,12 +518,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt;</span></span>
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 success 0.703</span></span>
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 fail    0.297</span></span></code></pre></div>
-<p>From this, we find that during these two weeks, ~30% of the CPU time was consumed by jobs that failed. Among the failed jobs, the failure code was distributed as:</p>
+<p>From this, we find that during these two weeks, ~30% of the CPU time
+was consumed by jobs that failed. Among the failed jobs, the failure
+code was distributed as:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>codes <span class="ot">&lt;-</span> groups<span class="sc">$</span>fail<span class="sc">$</span>failed</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">table</span>(codes))</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    1     8    19    21    26    27    28    37   100 </span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    8    26  2520     8  2762    15 15552  9907 32658</span></span></code></pre></div>
-<p>From details on these codes, see <code>help(&quot;read_sge_accounting&quot;, package=&quot;wyntonquery&quot;)</code>, or:</p>
+<p>From details on these codes, see
+<code>help(&quot;read_sge_accounting&quot;, package=&quot;wyntonquery&quot;)</code>, or:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(<span class="fu">sge_failed_codes</span>(), Code <span class="sc">%in%</span> <span class="fu">unique</span>(codes), <span class="at">select=</span><span class="fu">c</span>(Code, Explanation))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 9 × 2</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Code Explanation                                                                                                       </span></span>
@@ -514,7 +541,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8    37 ran, but killed due to exceeding run time limit</span></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9   100 ran, but killed by a signal (perhaps due to exceeding resources),</span></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         task died, shepherd died (e.g. node crash), etc.</span></span></code></pre></div>
-<p>The jobs that exhausted their limits, consumed 9,613 days of CPU time;</p>
+<p>The jobs that exhausted their limits, consumed 9,613 days of CPU
+time;</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">subset</span>(groups<span class="sc">$</span>fail, failed <span class="sc">==</span> <span class="dv">37</span>)<span class="sc">$</span>cpu); <span class="fu">units</span>(d) <span class="ot">&lt;-</span> <span class="st">&quot;days&quot;</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(d)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Time difference of 9613.036 days</span></span></code></pre></div>
