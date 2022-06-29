@@ -37,6 +37,8 @@ print(quota)
 
 ## All groups
 quota <- beegfs_quota(which = NULL, what = "group", storagepool = 12L)
+quota <- subset(quota, !is.na(max_size) & max_size > 1)
+quota$use <- with(quota, size / max_size)
 print(quota)
 }}
 
