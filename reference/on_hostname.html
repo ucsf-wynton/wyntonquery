@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9001</span>
       </span>
     </div>
 
@@ -66,27 +66,38 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">on_hostname</span><span class="op">(</span><span class="va">hostnames</span>, <span class="va">expr</span>, <span class="va">...</span>, on_error <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stop"</span>, <span class="st">"asis"</span><span class="op">)</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">on_hostname</span><span class="op">(</span><span class="va">hostnames</span>, <span class="va">expr</span>, <span class="va">...</span>, on_error <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stop"</span>, <span class="st">"asis"</span><span class="op">)</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>hostnames</dt>
 <dd><p>A character vector of hostnames.</p></dd>
+
+
 <dt>expr</dt>
 <dd><p>The <span style="R">R</span> expression to be evaluated on each host.</p></dd>
+
+
 <dt>on_error</dt>
 <dd><p>A character string specifying how to handle errors.
 If <code>"stop"</code> (default), then the error is relayed.
 If <code>"asis"</code>, then the error (the <a href="https://rdrr.io/r/base/conditions.html" class="external-link">base::condition</a> object) is returned.</p></dd>
+
+
 <dt>cache</dt>
 <dd><p>If <code>TRUE</code>, cached results on file are considered.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>(optional) Additional arguments passed to <code><a href="https://future.futureverse.org/reference/future.html" class="external-link">future::future()</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A named list with names <code>hostnames</code>.</p>
+    
+
+<p>A named list with names <code>hostnames</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -97,13 +108,13 @@ a particular host by submitting it via the SGE scheduler.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">q</span> <span class="op">&lt;-</span> <span class="fu"><a href="available.html">available</a></span><span class="op">(</span><span class="fu"><a href="queues.html">queues</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">hostnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">q</span><span class="op">$</span><span class="va">hostname</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">si</span> <span class="op">&lt;-</span> <span class="fu">on_hostname</span><span class="op">(</span><span class="va">hostnames</span>, <span class="fu"><a href="system_info.html">system_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">si</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">q</span> <span class="op">&lt;-</span> <span class="fu"><a href="available.html">available</a></span><span class="op">(</span><span class="fu"><a href="queues.html">queues</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">hostnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">q</span><span class="op">$</span><span class="va">hostname</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">si</span> <span class="op">&lt;-</span> <span class="fu">on_hostname</span><span class="op">(</span><span class="va">hostnames</span>, <span class="fu"><a href="system_info.html">system_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">si</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -118,7 +129,7 @@ a particular host by submitting it via the SGE scheduler.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

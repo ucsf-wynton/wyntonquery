@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9001</span>
       </span>
     </div>
 
@@ -66,37 +66,50 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sge_make_week_index</span><span class="op">(</span>
-  <span class="va">file</span>,
-  <span class="va">index</span>,
-  until <span class="op">=</span> <span class="cn">NULL</span>,
-  n_max <span class="op">=</span> <span class="cn">Inf</span>,
-  delta <span class="op">=</span> <span class="fl">1e+05</span>,
-  debug <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sge_make_week_index</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  <span class="va">index</span>,</span>
+<span>  until <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n_max <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  delta <span class="op">=</span> <span class="fl">1e+05</span>,</span>
+<span>  debug <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
 <dd><p>(character) The SGE <code class="file">accounting</code> file to read.</p></dd>
+
+
 <dt>index</dt>
 <dd><p>(numeric vector) File byte offsets of job entries.</p></dd>
+
+
 <dt>until</dt>
 <dd><p>(character vector) If a week read that is part of this
 set, the terminate the scanning.  The weeks should be specified
 using <code>%GW%V</code> week format, e.g. <code>2019W01</code>.</p></dd>
+
+
 <dt>n_max</dt>
 <dd><p>(numeric) The maximum number of weeks to read.</p></dd>
+
+
 <dt>delta</dt>
 <dd><p>(numeric) Maximum number of rows to skip forward and
 backword in the divide-and-conquer search strategy.</p></dd>
+
+
 <dt>debug</dt>
 <dd><p>(logical) If TRUE, display debug messages.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble::tibble</a> with fields:</p><ul><li><p><code>week</code> (character) - the ISO-8601 week name, e.g. <code>"2021W48"</code></p></li>
+    
+
+<p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble::tibble</a> with fields:</p><ul><li><p><code>week</code> (character) - the ISO-8601 week name, e.g. <code>"2021W48"</code></p></li>
 <li><p><code>nbr_of_jobs</code> (numeric) - number of jobs</p></li>
 <li><p><code>file_offset</code> (numeric) - the file byte offset
 The week names uses <code>%GW%V</code> week format.</p></li>
@@ -114,7 +127,7 @@ The week names uses <code>%GW%V</code> week format.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

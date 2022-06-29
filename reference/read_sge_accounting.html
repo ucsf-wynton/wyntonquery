@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9001</span>
       </span>
     </div>
 
@@ -66,19 +66,24 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">read_sge_accounting</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="sge_accounting_file.html">sge_accounting_file</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_sge_accounting</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="sge_accounting_file.html">sge_accounting_file</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
 <dd><p>(character) The SGE <code class="file">accounting</code> file to read.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to <code><a href="read_raw_sge_accounting.html">read_raw_sge_accounting()</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>tibble</code> data frame with columns:</p><ul><li><p><code>qname</code> (character) - name of the cluster queue in which the job has run</p></li>
+    
+
+<p>A <code>tibble</code> data frame with columns:</p><ul><li><p><code>qname</code> (character) - name of the cluster queue in which the job has run</p></li>
 <li><p><code>hostname</code> (character) - name of the execution host</p></li>
 <li><p><code>group</code> (character) - the effective group id of the job owner when
 executing the job</p></li>
@@ -181,10 +186,10 @@ was 4.8 GB in size and ~6-8 minutes when it was 12 GB in size.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">pathname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"exdata"</span>, <span class="st">"accounting"</span>, package <span class="op">=</span> <span class="st">"wyntonquery"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">jobs</span> <span class="op">&lt;-</span> <span class="fu">read_sge_accounting</span><span class="op">(</span><span class="va">pathname</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pathname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"exdata"</span>, <span class="st">"accounting"</span>, package <span class="op">=</span> <span class="st">"wyntonquery"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">jobs</span> <span class="op">&lt;-</span> <span class="fu">read_sge_accounting</span><span class="op">(</span><span class="va">pathname</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,000 × 45</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    qname    hostname group  owner   job_name job_number account priority</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
@@ -205,37 +210,37 @@ was 4.8 GB in size and ~6-8 minutes when it was 12 GB in size.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_minflt &lt;dbl&gt;, ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_oublock &lt;dbl&gt;, ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_nvcsw &lt;dbl&gt;, ru_nivcsw &lt;dbl&gt;, project &lt;chr&gt;, department &lt;chr&gt;, …</span></span>
-<span class="r-in"><span class="co">## # A tibble: 1,000 x 45</span></span>
-<span class="r-in"><span class="co">##    qname    hostname group  owner   job_name job_number account priority submission_time    </span></span>
-<span class="r-in"><span class="co">##    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;      &lt;int&gt; &lt;dttm&gt;             </span></span>
-<span class="r-in"><span class="co">##  1 member.q cin-id3  group4 owner09 sleep.sh          1 sge            0 2017-08-15 11:59:21</span></span>
-<span class="r-in"><span class="co">##  2 long.q   cc-id2   group4 owner09 sleep.sh          2 sge           19 2017-08-15 12:00:23</span></span>
-<span class="r-in"><span class="co">##  3 long.q   cc-id2   group4 owner09 sleep.sh          2 sge           19 2017-08-15 12:00:23</span></span>
-<span class="r-in"><span class="co">## ...</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Identify successful and failed jobs</span></span>
-<span class="r-in"><span class="va">jobs_success</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">jobs</span>, <span class="va">failed</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">jobs_fail</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">jobs</span>, <span class="va">failed</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## CPU time consumed</span></span>
-<span class="r-in"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">jobs_success</span><span class="op">$</span><span class="va">cpu</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">jobs_fail</span><span class="op">$</span><span class="va">cpu</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/difftime.html" class="external-link">units</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"days"</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## # A tibble: 1,000 x 45</span></span></span>
+<span class="r-in"><span><span class="co">##    qname    hostname group  owner   job_name job_number account priority submission_time    </span></span></span>
+<span class="r-in"><span><span class="co">##    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;      &lt;int&gt; &lt;dttm&gt;             </span></span></span>
+<span class="r-in"><span><span class="co">##  1 member.q cin-id3  group4 owner09 sleep.sh          1 sge            0 2017-08-15 11:59:21</span></span></span>
+<span class="r-in"><span><span class="co">##  2 long.q   cc-id2   group4 owner09 sleep.sh          2 sge           19 2017-08-15 12:00:23</span></span></span>
+<span class="r-in"><span><span class="co">##  3 long.q   cc-id2   group4 owner09 sleep.sh          2 sge           19 2017-08-15 12:00:23</span></span></span>
+<span class="r-in"><span><span class="co">## ...</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Identify successful and failed jobs</span></span></span>
+<span class="r-in"><span><span class="va">jobs_success</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">jobs</span>, <span class="va">failed</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">jobs_fail</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">jobs</span>, <span class="va">failed</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## CPU time consumed</span></span></span>
+<span class="r-in"><span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">jobs_success</span><span class="op">$</span><span class="va">cpu</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">jobs_fail</span><span class="op">$</span><span class="va">cpu</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/difftime.html" class="external-link">units</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"days"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Time differences in days</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1283.6721  328.9508</span>
-<span class="r-in"><span class="co">## Time differences in days</span></span>
-<span class="r-in"><span class="co">## [1] 1283.6721  328.9508</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Fraction of successful and failed CPU time</span></span>
-<span class="r-in"><span class="va">u</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">u</span> <span class="op">&lt;-</span> <span class="va">u</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">u</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">u</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"success"</span>, <span class="st">"failed"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">u</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Time differences in days</span></span></span>
+<span class="r-in"><span><span class="co">## [1] 1283.6721  328.9508</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Fraction of successful and failed CPU time</span></span></span>
+<span class="r-in"><span><span class="va">u</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">u</span> <span class="op">&lt;-</span> <span class="va">u</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">u</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">u</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"success"</span>, <span class="st">"failed"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">u</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   success    failed </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.7960151 0.2039849 </span>
-<span class="r-in"><span class="co">##   success    failed </span></span>
-<span class="r-in"><span class="co">## 0.7960151 0.2039849</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="co">##   success    failed </span></span></span>
+<span class="r-in"><span><span class="co">## 0.7960151 0.2039849</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -250,7 +255,7 @@ was 4.8 GB in size and ~6-8 minutes when it was 12 GB in size.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

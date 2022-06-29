@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9001</span>
       </span>
     </div>
 
@@ -66,7 +66,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">beegfs_quota</span><span class="op">(</span>which <span class="op">=</span> <span class="st">"&lt;current&gt;"</span>, <span class="va">storagepool</span>, what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"user"</span>, <span class="st">"group"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">beegfs_quota</span><span class="op">(</span>which <span class="op">=</span> <span class="st">"&lt;current&gt;"</span>, <span class="va">storagepool</span>, what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"user"</span>, <span class="st">"group"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -76,14 +76,21 @@
 If NULL, quotas for all are queried.
 If <code>&lt;current&gt;</code>, then the current user or group is used.
 If</p></dd>
+
+
 <dt>storagepool</dt>
 <dd><p>A storage-pool ID (integer) to be queried.</p></dd>
+
+
 <dt>what</dt>
 <dd><p>Either <code>"user"</code> or <code>"group"</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame (tibble)</p>
+    
+
+<p>A data.frame (tibble)</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -92,20 +99,22 @@ If</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co">## The current user</span></span>
-<span class="r-in"><span class="va">quota</span> <span class="op">&lt;-</span> <span class="fu">beegfs_quota</span><span class="op">(</span>what <span class="op">=</span> <span class="st">"user"</span>, storagepool <span class="op">=</span> <span class="fl">11L</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">quota</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The current group</span></span>
-<span class="r-in"><span class="va">quota</span> <span class="op">&lt;-</span> <span class="fu">beegfs_quota</span><span class="op">(</span>what <span class="op">=</span> <span class="st">"group"</span>, storagepool <span class="op">=</span> <span class="fl">11L</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">quota</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## All groups</span></span>
-<span class="r-in"><span class="va">quota</span> <span class="op">&lt;-</span> <span class="fu">beegfs_quota</span><span class="op">(</span>which <span class="op">=</span> <span class="cn">NULL</span>, what <span class="op">=</span> <span class="st">"group"</span>, storagepool <span class="op">=</span> <span class="fl">12L</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">quota</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co">## The current user</span></span></span>
+<span class="r-in"><span><span class="va">quota</span> <span class="op">&lt;-</span> <span class="fu">beegfs_quota</span><span class="op">(</span>what <span class="op">=</span> <span class="st">"user"</span>, storagepool <span class="op">=</span> <span class="fl">11L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">quota</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The current group</span></span></span>
+<span class="r-in"><span><span class="va">quota</span> <span class="op">&lt;-</span> <span class="fu">beegfs_quota</span><span class="op">(</span>what <span class="op">=</span> <span class="st">"group"</span>, storagepool <span class="op">=</span> <span class="fl">11L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">quota</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## All groups</span></span></span>
+<span class="r-in"><span><span class="va">quota</span> <span class="op">&lt;-</span> <span class="fu">beegfs_quota</span><span class="op">(</span>which <span class="op">=</span> <span class="cn">NULL</span>, what <span class="op">=</span> <span class="st">"group"</span>, storagepool <span class="op">=</span> <span class="fl">12L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">quota</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">quota</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">max_size</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">max_size</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">quota</span><span class="op">$</span><span class="va">use</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">quota</span>, <span class="va">size</span> <span class="op">/</span> <span class="va">max_size</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">quota</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -120,7 +129,7 @@ If</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

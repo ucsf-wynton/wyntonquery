@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9001</span>
       </span>
     </div>
 
@@ -66,21 +66,26 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">host_info</span><span class="op">(</span>system_info <span class="op">=</span> <span class="cn">NULL</span>, qhost <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">host_info</span><span class="op">(</span>system_info <span class="op">=</span> <span class="cn">NULL</span>, qhost <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>system_info</dt>
 <dd><p>(optional) A named list as returned by <code><a href="system_info.html">system_info()</a></code>.</p></dd>
+
+
 <dt>qhost</dt>
 <dd><p>(optional) A data.frame as returned by <code><a href="qhost.html">qhost()</a></code>.
 If <code>TRUE</code> (default), then <code><a href="qhost.html">qhost()</a></code> is queried.
 If <code>FALSE</code>, then queue information is not reported.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame (tibble) with information combined based
+    
+
+<p>A data.frame (tibble) with information combined based
 on <code>system_info</code> and <code>qhost</code>.</p>
     </div>
 
@@ -96,7 +101,7 @@ on <code>system_info</code> and <code>qhost</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>
