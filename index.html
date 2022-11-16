@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9002</span>
       </span>
     </div>
 
@@ -95,7 +95,7 @@
 <p>To gather the information, in R, run:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">source</span>(<span class="fu">system.file</span>(<span class="at">package=</span><span class="st">"wyntonquery"</span>, <span class="st">"scripts"</span>, <span class="st">"system_info.R"</span>), <span class="at">echo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>This will identify all compute nodes on the cluster (by querying <code>qhost</code>) and launch a job on each one that gathers details on that particular node. Depending on the amount and type of jobs currently occupying the cluster nodes, this may take anywhere from a few minutes to hours to complete.</p>
-<p>When completed, a tab-delimited file <code>.data/host_table,{date}.tsv</code> will be produced. To deploy this to <a href="https://wynton.ucsf.edu/hpc/about/specs.html" class="external-link">Wynton website</a>, copy this file to <a href="https://github.com/ucsf-wynton/wynton-website-hpc/blob/master/docs/assets/data/host_table.tsv" class="external-link"><code>docs/assets/data/host_table.tsv</code></a>, then commit and push.</p>
+<p>When completed, a tab-delimited file <code>.data/host_table,{date}.tsv</code> will be produced. To deploy this to <a href="https://wynton.ucsf.edu/hpc/about/specs.html" class="external-link">Wynton website</a>, copy this file to <a href="https://github.com/ucsf-wynton/wynton-website-hpc/blob/master/docs/hpc/assets/data/host_table.tsv" class="external-link"><code>docs/assets/data/host_table.tsv</code></a>, then commit and push.</p>
 </div>
 </div>
 <div class="section level2">
@@ -195,7 +195,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9005.</p>
 </div>
 
       </footer>
