@@ -1,3 +1,24 @@
+all:
+
+install:
+	module purge; \
+	module load CBI r; \
+	Rscript --version; \
+	Rscript -e "if (!requireNamespace('ggplot2')) { chooseCRANmirror(ind = 1); install.packages('ggplot2') }"; \
+	Rscript -e "if (!requireNamespace('remotes')) { chooseCRANmirror(ind = 1); install.packages('remotes') }"; \
+	Rscript -e "remotes::install_github('ucsf-wynton/wyntonquery')"; \
+	Rscript -e "packageVersion('wyntonquery')"
+
+debug:
+	module purge; \
+	module load CBI r; \
+	Rscript --version; \
+	Rscript -e "packageVersion('wyntonquery')"
+
+users_over_time:
+	Rscript -e "library(wyntonquery)" -e "source('incl/users_over_time.R')"
+#	Rscript -e "example('users_over_time', package = 'wyntonquery')"
+
 exdata: inst/exdata/ldap_wynton_dates.txt inst/exdata/ldap_wynton_phi_dates.txt
 
 inst/exdata/ldap_wynton_dates.txt: FORCE
