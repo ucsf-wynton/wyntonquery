@@ -1,4 +1,4 @@
-all:
+all: exdata
 
 install:
 	module purge; \
@@ -16,8 +16,8 @@ debug:
 	Rscript -e "packageVersion('wyntonquery')"
 
 users_over_time:
-	Rscript -e "library(wyntonquery)" -e "source('incl/users_over_time.R')"
-#	Rscript -e "example('users_over_time', package = 'wyntonquery')"
+#	Rscript -e "library(wyntonquery)" -e "source('incl/users_over_time.R')"
+	Rscript -e "example('users_over_time', package = 'wyntonquery')"
 
 exdata: inst/exdata/ldap_wynton_dates.txt inst/exdata/ldap_wynton_phi_dates.txt
 

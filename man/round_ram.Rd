@@ -6,8 +6,8 @@
 \usage{
 round_ram(
   x,
-  map = getOption("wyntonquery.round_ram.map", c(16, 32, 48, 64, 96, 128, 256, 384,
-    512, 768, 1024, 2048))
+  map = getOption("wyntonquery.round_ram.map", c(16, 32, 48, 64, 96, 128, 256, 384, 512,
+    768, 1024, 2048))
 )
 }
 \arguments{
