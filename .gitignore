@@ -17,3 +17,4 @@ revdep/library/*
 docs/
 pkgdown/
 inst/doc
+users_over_time_*.png
