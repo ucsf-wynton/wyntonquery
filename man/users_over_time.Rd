@@ -45,7 +45,7 @@ signups <- group_by(signups, year, month)
 signups_per_month <- count(signups, name = "change")
 signups_end_of_month <- filter(signups, date == max(date), total == max(total))
 signups_per_month <- left_join(signups_per_month, signups_end_of_month)
-signups_per_month <- select(signups_per_month, year, change, total, per = date)
+signups_per_month <- select(signups_per_month, year, month, change, total, per = date)
 print(signups_per_month, n = Inf)
 
 
