@@ -1,4 +1,4 @@
-# Version 0.3.0-9000 [2022-06-02]
+# Version (development version)
 
  * ...
 
