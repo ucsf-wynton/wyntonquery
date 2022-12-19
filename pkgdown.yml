@@ -1,8 +1,8 @@
 pandoc: 2.19.2
-pkgdown: 2.0.6
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   qstat: qstat.html
   sge_accounting_file: sge_accounting_file.html
-last_built: 2022-12-15T07:02Z
+last_built: 2022-12-19T07:02Z
 
