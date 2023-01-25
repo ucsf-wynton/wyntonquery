@@ -1,6 +1,8 @@
 # Version (development version)
 
- * ...
+## New Features
+
+ * Add `sql_import_sge_accounting()`.
 
 
 # Version 0.3.0 [2022-06-02]

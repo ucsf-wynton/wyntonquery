@@ -1,11 +1,14 @@
 Package: wyntonquery
-Version: 0.3.0-9004
+Version: 0.3.0-9005
 Depends:
     R (>= 3.5.0)
 Imports:
+    DBI,
     dplyr,
     forcats,
+    glue,
     R.cache,
+    parallel,
     parallelly,
     prettyunits,
     progressr,
