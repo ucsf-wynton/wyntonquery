@@ -16,8 +16,7 @@ debug:
 	Rscript -e "packageVersion('wyntonquery')"
 
 users_over_time:
-#	Rscript -e "library(wyntonquery)" -e "source('incl/users_over_time.R')"
-	Rscript -e "example('users_over_time', package = 'wyntonquery')"
+	Rscript -e "library(wyntonquery)" -e "source('incl/users_over_time.R')" -e "ggsave('users_over_time.png', gg, width = 8.0, height = 6.0)"
 
 exdata: inst/exdata/ldap_wynton_dates.txt inst/exdata/ldap_wynton_phi_dates.txt
 

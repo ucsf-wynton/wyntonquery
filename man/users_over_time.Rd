@@ -54,11 +54,5 @@ if (require("ggplot2", quietly = TRUE)) {
   gg <- gg + xlab("") + ylab("Number of users")
   gg <- gg + theme(text = element_text(size = 20))
   print(gg)
-
-  ## To save to file, uncomment
-  # until <- max(signups$date, na.rm = TRUE)
-  # filename <- sprintf("users_over_time_\%s.png", until)
-  # ggsave(filename, gg, width = 8.0, height = 6.0)
 }
-
 }

@@ -1,5 +1,5 @@
 Package: wyntonquery
-Version: 0.3.0-9003
+Version: 0.3.0-9004
 Depends:
     R (>= 3.5.0)
 Imports:
@@ -32,6 +32,6 @@ License: LGPL (>= 2.1)
 LazyLoad: TRUE
 URL: https://github.com/ucsf-wynton/wyntonquery
 BugReports: https://github.com/ucsf-wynton/wyntonquery/issues
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8

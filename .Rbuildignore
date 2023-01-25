@@ -11,5 +11,5 @@
 ^pkgdown
 ^CONTRIBUTING[.]md$
 ^OVERVIEW[.]md$
-users_over_time_.*.png
+users_over_time.*.png
 ^\.github$
