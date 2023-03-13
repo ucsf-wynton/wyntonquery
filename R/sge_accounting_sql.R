@@ -20,22 +20,41 @@ dbDeleteDuplicates <- function(conn, name, by) {
   dbExecute(conn, sql)
 }
 
+
+#' Imports an SGE Accounting file into a database
+#'
+#' @inheritParams read_raw_sge_accounting
+#'
+#' @param conn A [DBI::DBIConnection-class].
+#'
+#' @param chunk_size (integer) The number of records to import in each chunk.
+#'
+#' @param deduplicate (logical) If TRUE, duplicated records in the database
+#' are removed at the end, otherwise not.
+#'
+#' @return (invisibly) The number of SGE accounting records ("jobs") in
+#' the input file.
+#'
+#' @seealso
+#' Internally, [read_raw_sge_accounting()] is used to parse the SGE
+#' Accounting file.
+#'
 #' @importFrom DBI dbWriteTable
 #' @importFrom parallel splitIndices
 #' @export
-dbi_import_sge_accounting <- function(conn, pathname, chunk_size = 10000L, deduplicate = FALSE) {
+dbi_import_sge_accounting <- function(conn, file, chunk_size = 10000L, deduplicate = FALSE) {
   stopifnot(
     inherits(conn, "DBIConnection"),
-    utils::file_test("-f", pathname),
+    utils::file_test("-f", file),
     length(chunk_size) == 1L, is.numeric(chunk_size),
     is.finite(chunk_size), chunk_size > 0
   )
 
   message("dbi_import_sge_accounting() ...")
   on.exit(message("dbi_import_sge_accounting() ... done"))
-  message(sprintf("- SGE accounting file: %s", pathname))
+  message(sprintf("- SGE accounting file: %s", file))
 
-  index <- make_file_index(pathname, skip = 4L)
+  index <- make_file_index(file, skip = 4L)
   njobs <- length(index)
   message(sprintf("- Number of jobs: %d", njobs))
   message(sprintf("- Number of jobs per chunk: %d", chunk_size))
@@ -47,7 +66,7 @@ dbi_import_sge_accounting <- function(conn, pathname, chunk_size = 10000L, dedup
     chunk <- chunks[[kk]]
     offset <- index[chunk[1]]
     message(sprintf("Chunk #%d: index=%d, offset=%d", kk, chunk[1], offset))
-    jobs <- read_sge_accounting(pathname, offset = offset, n_max = chunk_size)
+    jobs <- read_sge_accounting(file, offset = offset, n_max = chunk_size)
     message(sprintf("Jobs read: %d", nrow(jobs)))
     jobs <- as.data.frame(jobs)
     message("Converted to data.frame")
