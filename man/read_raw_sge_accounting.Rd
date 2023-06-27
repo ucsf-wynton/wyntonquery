@@ -18,7 +18,7 @@ write_raw_sge_accounting(x, file, header = attr(x, "header"), ...)
 \arguments{
 \item{file}{(character or a file connection) The SGE \file{accounting} file to read.}
 
-\item{offset}{The file byte position from where to start reading.}
+\item{offset}{The file offset position (in bytes) from where to start reading.}
 
 \item{n_max}{(numeric) The maximum number of rows to read.}
 
@@ -35,11 +35,21 @@ at the top of the file.}
 \description{
 Read a tab-delimited SGE accounting file (without parsing it)
 }
-\details{
+\section{Location of the SGE accounting file}{
+
 The SGE \file{accounting} file is typically located in a subfolder of
 the folder \file{$SGE_ROOT/$SGE_CELL/}.  On Wynton HPC, the pathname
 is given by \code{sge_accounting_file()}.
 }
+
+\section{File offset positions for each job entry}{
+
+If you know the file offset (in bytes) for the first job entry you wish to read,
+then specify it via argument \code{offset}.  This speeds up the reading, because it
+avoids having to parse jobs from the beginning.  To find the file offsets for
+job entries, see \code{\link[=make_file_index]{make_file_index()}}.
+}
+
 \examples{
 pathname <- system.file("exdata", "accounting", package = "wyntonquery")
 

@@ -2,7 +2,7 @@
 #'
 #' @param file (character or a file connection) The SGE \file{accounting} file to read.
 #'
-#' @param offset The file byte position from where to start reading.
+#' @param offset The file offset position (in bytes) from where to start reading.
 #'
 #' @param n_max (numeric) The maximum number of rows to read.
 #'
@@ -10,10 +10,16 @@
 #'
 #' @param \ldots (optional) Addition arguments passed to [readr::read_delim()].
 #'
-#' @details
+#' @section Location of the SGE accounting file:
 #' The SGE \file{accounting} file is typically located in a subfolder of
 #' the folder \file{$SGE_ROOT/$SGE_CELL/}.  On Wynton HPC, the pathname
 #' is given by `sge_accounting_file()`.
+#'
+#' @section File offset positions for each job entry:
+#' If you know the file offset (in bytes) for the first job entry you wish to read,
+#' then specify it via argument `offset`.  This speeds up the reading, because it
+#' avoids having to parse jobs from the beginning.  To find the file offsets for
+#' job entries, see [make_file_index()].
 #'
 #' @example incl/raw_sge_accounting.R
 #'

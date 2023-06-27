@@ -205,7 +205,6 @@ names(u) <- c("success", "failed")
 print(u)
 ##   success    failed 
 ## 0.7960151 0.2039849
-
 }
 \references{
 \itemize{
