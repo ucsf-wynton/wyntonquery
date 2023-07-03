@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9006</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@
 
 
 <dt>offset</dt>
-<dd><p>The file offset position (in bytes) from where to start reading.</p></dd>
+<dd><p>The file byte position from where to start reading.</p></dd>
 
 
 <dt>n_max</dt>
@@ -109,22 +109,11 @@ at the top of the file.</p></dd>
 <dd><p>(optional) Addition arguments passed to <code><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">readr::read_delim()</a></code>.</p></dd>
 
 </dl></div>
-    <div id="location-of-the-sge-accounting-file">
-    <h2>Location of the SGE accounting file</h2>
-    
-
-<p>The SGE <code class="file">accounting</code> file is typically located in a subfolder of
+    <div id="details">
+    <h2>Details</h2>
+    <p>The SGE <code class="file">accounting</code> file is typically located in a subfolder of
 the folder <code class="file">$SGE_ROOT/$SGE_CELL/</code>.  On Wynton HPC, the pathname
 is given by <code><a href="sge_accounting_file.html">sge_accounting_file()</a></code>.</p>
-    </div>
-    <div id="file-offset-positions-for-each-job-entry">
-    <h2>File offset positions for each job entry</h2>
-    
-
-<p>If you know the file offset (in bytes) for the first job entry you wish to read,
-then specify it via argument <code>offset</code>.  This speeds up the reading, because it
-avoids having to parse jobs from the beginning.  To find the file offsets for
-job entries, see <code><a href="make_file_index.html">make_file_index()</a></code>.</p>
     </div>
 
     <div id="ref-examples">
@@ -160,16 +149,16 @@ job entries, see <code><a href="make_file_index.html">make_file_index()</a></cod
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,000 × 45</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    qname    hostname group  owner   job_name job_number account priority</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> member.q cin-id3  group1 owner09 sleep.sh          1 sge            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> long.q   cc-id2   group1 owner09 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> long.q   cc-id2   group1 owner09 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> long.q   cc-id2   group1 owner09 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> long.q   cc-id2   group1 owner09 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> long.q   cc-id2   group1 owner09 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> long.q   cc-id2   group1 owner09 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> member.q cin-id2  group1 owner09 sleep.sh          2 sge            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> long.q   cin-id2  group1 owner09 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> long.q   cin-id2  group1 owner09 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> member.q cin-id3  group2 owner01 sleep.sh          1 sge            0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> long.q   cc-id2   group2 owner01 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> long.q   cc-id2   group2 owner01 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> long.q   cc-id2   group2 owner01 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> long.q   cc-id2   group2 owner01 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> long.q   cc-id2   group2 owner01 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> long.q   cc-id2   group2 owner01 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> member.q cin-id2  group2 owner01 sleep.sh          2 sge            0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> long.q   cin-id2  group2 owner01 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> long.q   cin-id2  group2 owner01 sleep.sh          2 sge           19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 990 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 37 more variables: submission_time &lt;dbl&gt;, start_time &lt;dbl&gt;, end_time &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   failed &lt;int&gt;, exit_status &lt;int&gt;, ru_wallclock &lt;dbl&gt;, ru_utime &lt;dbl&gt;,</span></span>
@@ -191,7 +180,7 @@ job entries, see <code><a href="make_file_index.html">make_file_index()</a></cod
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9005.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
