@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9008</span>
       </span>
     </div>
 
@@ -135,51 +135,48 @@ by a <code>newline</code> character.  The first line is at file byte offset
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pathname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"exdata"</span>, <span class="st">"accounting"</span>, package <span class="op">=</span> <span class="st">"wyntonquery"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu">read_file_index</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%s.index"</span>, <span class="va">pathname</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## An SGE accounting file</span></span></span>
+<span class="r-in"><span><span class="va">pathname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"exdata"</span>, <span class="st">"accounting"</span>, package <span class="op">=</span> <span class="st">"wyntonquery"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The corresponding SGE accounting index file</span></span></span>
+<span class="r-in"><span><span class="va">pathname_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%s.index"</span>, <span class="va">pathname</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Scan SGE accounting file to identify job offset positions</span></span></span>
+<span class="r-in"><span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu">make_file_index</span><span class="op">(</span><span class="va">pathname</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Number of jobs: %d\n"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of jobs: 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of jobs: 1004</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  num [1:1004] 0 17 20 56 59 ...</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Get all jobs *after* the 500:th job</span></span></span>
-<span class="r-in"><span><span class="va">jobs</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_sge_accounting.html">read_sge_accounting</a></span><span class="op">(</span><span class="va">pathname</span>, offset <span class="op">=</span> <span class="va">index</span><span class="op">[</span><span class="fl">501</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 500 × 45</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    qname  hostname  group  owner   job_name  job_number account priority</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> long.q cc-hmid1  group3 owner04 cc-hmid1         238 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> long.q cc-id1    group3 owner04 cc-id1           239 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> long.q cin-hmid1 group3 owner04 cin-hmid1        242 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> long.q qb3-hmid1 group3 owner04 qb3-hmid1        246 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> long.q cin-id3   group3 owner04 cin-id3          245 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> long.q qb3-id1   group3 owner04 qb3-id1          247 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> long.q cin-id2   group3 owner04 cin-id2          244 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> long.q qb3-id2   group3 owner04 qb3-id2          248 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> long.q cc-id3    group3 owner04 cc-id3           241 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> long.q cin-id1   group3 owner04 cin-id1          243 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 490 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 37 more variables: submission_time &lt;dttm&gt;, start_time &lt;dttm&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   end_time &lt;dttm&gt;, failed &lt;int&gt;, exit_status &lt;int&gt;, ru_wallclock &lt;drtn&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_utime &lt;drtn&gt;, ru_stime &lt;drtn&gt;, ru_maxrss &lt;chr&gt;, ru_ixrss &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;, ru_isrss &lt;chr&gt;, ru_minflt &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;, ru_oublock &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;, ru_nvcsw &lt;dbl&gt;, …</span></span>
+<span class="r-in"><span><span class="co">## Save index to file</span></span></span>
+<span class="r-in"><span><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".index"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">save_file_index</span><span class="op">(</span><span class="va">index</span>, file <span class="op">=</span> <span class="va">tf</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Saved index file: %s (%d bytes)\n"</span>, <span class="va">pathname</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.size</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Saved index file: /tmp/henrik/Rtmp8z01qS/temp_libpath90d532d205a2/wyntonquery/exdata/accounting (8032 bytes)</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Get jobs 301 to 350</span></span></span>
-<span class="r-in"><span><span class="va">jobs</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_sge_accounting.html">read_sge_accounting</a></span><span class="op">(</span><span class="va">pathname</span>, offset <span class="op">=</span> <span class="va">index</span><span class="op">[</span><span class="fl">301</span><span class="op">]</span>, n_max <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Read index from file</span></span></span>
+<span class="r-in"><span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu">read_file_index</span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Number of jobs: %d\n"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of jobs: 1004</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  num [1:1004] 0 17 20 56 59 ...</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Read jobs 301 to 350</span></span></span>
+<span class="r-in"><span><span class="va">jobs</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_sge_accounting.html">read_sge_accounting</a></span><span class="op">(</span><span class="va">pathname</span>, offset <span class="op">=</span> <span class="va">index</span><span class="op">[</span><span class="fl">301</span><span class="op">]</span>, n_max <span class="op">=</span> <span class="fl">50L</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 50 × 45</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    qname    hostname group  owner   job_name         job_number account priority</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> member.q qb3-id1  group4 owner09 sleep.sh                  2 sge            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> long.q   cc-id3   group6 owner01 AD_196_bvFTD_65…          3 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> long.q   qb3-id1  group6 owner01 AD_196_bvFTD_65…          4 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> long.q   cc-id2   group6 owner01 AD_196_PSP_58_m…          7 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> long.q   cin-id3  group6 owner01 bvFTD_65_CONTRO…          9 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> long.q   cc-id1   group6 owner01 AD_196_svPPA_46…          8 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> long.q   cin-id2  group6 owner01 bvFTD_65_nfvPPA…         10 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> long.q   cc-hmid1 group6 owner01 AD_196_CONTROL_…          5 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> long.q   cc-id3   group6 owner01 CONTROL_412_PSP…         14 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> long.q   cin-id1  group6 owner01 bvFTD_65_PSP_58…         11 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> member.q qb3-id1  group4 owner09 sleep.sh                  2 sge            0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> member.q qb3-id1  group4 owner09 sleep.sh                  2 sge            0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> member.q qb3-id1  group4 owner09 sleep.sh                  2 sge            0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> member.q qb3-id1  group4 owner09 sleep.sh                  2 sge            0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> long.q   cc-id3   group6 owner01 AD_196_bvFTD_65…          3 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> long.q   qb3-id1  group6 owner01 AD_196_bvFTD_65…          4 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> long.q   cc-id2   group6 owner01 AD_196_PSP_58_m…          7 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> long.q   cin-id3  group6 owner01 bvFTD_65_CONTRO…          9 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> long.q   cc-id1   group6 owner01 AD_196_svPPA_46…          8 sge           19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 40 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 37 more variables: submission_time &lt;dttm&gt;, start_time &lt;dttm&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   end_time &lt;dttm&gt;, failed &lt;int&gt;, exit_status &lt;int&gt;, ru_wallclock &lt;drtn&gt;,</span></span>
@@ -188,6 +185,33 @@ by a <code>newline</code> character.  The first line is at file byte offset
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;, ru_oublock &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;, ru_nvcsw &lt;dbl&gt;, …</span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Read all jobs *after* the 500:th job</span></span></span>
+<span class="r-in"><span><span class="va">jobs</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_sge_accounting.html">read_sge_accounting</a></span><span class="op">(</span><span class="va">pathname</span>, offset <span class="op">=</span> <span class="va">index</span><span class="op">[</span><span class="fl">501</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 504 × 45</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    qname  hostname  group  owner   job_name       job_number account priority</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> long.q cc-id3    group6 owner07 job_qb3.sh            230 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> long.q cin-hmid1 group6 owner01 bmle_1_4_s3.sh        233 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> long.q cin-id2   group6 owner01 bmle_1_5_s3.sh        229 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> long.q cc-id1    group6 owner06 job.sh                147 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> long.q cc-hmid1  group3 owner04 cc-hmid1              238 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> long.q cc-id1    group3 owner04 cc-id1                239 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> long.q cin-hmid1 group3 owner04 cin-hmid1             242 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> long.q qb3-hmid1 group3 owner04 qb3-hmid1             246 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> long.q cin-id3   group3 owner04 cin-id3               245 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> long.q qb3-id1   group3 owner04 qb3-id1               247 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 494 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 37 more variables: submission_time &lt;dttm&gt;, start_time &lt;dttm&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   end_time &lt;dttm&gt;, failed &lt;int&gt;, exit_status &lt;int&gt;, ru_wallclock &lt;drtn&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_utime &lt;drtn&gt;, ru_stime &lt;drtn&gt;, ru_maxrss &lt;chr&gt;, ru_ixrss &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;, ru_isrss &lt;chr&gt;, ru_minflt &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_majflt &lt;dbl&gt;, ru_nswap &lt;dbl&gt;, ru_inblock &lt;dbl&gt;, ru_oublock &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ru_msgsnd &lt;dbl&gt;, ru_msgrcv &lt;dbl&gt;, ru_nsignals &lt;dbl&gt;, ru_nvcsw &lt;dbl&gt;, …</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Cleanup</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>
   </div>
@@ -202,7 +226,7 @@ by a <code>newline</code> character.  The first line is at file byte offset
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9005.</p>
 </div>
 
       </footer></div>

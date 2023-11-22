@@ -34,9 +34,6 @@
     <loc>/reference/anonymize.html</loc>
   </url>
   <url>
-    <loc>/reference/as_sge_accounting.html</loc>
-  </url>
-  <url>
     <loc>/reference/available.html</loc>
   </url>
   <url>
@@ -82,9 +79,6 @@
     <loc>/reference/open_file_at.html</loc>
   </url>
   <url>
-    <loc>/reference/parse_category.html</loc>
-  </url>
-  <url>
     <loc>/reference/qhost.html</loc>
   </url>
   <url>
@@ -94,19 +88,10 @@
     <loc>/reference/read_qstat.html</loc>
   </url>
   <url>
-    <loc>/reference/read_raw_sge_accounting.html</loc>
-  </url>
-  <url>
     <loc>/reference/read_sge_accounting.html</loc>
   </url>
   <url>
     <loc>/reference/round_ram.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sge_accounting_file.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sge_failed_codes.html</loc>
   </url>
   <url>
     <loc>/reference/sge_make_week_index.html</loc>
