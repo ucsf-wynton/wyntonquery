@@ -25,6 +25,7 @@
 #'
 #' @importFrom parallelly isConnectionValid
 #' @importFrom readr read_delim
+#' @rdname read_sge_accounting
 #' @export
 read_raw_sge_accounting <- function(file, offset = 0, n_max = Inf, skip = if (is.character(file) && offset == 0) 4L else 0L, ...) {
   if (inherits(offset, "sge_accounting_index_by_week")) {
@@ -71,8 +72,8 @@ read_raw_sge_accounting <- function(file, offset = 0, n_max = Inf, skip = if (is
 #' @param header (character vector) Zero of more header lines to be written
 #' at the top of the file.
 #'
-#' @rdname read_raw_sge_accounting
 #' @importFrom readr write_delim
+#' @rdname read_sge_accounting
 #' @export
 write_raw_sge_accounting <- function(x, file, header = attr(x, "header"), ...) {
   stopifnot(inherits(x, "raw_sge_accounting"))
@@ -183,9 +184,11 @@ sge_accounting_col_types <- function() {
 #' 
 #' @param \ldots (optional) Addition arguments passed to the S3 methods.
 #'
+#' @rdname read_sge_accounting
 #' @export
 as_sge_accounting <- function(x, ...) UseMethod("as_sge_accounting")
 
+#' @rdname read_sge_accounting
 #' @export
 as_sge_accounting.raw_sge_accounting <- function(x, ...) {
   origin <- as.POSIXct("1970-01-01 00:00.00 UTC", tz = "GMT")
@@ -228,7 +231,10 @@ as_sge_accounting.raw_sge_accounting <- function(x, ...) {
   x
 }
 
+#' @param format Either `"pretty"` or `"raw"`.
+#'
 #' @importFrom prettyunits pretty_bytes pretty_dt pretty_sec
+#' @rdname read_sge_accounting
 #' @export
 print.sge_accounting <- function(x, format = c("pretty", "raw"), ...) {
   format <- match.arg(format)
@@ -269,6 +275,7 @@ print.sge_accounting <- function(x, format = c("pretty", "raw"), ...) {
 #' If not found, and error is thrown.
 #'
 #' @importFrom utils file_test
+#' @rdname read_sge_accounting
 #' @export
 sge_accounting_file <- function(filename = "accounting", path = do.call(file.path, args = as.list(c(Sys.getenv(c("SGE_ROOT", "SGE_CELL")), "common")))) {
   stopifnot(file_test("-d", path))
@@ -513,6 +520,7 @@ read_sge_accounting <- function(file = sge_accounting_file(), ...) {
 #' @return A `tibble` data frame with columns corresponding to the requested
 #' properties.
 #'
+#' @rdname read_sge_accounting
 #' @export
 parse_category <- function(x, ...) {
   UseMethod("parse_category")
@@ -521,6 +529,7 @@ parse_category <- function(x, ...) {
 #' @param properties (character vector) The properties to extract.
 #'
 #' @importFrom tibble as_tibble
+#' @rdname read_sge_accounting
 #' @export
 parse_category.sge_accounting <- function(x, properties = c("h_rt", "s_rt", "mem_free"), ...) {
   properties <- match.arg(properties, several.ok = TRUE)
@@ -563,6 +572,7 @@ parse_category.sge_accounting <- function(x, properties = c("h_rt", "s_rt", "mem
 #' @return A tibble
 #'
 #' @importFrom readr read_delim
+#' @rdname read_sge_accounting
 #' @export
 sge_failed_codes <- local({
   codes <- NULL

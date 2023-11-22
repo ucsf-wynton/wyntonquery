@@ -9,7 +9,7 @@ dbi_import_sge_accounting(conn, file, chunk_size = 10000L, deduplicate = FALSE)
 \arguments{
 \item{conn}{A \link[DBI:DBIConnection-class]{DBI::DBIConnection}.}
 
-\item{file}{(character or a file connection) The SGE \file{accounting} file to read.}
+\item{file}{(character) The SGE \file{accounting} file to read.}
 
 \item{chunk_size}{(integer) The number of records to import in each chunk.}
 
