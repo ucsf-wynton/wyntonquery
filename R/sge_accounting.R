@@ -464,7 +464,19 @@ sge_accounting_file <- function(filename = "accounting", path = do.call(file.pat
 #' 
 #' 
 #' Source: `man sge_status`.
+#'
+#' In addition to the above, I, the package author, have tried to gathered
+#' additional information about the below `failed` codes based on real-world
+#' observations.
 #' 
+#' * `21`: When this happens, both `qname` and `hostname` are `UNKNOWN`, 
+#'         `qsub_time` is 0 ("Wed Dec 31 16:00:00 1969"),
+#'         `start_time` and `end_time` are 0 ("-/-"),
+#'         all run-time data, including `ru_wallclock`, are all `0`.
+#'         It appears to happen to old jobs (per `job_number`) from times
+#'         before one or more major downtimes.  Because of this, I believe
+#'         these are from jobs with `Eqw` state that SGE eventually tries
+#'         to flush out.
 #' 
 #' @section Common exit codes:
 #'

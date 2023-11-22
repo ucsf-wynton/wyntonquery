@@ -232,6 +232,20 @@ The following failed codes are specific to MS Windows:\tabular{rlll}{
 
 
 Source: \verb{man sge_status}.
+
+In addition to the above, I, the package author, have tried to gathered
+additional information about the below \code{failed} codes based on real-world
+observations.
+\itemize{
+\item \code{21}: When this happens, both \code{qname} and \code{hostname} are \code{UNKNOWN},
+\code{qsub_time} is 0 ("Wed Dec 31 16:00:00 1969"),
+\code{start_time} and \code{end_time} are 0 ("-/-"),
+all run-time data, including \code{ru_wallclock}, are all \code{0}.
+It appears to happen to old jobs (per \code{job_number}) from times
+before one or more major downtimes.  Because of this, I believe
+these are from jobs with \code{Eqw} state that SGE eventually tries
+to flush out.
+}
 }
 
 \section{Common exit codes}{
