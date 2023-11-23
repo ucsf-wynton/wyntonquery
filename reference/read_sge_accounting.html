@@ -22,7 +22,7 @@ Table of SGE failed codes with descriptions"><!-- mathjax --><script src="https:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9008</span>
       </span>
     </div>
 
@@ -268,17 +268,7 @@ job entries, see <code><a href="make_file_index.html">make_file_index()</a></cod
     <h2>Failed code</h2>
     
 <table class="table table"><tr><td>Code</td><td>Description</td><td>OK</td><td>Explanation</td></tr><tr><td>0</td><td>no failure</td><td>Y</td><td>ran and exited normally</td></tr><tr><td>1</td><td>assumedly before job</td><td>N</td><td>failed early in execd</td></tr><tr><td>3</td><td>before writing config</td><td>N</td><td>failed before execd set up local spool</td></tr><tr><td>4</td><td>before writing PID</td><td>N</td><td>shepherd failed to record its pid - filesystem problem?</td></tr><tr><td>6</td><td>setting processor set</td><td>N</td><td>failed setting up processor set (obsolete)</td></tr><tr><td>7</td><td>before prolog</td><td>N</td><td>failed before prolog</td></tr><tr><td>8</td><td>in prolog</td><td>N</td><td>failed in prolog</td></tr><tr><td>9</td><td>before pestart</td><td>N</td><td>failed before starting PE</td></tr><tr><td>10</td><td>in pestart</td><td>N</td><td>failed in PE starter</td></tr><tr><td>11</td><td>before job</td><td>N</td><td>failed in shepherd before starting job</td></tr><tr><td>12</td><td>before pestop</td><td>Y</td><td>ran, but failed before calling PE stop procedure</td></tr><tr><td>13</td><td>in pestop</td><td>Y</td><td>ran, but PE stop procedure failed</td></tr><tr><td>14</td><td>before epilog</td><td>Y</td><td>ran, but failed before calling epilog</td></tr><tr><td>15</td><td>in epilog</td><td>Y</td><td>ran, but failed in epilog</td></tr><tr><td>16</td><td>releasing processor set</td><td>Y</td><td>ran, but processor set could not be released (obsolete)</td></tr><tr><td>17</td><td>through signal</td><td>Y</td><td>job killed by signal (possibly qdel)</td></tr><tr><td>18</td><td>shepherd returned error</td><td>N</td><td>shepherd died somehow</td></tr><tr><td>19</td><td>before writing exit_status</td><td>N</td><td>shepherd didn't write reports correctly - probably program or machine crash</td></tr><tr><td>20</td><td>found unexpected error file</td><td>?</td><td>shepherd encountered a problem</td></tr><tr><td>21</td><td>in recognizing job</td><td>N</td><td>qmaster asked about an unknown job (not in accounting?)</td></tr><tr><td>24</td><td>migrating (checkpointing jobs)</td><td>Y</td><td>ran, will be migrated</td></tr><tr><td>25</td><td>rescheduling</td><td>Y</td><td>ran, will be rescheduled</td></tr><tr><td>26</td><td>opening output file</td><td>N</td><td>failed opening stderr/stdout file</td></tr><tr><td>27</td><td>searching requested shell</td><td>N</td><td>failed finding specified shell</td></tr><tr><td>28</td><td>changing to working directory</td><td>N</td><td>failed changing to start directory</td></tr><tr><td>29</td><td>AFS setup</td><td>N</td><td>failed setting up AFS security</td></tr><tr><td>30</td><td>application error returned</td><td>Y</td><td>ran and exited 100 - maybe re-scheduled</td></tr><tr><td>36</td><td>checking configured daemons</td><td>N</td><td>failed because of configured remote startup daemon</td></tr><tr><td>37</td><td>qmaster enforced h_rt, h_cpu, or h_vmem limit</td><td>Y</td><td>ran, but killed due to exceeding run time limit</td></tr><tr><td>38</td><td>adding supplementary group</td><td>N</td><td>failed adding supplementary gid to job</td></tr><tr><td>100</td><td>assumedly after job</td><td>Y</td><td>ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.</td></tr></table><p>The following failed codes are specific to MS Windows:</p><table class="table table"><tr><td>Code</td><td>Description</td><td>OK</td><td>Explanation</td></tr><tr><td>31</td><td>accessing sgepasswd file</td><td>N</td><td>failed because sgepasswd not readable*</td></tr><tr><td>32</td><td>entry is missing in password file</td><td>N</td><td>failed because user not in sgepasswd*</td></tr><tr><td>33</td><td>wrong password</td><td>N</td><td>failed because of wrong password against sgepasswd*</td></tr><tr><td>34</td><td>communicating with Grid Engine Helper Service</td><td>N</td><td>failed because of failure of helper service*</td></tr><tr><td>35</td><td>before job in Grid Engine Helper Service</td><td>N</td><td>failed because of failure running helper service*</td></tr></table><p>Source: <code>man sge_status</code>.</p>
-<p>In addition to the above, I, the package author, have tried to gathered
-additional information about the below <code>failed</code> codes based on real-world
-observations.</p><ul><li><p><code>21</code>: When this happens, both <code>qname</code> and <code>hostname</code> are <code>UNKNOWN</code>,
-<code>qsub_time</code> is 0 ("Wed Dec 31 16:00:00 1969"),
-<code>start_time</code> and <code>end_time</code> are 0 ("-/-"),
-all run-time data, including <code>ru_wallclock</code>, are all <code>0</code>.
-It appears to happen to old jobs (per <code>job_number</code>) from times
-before one or more major downtimes.  Because of this, I believe
-these are from jobs with <code>Eqw</code> state that SGE eventually tries
-to flush out.</p></li>
-</ul></div>
+    </div>
     <div id="common-exit-codes">
     <h2>Common exit codes</h2>
     
@@ -331,16 +321,16 @@ was 4.8 GB in size and ~6-8 minutes when it was 12 GB in size.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,000 × 45</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    qname    hostname group  owner   job_name job_number account priority</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> member.q cin-id3  group2 owner03 sleep.sh          1 sge            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> long.q   cc-id2   group2 owner03 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> long.q   cc-id2   group2 owner03 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> long.q   cc-id2   group2 owner03 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> long.q   cc-id2   group2 owner03 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> long.q   cc-id2   group2 owner03 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> long.q   cc-id2   group2 owner03 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> member.q cin-id2  group2 owner03 sleep.sh          2 sge            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> long.q   cin-id2  group2 owner03 sleep.sh          2 sge           19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> long.q   cin-id2  group2 owner03 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> member.q cin-id3  group5 owner06 sleep.sh          1 sge            0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> long.q   cc-id2   group5 owner06 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> long.q   cc-id2   group5 owner06 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> long.q   cc-id2   group5 owner06 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> long.q   cc-id2   group5 owner06 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> long.q   cc-id2   group5 owner06 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> long.q   cc-id2   group5 owner06 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> member.q cin-id2  group5 owner06 sleep.sh          2 sge            0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> long.q   cin-id2  group5 owner06 sleep.sh          2 sge           19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> long.q   cin-id2  group5 owner06 sleep.sh          2 sge           19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 990 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 37 more variables: submission_time &lt;dbl&gt;, start_time &lt;dbl&gt;, end_time &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   failed &lt;int&gt;, exit_status &lt;int&gt;, ru_wallclock &lt;dbl&gt;, ru_utime &lt;dbl&gt;,</span></span>
@@ -416,7 +406,7 @@ was 4.8 GB in size and ~6-8 minutes when it was 12 GB in size.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9005.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
