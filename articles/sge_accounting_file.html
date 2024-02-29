@@ -316,8 +316,8 @@ time;</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
 <span><span class="co"># Time difference of 9613.036 days</span></span></code></pre></div>
 <p>which corresponds to ~18% of all CPU time spent:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">as.numeric</span>(d)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">as.numeric</span>(total<span class="sc">$</span>cpu))</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.1811399</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">as.numeric</span>(d)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">as.numeric</span>(total<span class="sc">$</span>cpu))</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.1811399</span></span></code></pre></div>
 </div>
   </div>
 
