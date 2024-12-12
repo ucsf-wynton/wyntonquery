@@ -4,6 +4,11 @@
 #'
 #' @param offset (numeric) The number of bytes to skip before start indexing.
 #'
+#' @param index (numeric; optional) An existing index (file byte offsets)
+#' generated on an earlier version of the input file. If specified, the
+#' indexing will continue at the very last known index, instead of
+#' re-indexing from the beginning.
+#'
 #' @param skip (numeric) The number of `newline` matches to ignore before
 #' recording them.
 #'
@@ -27,8 +32,15 @@
 #' @importFrom utils file_test
 #' @importFrom progressr progressor
 #' @export
-make_file_index <- function(pathname, offset = 0, skip = 0L, n_max = Inf, newline = "\n", drop_eof = TRUE, bfr_size = 50e6) {
+make_file_index <- function(pathname, offset = NULL, skip = 0L, index = NULL, n_max = Inf, newline = "\n", drop_eof = TRUE, bfr_size = 50e6) {
   stopifnot(length(pathname) == 1L, file_test("-f", pathname))
+  if (!is.null(index)) {
+    stopifnot(is.numeric(index), !anyNA(index))
+    index_range <- range(index)
+    stopifnot(index_range[1] >= 0, index_range[2] < Inf)
+    if (is.null(offset)) offset <- index_range[2] - 1
+  }
+  if (is.null(offset)) offset <- 0
   stopifnot(length(offset) == 1L, is.numeric(offset), is.finite(offset), offset >= 0)
   stopifnot(length(skip) == 1L, is.numeric(skip), is.finite(skip), skip >= 0)
   stopifnot(length(n_max) == 1L, is.numeric(n_max), !is.na(n_max), n_max >= 0)
@@ -39,6 +51,9 @@ make_file_index <- function(pathname, offset = 0, skip = 0L, n_max = Inf, newlin
   nl <- charToRaw(newline)
 
   file_size <- file.size(pathname)
+  if (!is.null(index)) {
+    stopifnot(file_size > index_range[2])
+  }  
   con <- file(pathname, open = "rb")
   on.exit(close(con))
 
@@ -86,6 +101,18 @@ make_file_index <- function(pathname, offset = 0, skip = 0L, n_max = Inf, newlin
   if (drop_eof) {
     n <- length(pos)
     if (pos[n] == file_size) pos <- pos[-n]
+  }
+
+  if (!is.null(index)) {
+    drop <- which(pos <= index_range[2])
+    if (length(drop) > 0) pos <- pos[-drop]
+    pos <- c(index, pos)
+
+    ## Check for duplicated. Sorting will set ALTREP sort flag,
+    ## which will speed up future sorting and duplication checks.
+    pos <- sort(pos)
+    dups <- anyDuplicated(pos)
+    stopifnot(length(dups) == 1, dups == 0)
   }
   
   pos

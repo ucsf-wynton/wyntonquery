@@ -2,6 +2,12 @@
 
 ## New Features
 
+ * Now `make_file_index()` takes optional argument `index`, which
+   should specify the index of a previous version of the input
+   file. If specified, it will only index the end of the file that is
+   not already indexed. This provides a quick way to update the index
+   of a file that is continously growing.
+
  * Add `sql_import_sge_accounting()`.
 
 
