@@ -275,5 +275,5 @@ which corresponds to ~15% of all CPU time spent:
 
 ```r
 as.numeric(d)/sum(as.numeric(total$cpu))
-[1] 0.1501645
+#> [1] 0.1501645
 ```
