@@ -8,6 +8,8 @@
    not already indexed. This provides a quick way to update the index
    of a file that is continously growing.
 
+ * Add `sge_make_date_index()`.
+
  * Add `sql_import_sge_accounting()`.
 
 

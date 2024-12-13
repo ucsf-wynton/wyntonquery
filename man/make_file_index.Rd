@@ -8,8 +8,9 @@
 \usage{
 make_file_index(
   pathname,
-  offset = 0,
+  offset = NULL,
   skip = 0L,
+  index = NULL,
   n_max = Inf,
   newline = "\\n",
   drop_eof = TRUE,
@@ -28,6 +29,8 @@ read_file_index(file)
 \item{skip}{(numeric) The number of \code{newline} matches to ignore before
 recording them.}
 
+\item{index}{(numeric vector) A sorted index of file byte positions.}
+
 \item{n_max}{(numeric) The maximum number of bytes to scan.}
 
 \item{newline}{(character) The character to scan for.}
@@ -37,8 +40,6 @@ dropped if at the very end of the file, i.e. when there is nothing
 available to read from that position.}
 
 \item{bfr_size}{(numeric) The number of bytes to read in each iteration.}
-
-\item{index}{(numeric vector) A sorted index of file byte positions.}
 
 \item{file}{A pathname to a \file{*.index} file to be
 created or read from.}
