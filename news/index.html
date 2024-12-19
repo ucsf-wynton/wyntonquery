@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9011</span>
       </span>
     </div>
 
@@ -64,7 +64,9 @@
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li>Add <code>sql_import_sge_accounting()</code>.</li>
+<ul><li><p>Now <code><a href="../reference/make_file_index.html">make_file_index()</a></code> takes optional argument <code>index</code>, which should specify the index of a previous version of the input file. If specified, it will only index the end of the file that is not already indexed. This provides a quick way to update the index of a file that is continously growing.</p></li>
+<li><p>Add <code>sge_make_date_index()</code>.</p></li>
+<li><p>Add <code>sql_import_sge_accounting()</code>.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
