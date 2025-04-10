@@ -117,12 +117,12 @@ If NULL, then the Wynton LDAP server is queried.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   date       total</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2025-03-28  <span style="text-decoration: underline;">1</span>430</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 2025-04-01  <span style="text-decoration: underline;">1</span>431</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2025-04-01  <span style="text-decoration: underline;">1</span>432</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2025-04-01  <span style="text-decoration: underline;">1</span>433</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 2025-04-01  <span style="text-decoration: underline;">1</span>434</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 2025-04-04  <span style="text-decoration: underline;">1</span>435</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2025-04-09  <span style="text-decoration: underline;">1</span>441</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 2025-04-09  <span style="text-decoration: underline;">1</span>442</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2025-04-09  <span style="text-decoration: underline;">1</span>443</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2025-04-09  <span style="text-decoration: underline;">1</span>444</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 2025-04-09  <span style="text-decoration: underline;">1</span>445</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 2025-04-09  <span style="text-decoration: underline;">1</span>446</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Summarize by year and month</span></span></span>
 <span class="r-in"><span><span class="va">signups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">signups</span>, year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">date</span>, <span class="st">"%Y"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -140,15 +140,15 @@ If NULL, then the Wynton LDAP server is queried.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   year [9]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   year  change total per       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2017      21    34 2017-12-12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 2018      29    63 2018-11-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2019     101   164 2019-12-18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2020     119   283 2020-12-22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 2021     136   419 2021-12-18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 2022     187   606 2022-12-14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> 2023     231   837 2023-12-27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> 2024     446  <span style="text-decoration: underline;">1</span>283 2024-12-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span> 2025     152  <span style="text-decoration: underline;">1</span>435 2025-04-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2017      22    35 2017-12-12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 2018      29    64 2018-11-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2019     101   165 2019-12-18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2020     119   284 2020-12-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 2021     136   420 2021-12-18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 2022     188   608 2022-12-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> 2023     232   840 2023-12-27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> 2024     439  <span style="text-decoration: underline;">1</span>279 2024-12-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span> 2025     167  <span style="text-decoration: underline;">1</span>446 2025-04-09</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Signups per calendar month</span></span></span>
 <span class="r-in"><span><span class="va">signups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">signups</span>, <span class="va">year</span>, <span class="va">month</span><span class="op">)</span></span></span>
@@ -170,93 +170,93 @@ If NULL, then the Wynton LDAP server is queried.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2017  09         2    20 2017-09-22</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 2017  10         6    26 2017-10-27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2017  11         7    33 2017-11-21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2017  12         1    34 2017-12-12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2018  01         1    35 2018-01-16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 2018  02         5    40 2018-02-26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 2018  03         2    42 2018-03-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 2018  05         2    44 2018-05-14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 2018  06         1    45 2018-06-12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 2018  07         3    48 2018-07-20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> 2018  08         5    53 2018-08-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> 2018  09         3    56 2018-09-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> 2018  10         2    58 2018-10-12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> 2018  11         5    63 2018-11-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> 2019  01         2    65 2019-01-17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">21</span> 2019  02        11    76 2019-02-21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">22</span> 2019  03        16    92 2019-03-22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">23</span> 2019  04        13   105 2019-04-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">24</span> 2019  05         7   112 2019-05-20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">25</span> 2019  06         6   118 2019-06-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">26</span> 2019  07         7   125 2019-07-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">27</span> 2019  08         5   130 2019-08-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">28</span> 2019  09        18   148 2019-09-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">29</span> 2019  10         7   155 2019-10-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">30</span> 2019  11         4   159 2019-11-26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">31</span> 2019  12         5   164 2019-12-18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">32</span> 2020  01         6   170 2020-01-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">33</span> 2020  02         7   177 2020-02-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">34</span> 2020  03         8   185 2020-03-25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">35</span> 2020  04         8   193 2020-04-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">36</span> 2020  05        12   205 2020-05-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">37</span> 2020  06         3   208 2020-06-19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">38</span> 2020  07        10   218 2020-07-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">39</span> 2020  08        18   236 2020-08-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">40</span> 2020  09        16   252 2020-09-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">41</span> 2020  10        12   264 2020-10-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">42</span> 2020  11        13   277 2020-11-19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">43</span> 2020  12         6   283 2020-12-22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">44</span> 2021  01        12   295 2021-01-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">45</span> 2021  02        11   306 2021-02-26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">46</span> 2021  03        10   316 2021-03-25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">47</span> 2021  04         9   325 2021-04-27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">48</span> 2021  05         7   332 2021-05-21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">49</span> 2021  06         8   340 2021-06-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">50</span> 2021  07         5   345 2021-07-27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">51</span> 2021  08        14   359 2021-08-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">52</span> 2021  09        20   379 2021-09-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">53</span> 2021  10        17   396 2021-10-27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">54</span> 2021  11        12   408 2021-11-25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">55</span> 2021  12        11   419 2021-12-18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">56</span> 2022  01        15   434 2022-01-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">57</span> 2022  02        12   446 2022-02-26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">58</span> 2022  03        19   465 2022-03-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">59</span> 2022  04         9   474 2022-04-15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">60</span> 2022  05        11   485 2022-05-27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">61</span> 2022  06        11   496 2022-06-16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">62</span> 2022  07        16   512 2022-07-27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">63</span> 2022  08        20   532 2022-08-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">64</span> 2022  09        33   565 2022-09-24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">65</span> 2022  10        21   586 2022-10-26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">66</span> 2022  11        16   602 2022-11-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">67</span> 2022  12         4   606 2022-12-14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">68</span> 2023  01        16   622 2023-01-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">69</span> 2023  02        11   633 2023-02-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">70</span> 2023  03        15   648 2023-03-24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">71</span> 2023  04        16   664 2023-04-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">72</span> 2023  05        13   677 2023-05-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">73</span> 2023  06        21   698 2023-06-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">74</span> 2023  07        22   720 2023-07-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">75</span> 2023  08        22   742 2023-08-23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">76</span> 2023  09        45   787 2023-09-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">77</span> 2023  10        17   804 2023-10-24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">78</span> 2023  11        21   825 2023-11-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">79</span> 2023  12        12   837 2023-12-27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">80</span> 2024  01        28   865 2024-01-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">81</span> 2024  02        27   892 2024-02-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">82</span> 2024  03        24   916 2024-03-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">83</span> 2024  04        43   959 2024-04-27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">84</span> 2024  05        26   985 2024-05-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">85</span> 2024  06        31  <span style="text-decoration: underline;">1</span>016 2024-06-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">86</span> 2024  07        41  <span style="text-decoration: underline;">1</span>057 2024-07-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">87</span> 2024  08        33  <span style="text-decoration: underline;">1</span>090 2024-08-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">88</span> 2024  09        72  <span style="text-decoration: underline;">1</span>162 2024-09-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">89</span> 2024  10        46  <span style="text-decoration: underline;">1</span>208 2024-10-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">90</span> 2024  11        32  <span style="text-decoration: underline;">1</span>240 2024-11-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">91</span> 2024  12        43  <span style="text-decoration: underline;">1</span>283 2024-12-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">92</span> 2025  01        50  <span style="text-decoration: underline;">1</span>333 2025-01-31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">93</span> 2025  02        52  <span style="text-decoration: underline;">1</span>385 2025-02-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">94</span> 2025  03        45  <span style="text-decoration: underline;">1</span>430 2025-03-28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">95</span> 2025  04         5  <span style="text-decoration: underline;">1</span>435 2025-04-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2017  12         2    35 2017-12-12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2018  01         1    36 2018-01-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 2018  02         5    41 2018-02-26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 2018  03         2    43 2018-03-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 2018  05         2    45 2018-05-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 2018  06         1    46 2018-06-12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 2018  07         3    49 2018-07-20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> 2018  08         5    54 2018-08-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> 2018  09         3    57 2018-09-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> 2018  10         2    59 2018-10-12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> 2018  11         5    64 2018-11-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> 2019  01         2    66 2019-01-17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">21</span> 2019  02        11    77 2019-02-21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">22</span> 2019  03        16    93 2019-03-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">23</span> 2019  04        13   106 2019-04-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">24</span> 2019  05         7   113 2019-05-20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">25</span> 2019  06         6   119 2019-06-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">26</span> 2019  07         7   126 2019-07-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">27</span> 2019  08         5   131 2019-08-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">28</span> 2019  09        18   149 2019-09-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">29</span> 2019  10         7   156 2019-10-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">30</span> 2019  11         4   160 2019-11-26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">31</span> 2019  12         5   165 2019-12-18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">32</span> 2020  01         6   171 2020-01-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">33</span> 2020  02         7   178 2020-02-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">34</span> 2020  03         8   186 2020-03-25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">35</span> 2020  04         8   194 2020-04-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">36</span> 2020  05        12   206 2020-05-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">37</span> 2020  06         3   209 2020-06-19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">38</span> 2020  07        10   219 2020-07-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">39</span> 2020  08        18   237 2020-08-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">40</span> 2020  09        16   253 2020-09-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">41</span> 2020  10        12   265 2020-10-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">42</span> 2020  11        13   278 2020-11-19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">43</span> 2020  12         6   284 2020-12-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">44</span> 2021  01        12   296 2021-01-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">45</span> 2021  02        11   307 2021-02-26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">46</span> 2021  03        10   317 2021-03-25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">47</span> 2021  04         9   326 2021-04-27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">48</span> 2021  05         7   333 2021-05-21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">49</span> 2021  06         8   341 2021-06-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">50</span> 2021  07         5   346 2021-07-27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">51</span> 2021  08        14   360 2021-08-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">52</span> 2021  09        20   380 2021-09-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">53</span> 2021  10        17   397 2021-10-27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">54</span> 2021  11        12   409 2021-11-25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">55</span> 2021  12        11   420 2021-12-18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">56</span> 2022  01        15   435 2022-01-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">57</span> 2022  02        12   447 2022-02-26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">58</span> 2022  03        20   467 2022-03-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">59</span> 2022  04        10   477 2022-04-15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">60</span> 2022  05        11   488 2022-05-27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">61</span> 2022  06        11   499 2022-06-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">62</span> 2022  07        16   515 2022-07-27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">63</span> 2022  08        20   535 2022-08-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">64</span> 2022  09        32   567 2022-09-24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">65</span> 2022  10        21   588 2022-10-26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">66</span> 2022  11        16   604 2022-11-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">67</span> 2022  12         4   608 2022-12-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">68</span> 2023  01        16   624 2023-01-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">69</span> 2023  02        11   635 2023-02-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">70</span> 2023  03        15   650 2023-03-24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">71</span> 2023  04        16   666 2023-04-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">72</span> 2023  05        13   679 2023-05-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">73</span> 2023  06        21   700 2023-06-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">74</span> 2023  07        21   721 2023-07-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">75</span> 2023  08        23   744 2023-08-23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">76</span> 2023  09        45   789 2023-09-30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">77</span> 2023  10        17   806 2023-10-24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">78</span> 2023  11        21   827 2023-11-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">79</span> 2023  12        13   840 2023-12-27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">80</span> 2024  01        28   868 2024-01-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">81</span> 2024  02        27   895 2024-02-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">82</span> 2024  03        21   916 2024-03-29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">83</span> 2024  04        42   958 2024-04-27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">84</span> 2024  05        26   984 2024-05-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">85</span> 2024  06        31  <span style="text-decoration: underline;">1</span>015 2024-06-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">86</span> 2024  07        41  <span style="text-decoration: underline;">1</span>056 2024-07-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">87</span> 2024  08        33  <span style="text-decoration: underline;">1</span>089 2024-08-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">88</span> 2024  09        70  <span style="text-decoration: underline;">1</span>159 2024-09-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">89</span> 2024  10        46  <span style="text-decoration: underline;">1</span>205 2024-10-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">90</span> 2024  11        32  <span style="text-decoration: underline;">1</span>237 2024-11-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">91</span> 2024  12        42  <span style="text-decoration: underline;">1</span>279 2024-12-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">92</span> 2025  01        50  <span style="text-decoration: underline;">1</span>329 2025-01-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">93</span> 2025  02        52  <span style="text-decoration: underline;">1</span>381 2025-02-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">94</span> 2025  03        45  <span style="text-decoration: underline;">1</span>426 2025-03-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">95</span> 2025  04        20  <span style="text-decoration: underline;">1</span>446 2025-04-09</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
