@@ -267,8 +267,8 @@ subset(sge_failed_codes(), Code %in% unique(codes), select=c(Code, Explanation))
 #> 11   100 ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.
 ```
 
-The jobs that exhausted their run-time limit, consumed 24,485 days of
-CPU time;
+The jobs that exhausted their run-time limit (failure code 37),
+consumed 24,485 days of CPU time;
 
 ```r
 d <- sum(subset(groups$fail, failed == 37)$cpu); units(d) <- "days"
@@ -281,4 +281,33 @@ which corresponds to ~15% of all CPU time spent:
 ```r
 as.numeric(d)/sum(as.numeric(total$cpu))
 #> [1] 0.1494577
+```
+
+
+The jobs that failed because it was killed by the scheduler (failure
+code 100), consumed 18,968 days of CPU time;
+
+```r
+> d <- sum(subset(groups$fail, failed == 100)$cpu); units(d) <- "days"                                                               
+> d
+Time difference of 18967.52 days
+```
+
+which corresponds to ~12% of all CPU time spent:
+
+```r
+> as.numeric(d)/sum(as.numeric(total$cpu))
+[1] 0.1192438
+```
+
+In total, these two types of failures (37 and 100) wasted 26.9% of the
+CPU compute resources corresponding to 42,741 days;
+
+```r
+> d <- sum(subset(groups$fail, failed %in% c(37, 100))$cpu); units(d) <- "days"
+> d
+Time difference of 42741.01 days
+
+> as.numeric(d)/sum(as.numeric(total$cpu))
+[1] 0.2687015
 ```
