@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9011</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9012</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@
                         <h4 data-toc-skip class="author">Henrik
 Bengtsson</h4>
             
-            <h4 data-toc-skip class="date">2024-12-11</h4>
+            <h4 data-toc-skip class="date">2025-05-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ucsf-wynton/wyntonquery/blob/develop/vignettes/sge_accounting_file.Rmd" class="external-link"><code>vignettes/sge_accounting_file.Rmd</code></a></small>
       <div class="hidden name"><code>sge_accounting_file.Rmd</code></div>
@@ -118,10 +118,10 @@ job index.</p>
 minutes to read. In June 2021, it was ~58 GB and had 161 million job
 entries. In October 2021, it was ~69 GB and had 192 million job entries.
 The accounting file was “rolled over” on 2022-03-02, that is, the old
-file was renamed and replaced by a new one.</p>
-<p>As seen below, in December 2024, the new accounting file was ~112 GB
-and had 300 million job entries and it took <code>wc -l</code> a little
-bit more than 4 minutes to count them.</p>
+file was renamed and replaced by a new one. As of December 2024, the
+“new” accounting file was ~112 GB and had 300 million job entries.</p>
+<p>As seen below, in May 2025, the new accounting file was ~131 GB and
+had ??? million job entries.</p>
 <p>It is rare to be interested in all entries. It is more common to work
 with a subset of the job entries. In order to do this efficiently, we
 start by indexing the SGE accounting file to identify the file byte
@@ -134,19 +134,19 @@ offset for each job entry;</p>
 <span></span>
 <span><span class="va">pathname</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_sge_accounting.html">sge_accounting_file</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"File size: %.3g GB\n"</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.size</a></span><span class="op">(</span><span class="va">pathname</span><span class="op">)</span><span class="op">/</span><span class="fl">1000</span><span class="op">^</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; File size: 112 GB</span></span>
+<span><span class="co">#&gt; File size: 131 GB</span></span>
 <span></span>
-<span><span class="co">## It takes ~15 minutes to index a 112 GB SGE accounting file.</span></span>
+<span><span class="co">## It takes ~20 minutes to index a 131 GB SGE accounting file.</span></span>
 <span><span class="co">## Indexing requires only a small amount of memory, i.e. only</span></span>
 <span><span class="co">## a portion of the accounting file is in memory at any time.</span></span>
 <span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_file_index.html">make_file_index</a></span><span class="op">(</span><span class="va">pathname</span>, skip <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Number of job entries: %d\n"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Number of job entries: 300509469</span></span>
+<span><span class="co">#&gt; Number of job entries: 352616562</span></span>
 <span></span>
 <span><span class="co">## Save per-job index to file</span></span>
 <span><span class="fu"><a href="../reference/make_file_index.html">save_file_index</a></span><span class="op">(</span><span class="va">index</span>, file <span class="op">=</span> <span class="st">"accounting.index_by_row"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"File size: %.3g GB\n"</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.size</a></span><span class="op">(</span><span class="st">"accounting.index_by_row"</span><span class="op">)</span><span class="op">/</span><span class="fl">1000</span><span class="op">^</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>                                                  </span>
-<span><span class="co">#&gt; File size: 2.4 GB</span></span></code></pre></div>
+<span><span class="co">#&gt; File size: 2.82 GB</span></span></code></pre></div>
 <p>Next, we want to group the job entries by the ISO-6801 week of the
 job end times.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(wyntonquery)</span>
@@ -157,19 +157,19 @@ job end times.</p>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>pathname <span class="ot">&lt;-</span> <span class="fu">sge_accounting_file</span>()</span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">read_file_index</span>(<span class="st">"accounting.index_by_row"</span>)</span>
 <span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Number of job entries: %d</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">length</span>(index)))</span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; Number of job entries: 300509469</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; Number of job entries: 352616562</span></span>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="do">## It takes ~30 minutes to build the week index for 300 million entries</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="do">## It takes ~50 minutes to build the week index for 350 million entries</span></span>
 <span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>week_index <span class="ot">&lt;-</span> <span class="fu">sge_make_week_index</span>(pathname, <span class="at">index =</span> index)</span>
 <span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="fu">saveRDS</span>(week_index, <span class="at">file =</span> <span class="st">"accounting.index_by_week.rds"</span>)</span>
 <span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"File size: %.3g kB</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">file.size</span>(<span class="st">"accounting.index_by_week.rds"</span>)<span class="sc">/</span><span class="dv">1000</span>))</span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; File size: 2.11 kB</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; File size: 2.4 kB</span></span>
 <span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a></span>
 <span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="fu">range</span>(week_index<span class="sc">$</span>week, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; [1] "2022W09" "2024W50"</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; [1] "2022W09" "2025W20"</span></span>
 <span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a></span>
 <span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="fu">print</span>(week_index)</span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co"># A tibble: 144 × 3</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co"># A tibble: 166 × 3</span></span>
 <span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>   week    nbr_of_jobs file_offset</span>
 <span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>   <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>         <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>       <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
 <span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a> <span class="dv">1</span> <span class="cn">NA</span>               <span class="dv">28</span>        <span class="dv">1188</span></span>
@@ -182,7 +182,7 @@ job end times.</p>
 <span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2022</span>W15     <span class="dv">1413045</span>  <span class="dv">3044101933</span></span>
 <span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">2022</span>W16     <span class="dv">1435363</span>  <span class="dv">3567520111</span></span>
 <span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="dv">10</span> <span class="dv">2022</span>W17     <span class="dv">1825431</span>  <span class="dv">4101619930</span></span>
-<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co"># ℹ 134 more rows</span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co"># ℹ 156 more rows</span></span>
 <span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co"># ℹ Use `print(n = ...)` to see more rows</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -197,34 +197,34 @@ weeks:</p>
 <span><span class="va">pathname</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_sge_accounting.html">sge_accounting_file</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">week_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"accounting.index_by_week.rds"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">weeks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">week_index</span>, <span class="va">week</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2024W40"</span>, <span class="st">"2024W41"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">weeks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">week_index</span>, <span class="va">week</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2025W18"</span>, <span class="st">"2025W19"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">weeks</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
-<span><span class="co">#&gt;   week    nbr_of_jobs file_offset</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;         &lt;dbl&gt;       &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 2024W40     3466942 96963551199</span></span>
-<span><span class="co">#&gt; 2 2024W41     4598813 98239520943</span></span>
+<span><span class="co">#&gt;    week    nbr_of_jobs file_offset</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;         &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 2025W18     3723095 129069474766</span></span>
+<span><span class="co">#&gt; 2 2025W19     1623099 130432327795</span></span>
 <span></span>
 <span><span class="va">offset</span> <span class="op">&lt;-</span> <span class="va">weeks</span><span class="op">$</span><span class="va">file_offset</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
 <span><span class="va">n_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">weeks</span><span class="op">$</span><span class="va">nbr_of_jobs</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Number of job entries to read: %d\n"</span>, <span class="va">n_max</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Number of job entries to read: 8065755</span></span>
+<span><span class="co">#&gt; Number of job entries to read: 5346194</span></span>
 <span></span>
-<span><span class="co">## It takes ~45 seconds to read the ~8 million job entries of interest</span></span>
+<span><span class="co">## It takes ~45 seconds to read the ~5.3 million job entries of interest</span></span>
 <span><span class="va">jobs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_sge_accounting.html">read_sge_accounting</a></span><span class="op">(</span><span class="va">pathname</span>, offset <span class="op">=</span> <span class="va">offset</span>, n_max <span class="op">=</span> <span class="va">n_max</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## We anonymize the content so we can share it publically</span></span>
 <span><span class="va">jobs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/anonymize.html">anonymize</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">jobs</span>, <span class="op">-</span><span class="va">account</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 44</span></span>
-<span><span class="co">#&gt;   qname    hostname group owner job_name job_number priority submission_time    </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;         &lt;int&gt;    &lt;int&gt; &lt;dttm&gt;             </span></span>
-<span><span class="co">#&gt; 1 member.q qb3-id1… grou… owne… rundock…    3535323        0 2024-09-27 22:05:07</span></span>
-<span><span class="co">#&gt; 2 long.q   qb3-atg… grou… owne… batch_3d    3542680       19 2024-09-29 23:11:20</span></span>
-<span><span class="co">#&gt; 3 long.q   qb3-id2… grou… owne… batch_3d    3542680       19 2024-09-29 23:11:20</span></span>
-<span><span class="co">#&gt; 4 long.q   qb3-id1… grou… owne… batch_3d    3542680       19 2024-09-29 23:11:20</span></span>
-<span><span class="co">#&gt; 5 member.q qb3-id2… grou… owne… rundock…    3430911        0 2024-09-21 12:34:07</span></span>
-<span><span class="co">#&gt; 6 member.q qb3-id2… grou… owne… batch_3d    3542680        0 2024-09-29 23:11:20</span></span>
+<span><span class="co">#&gt;   qname    hostname  group    owner    job_name job_number priority submission_time    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;         &lt;int&gt;    &lt;int&gt; &lt;dttm&gt;             </span></span>
+<span><span class="co">#&gt; 1 member.q qb3-id284 group005 owner082 batch_3d    3439679        0 2025-04-27 23:49:43</span></span>
+<span><span class="co">#&gt; 2 member.q qb3-id244 group005 owner082 batch_3d    3439671        0 2025-04-27 23:47:42</span></span>
+<span><span class="co">#&gt; 3 member.q qb3-id202 group005 owner082 batch_3d    3439671        0 2025-04-27 23:47:42</span></span>
+<span><span class="co">#&gt; 4 member.q qb3-id333 group005 owner082 batch_3d    3439671        0 2025-04-27 23:47:42</span></span>
+<span><span class="co">#&gt; 5 long.q   qb3-as9   group005 owner082 batch_3d    3439679       19 2025-04-27 23:49:43</span></span>
+<span><span class="co">#&gt; 6 long.q   qb3-id290 group005 owner082 batch_3d    3439680       19 2025-04-27 23:49:45</span></span>
 <span><span class="co">#&gt; # ℹ 36 more variables: start_time &lt;dttm&gt;, end_time &lt;dttm&gt;, failed &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   exit_status &lt;int&gt;, ru_wallclock &lt;drtn&gt;, ru_utime &lt;drtn&gt;, ru_stime &lt;drtn&gt;,</span></span>
 <span><span class="co">#&gt; #   ru_maxrss &lt;chr&gt;, ru_ixrss &lt;chr&gt;, ru_ismrss &lt;chr&gt;, ru_idrss &lt;chr&gt;,</span></span>
@@ -239,19 +239,19 @@ weeks:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">$</span><span class="va">end_time</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Period: %s/%s\n"</span>, <span class="va">period</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">period</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Period: 2024-09-19 22:59:22/2024-10-14 00:00:00</span></span>
+<span><span class="co">#&gt; Period: 2025-04-27 23:59:59/2025-05-11 23:59:58</span></span>
 <span></span>
 <span><span class="va">jobs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_weeks.html">add_weeks</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">)</span></span>
 <span><span class="va">period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">$</span><span class="va">end_time_week</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Period (weeks): %s/%s\n"</span>, <span class="va">period</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">period</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Period (weeks): 2024W38/2024W42</span></span>
+<span><span class="co">#&gt; Period (weeks): 2025W17/2024W19</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Number of jobs finished during this period: %d\n"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Number of jobs finished during this period: 8065755</span></span>
+<span><span class="co">#&gt; Number of jobs finished during this period: 5346194</span></span>
 <span></span>
 <span><span class="va">nusers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">$</span><span class="va">owner</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Number of unique users: %d\n"</span>, <span class="va">nusers</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Number of unique users: 276</span></span></code></pre></div>
+<span><span class="co">#&gt; Number of unique users: 301</span></span></code></pre></div>
 <p>Let’s see how many of the jobs finished succesfully and how many
 failed.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -262,28 +262,28 @@ failed.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">groups</span>, <span class="va">nrow</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span></span>
-<span><span class="co">#&gt; success    fail</span></span>
-<span><span class="co">#&gt; 7957155  108600</span></span>
+<span><span class="co">#&gt; success    fail </span></span>
+<span><span class="co">#&gt; 5247273   98921</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">stats</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    success       fail </span></span>
-<span><span class="co">#&gt; 0.98653567 0.01346433 </span></span></code></pre></div>
-<p>We see that failure rate among the ~8 million jobs that ran during
-this period was ~1.4%. Next, let’s see how much CPU time this
+<span><span class="co">#&gt; 0.98149693 0.01850307 </span></span></code></pre></div>
+<p>We see that failure rate among the ~5.4 million jobs that ran during
+this period was ~1.8%. Next, let’s see how much CPU time this
 corresponds to:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## CPU time consumed</span></span>
 <span><span class="va">cpu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">groups</span>, <span class="kw">function</span><span class="op">(</span><span class="va">jobs</span><span class="op">)</span> <span class="op">{</span> <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">jobs</span><span class="op">$</span><span class="va">cpu</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/units.html" class="external-link">units</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"days"</span>; <span class="va">d</span> <span class="op">}</span><span class="op">)</span></span>
 <span><span class="va">total</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cpu</span><span class="op">)</span>, cpu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">c</span>, <span class="va">cpu</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Total CPU processing time: %.1f %s\n"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">total</span><span class="op">$</span><span class="va">cpu</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/units.html" class="external-link">units</a></span><span class="op">(</span><span class="va">total</span><span class="op">$</span><span class="va">cpu</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Total CPU processing time: 163053.1 days</span></span>
+<span><span class="co">#&gt; Total CPU processing time: 159065.0 days</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">total</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
 <span><span class="co">#&gt;   outcome cpu           </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;drtn&gt;        </span></span>
-<span><span class="co">#&gt; 1 success 129757.53 days</span></span>
-<span><span class="co">#&gt; 2 fail     33295.59 days</span></span>
+<span><span class="co">#&gt; 1 success 116262.86 days</span></span>
+<span><span class="co">#&gt; 2 fail     42802.14 days</span></span>
 <span></span>
 <span><span class="co">## CPU-time fractions</span></span>
 <span><span class="va">ratio</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">total</span>, cpu <span class="op">=</span> <span class="op">{</span> <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">cpu</span><span class="op">)</span>; <span class="va">x</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></span>
@@ -291,41 +291,45 @@ corresponds to:</p>
 <span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
 <span><span class="co">#&gt;   outcome   cpu</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 success 0.796</span></span>
-<span><span class="co">#&gt; 2 fail    0.204</span></span></code></pre></div>
-<p>From this, we find that during these two weeks, ~20% of the CPU time
+<span><span class="co">#&gt; 1 success 0.731</span></span>
+<span><span class="co">#&gt; 2 fail    0.269</span></span></code></pre></div>
+<p>From this, we find that during these two weeks, ~27% of the CPU time
 was consumed by jobs that failed. Among the failed jobs, the failure
 code was distributed as:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">codes</span> <span class="op">&lt;-</span> <span class="va">groups</span><span class="op">$</span><span class="va">fail</span><span class="op">$</span><span class="va">failed</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">codes</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; codes</span></span>
-<span><span class="co">#&gt;     1    21    25    26    28    37   100 </span></span>
-<span><span class="co">#&gt;    91     5 32944  1152    11 46523 27874</span></span></code></pre></div>
+<span><span class="co">#&gt;     1     7     8    11    19    25    26    27    28    37   100</span></span>
+<span><span class="co">#&gt;  8754     4     1     1    37  3319  1804     1    52 27438 57510</span></span></code></pre></div>
 <p>From details on these codes, see
 <code><a href="../reference/read_sge_accounting.html">help("read_sge_accounting", package="wyntonquery")</a></code>, or:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="fu"><a href="../reference/read_sge_accounting.html">sge_failed_codes</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">Code</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">codes</span><span class="op">)</span>, select<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">Code</span>, <span class="va">Explanation</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 9 × 2</span></span>
-<span><span class="co">#&gt;    Code Explanation                                                                                                       </span></span>
-<span><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;</span></span>
-<span><span class="co">#&gt; 1     1 failed early in execd</span></span>
-<span><span class="co">#&gt; 2    21 qmaster asked about an unknown job (not in accounting?)</span></span>
-<span><span class="co">#&gt; 3    25 ran, will be rescheduled</span></span>
-<span><span class="co">#&gt; 4    26 failed opening stderr/stdout file</span></span>
-<span><span class="co">#&gt; 5    28 failed changing to start directory</span></span>
-<span><span class="co">#&gt; 6    37 ran, but killed due to exceeding run time limit</span></span>
-<span><span class="co">#&gt; 7   100 ran, but killed by a signal (perhaps due to exceeding resources), task …</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 11 × 2</span></span>
+<span><span class="co">#&gt;     Code Explanation</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt;  1     1 failed early in execd</span></span>
+<span><span class="co">#&gt;  2     7 failed before prolog</span></span>
+<span><span class="co">#&gt;  3     8 failed in prolog</span></span>
+<span><span class="co">#&gt;  4    11 failed in shepherd before starting job</span></span>
+<span><span class="co">#&gt;  5    19 shepherd didnt write reports correctly - probably program or machine crash</span></span>
+<span><span class="co">#&gt;  6    25 ran, will be rescheduled</span></span>
+<span><span class="co">#&gt;  7    26 failed opening stderr/stdout file</span></span>
+<span><span class="co">#&gt;  8    27 failed finding specified shell</span></span>
+<span><span class="co">#&gt;  9    28 failed changing to start directory</span></span>
+<span><span class="co">#&gt; 10    37 ran, but killed due to exceeding run time limit</span></span>
+<span><span class="co">#&gt; 11   100 ran, but killed by a signal (perhaps due to exceeding resources), task died, shepherd died (e.g. node crash), etc.</span></span></code></pre></div>
 <p>The jobs that exhausted their run-time limit, consumed 24,485 days of
 CPU time;</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">groups</span><span class="op">$</span><span class="va">fail</span>, <span class="va">failed</span> <span class="op">==</span> <span class="fl">37</span><span class="op">)</span><span class="op">$</span><span class="va">cpu</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/units.html" class="external-link">units</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"days"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Time difference of 24484.79 days</span></span></code></pre></div>
+<span><span class="co">#&gt; Time difference of 23773.49 days</span></span></code></pre></div>
 <p>which corresponds to ~15% of all CPU time spent:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">total</span><span class="op">$</span><span class="va">cpu</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.1501645</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.1494577</span></span></code></pre></div>
 </div>
   </div>
 
