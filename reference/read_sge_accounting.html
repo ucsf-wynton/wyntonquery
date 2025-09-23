@@ -22,7 +22,7 @@ Table of SGE failed codes with descriptions"><!-- mathjax --><script src="https:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wyntonquery</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9013</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0-9014</span>
       </span>
     </div>
 
@@ -163,7 +163,7 @@ at the top of the file.</p></dd>
     <h2>Value</h2>
     <p>(character string) The pathname to the SGE accounting file.
 If not found, and error is thrown.</p>
-<p>A <code>tibble</code> data frame with columns:</p><ul><li><p><code>qname</code> (character) - name of the cluster queue in which the job has run</p></li>
+<p>A <code>tibble</code> data frame with columns:</p><ol><li><p><code>qname</code> (character) - name of the cluster queue in which the job has run</p></li>
 <li><p><code>hostname</code> (character) - name of the execution host</p></li>
 <li><p><code>group</code> (character) - the effective group id of the job owner when
 executing the job</p></li>
@@ -239,7 +239,7 @@ task was part of parallel job, and was passed to Grid Engine via the
 <li><p><code>arid</code> (numeric) - advance reservation identifier</p></li>
 <li><p><code>ar_sub_time</code> (dttm) - advance reservation submission time, if the job
 uses the resources of an advance reservation, otherwise <code>0</code></p></li>
-</ul><p>A <code>tibble</code> data frame with columns corresponding to the requested
+</ol><p>A <code>tibble</code> data frame with columns corresponding to the requested
 properties.</p>
 <p>A tibble</p>
     </div>
