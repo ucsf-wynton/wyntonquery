@@ -72,7 +72,7 @@ at the top of the file.}
 If not found, and error is thrown.
 
 A \code{tibble} data frame with columns:
-\itemize{
+\enumerate{
 \item \code{qname} (character) - name of the cluster queue in which the job has run
 \item \code{hostname} (character) - name of the execution host
 \item \code{group} (character) - the effective group id of the job owner when

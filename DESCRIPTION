@@ -1,5 +1,5 @@
 Package: wyntonquery
-Version: 0.3.0-9013
+Version: 0.3.0-9014
 Depends:
     R (>= 3.5.0)
 Imports:
@@ -37,5 +37,5 @@ License: LGPL (>= 2.1)
 Encoding: UTF-8
 Language: en-US
 LazyLoad: TRUE
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
