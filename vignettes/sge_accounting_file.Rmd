@@ -41,10 +41,8 @@ entries.  In October 2021, it was ~69 GB and had 192 million job
 entries. The accounting file was "rolled over" on 2022-03-02, that is,
 the old file was renamed and replaced by a new one.  As of December
 2024, the "new" accounting file was ~112 GB and had 300 million job
-entries.
-
-As seen below, in May 2025, the new accounting file was ~131 GB and
-had ??? million job entries.
+entries. As seen below, in May 2025, the accounting file was ~131 GB
+and had 353 million job entries.
 
 It is rare to be interested in all entries.  It is more common to work
 with a subset of the job entries.  In order to do this efficiently, we
