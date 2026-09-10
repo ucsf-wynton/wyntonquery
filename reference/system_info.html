@@ -85,7 +85,7 @@ and <code><a href="cpu_info.html">cpu_info()</a></code> on the current machine.<
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">system_info</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">info</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $hostname</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "runnervmejwal"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "runnervmlun5p"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $os_info</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 2</span></span>
@@ -98,32 +98,33 @@ and <code><a href="cpu_info.html">cpu_info()</a></code> on the current machine.<
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> os_type unix                                       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cpu_info</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 40 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 41 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    field      value                          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> hostname   runnervmejwal                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> hostname   runnervmlun5p                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> processor  0                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> vendor_id  vendor_GenuineIntel            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> cpu_family 6                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> model      207                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> model_name INTEL(R) XEON(R) PLATINUM 8573C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> stepping   2                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> vendor_id  vendor_AuthenticAMD            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> cpu_family 25                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> model      1                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> model_name AMD EPYC 7763 64-Core Processor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> stepping   1                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> microcode  0xffffffff                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> cpu_mhz    3084.609                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> cache_size 266240 KB                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 30 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> cpu_mhz    2773.730                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> cache_size 512 KB                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 31 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $disk_free</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 7 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   filesystem      blocks_1024     used available capacity mounted_on    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> /dev/root         151<span style="text-decoration: underline;">263</span>856 62<span style="text-decoration: underline;">739</span>856  88<span style="text-decoration: underline;">507</span>616     0.42 /             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> tmpfs               8<span style="text-decoration: underline;">186</span>216       84   8<span style="text-decoration: underline;">186</span>132     0.01 /dev/shm      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> tmpfs               3<span style="text-decoration: underline;">274</span>488     <span style="text-decoration: underline;">1</span>020   3<span style="text-decoration: underline;">273</span>468     0.01 /run          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> tmpfs                  <span style="text-decoration: underline;">5</span>120        0      <span style="text-decoration: underline;">5</span>120     0    /run/lock     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> /dev/nvme0n1p16      <span style="text-decoration: underline;">901</span>520    <span style="text-decoration: underline;">65</span>004    <span style="text-decoration: underline;">773</span>388     0.08 /boot         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> /dev/nvme0n1p15      <span style="text-decoration: underline;">106</span>832     <span style="text-decoration: underline;">6</span>250    <span style="text-decoration: underline;">100</span>582     0.06 /boot/efi     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> tmpfs               1<span style="text-decoration: underline;">637</span>240       12   1<span style="text-decoration: underline;">637</span>228     0.01 /run/user/1001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   filesystem blocks_1024     used available capacity mounted_on               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> /dev/root    151<span style="text-decoration: underline;">263</span>856 62<span style="text-decoration: underline;">933</span>128  88<span style="text-decoration: underline;">314</span>344     0.42 /                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> tmpfs          8<span style="text-decoration: underline;">186</span>724       84   8<span style="text-decoration: underline;">186</span>640     0.01 /dev/shm                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> tmpfs          3<span style="text-decoration: underline;">274</span>692     <span style="text-decoration: underline;">1</span>020   3<span style="text-decoration: underline;">273</span>672     0.01 /run                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> tmpfs             <span style="text-decoration: underline;">5</span>120        0      <span style="text-decoration: underline;">5</span>120     0    /run/lock                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> efivarfs        <span style="text-decoration: underline;">131</span>072       32    <span style="text-decoration: underline;">131</span>036     0.01 /sys/firmware/efi/efivars</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> /dev/sda16      <span style="text-decoration: underline;">901</span>520    <span style="text-decoration: underline;">65</span>012    <span style="text-decoration: underline;">773</span>380     0.08 /boot                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> /dev/sda15      <span style="text-decoration: underline;">106</span>832     <span style="text-decoration: underline;">6</span>250    <span style="text-decoration: underline;">100</span>582     0.06 /boot/efi                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> tmpfs          1<span style="text-decoration: underline;">637</span>344       12   1<span style="text-decoration: underline;">637</span>332     0.01 /run/user/1001           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
